@@ -8,7 +8,7 @@ D. Interview Q&A github repo (Archive catagory)
 
 1. Interview Q&A
 2. Class Notes:
-    - Girhub repo related to that
+    - Github repo related to that
 3. Golang Project Archive
 4. Golang Image Archive
 5. Community story Archive (Job tips, inspirational story, interview experience etc.)
