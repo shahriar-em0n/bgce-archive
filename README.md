@@ -1,5 +1,7 @@
-<img src="./docs/ui/bgce.png" alt="BGCE-ARCHIVE" width="200"
-  style="border-radius: 50%; border: 2px solid #1e90ff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"/>
+<div align="center">
+  <img src="./docs/ui/bgce.png" alt="BGCE-ARCHIVE" width="200" style="border-radius: 50%; border: 2px solid #1e90ff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" />
+</div>
+
 
 # 🌐 **Golang Community Vault**
 
