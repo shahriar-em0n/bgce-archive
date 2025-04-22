@@ -1,8 +1,7 @@
-[**Author:** @mdimamhosen
+**Author:** @mdimamhosen
 **Date:** 2025-04-20
 **Category:** e.g., link-resouces/problems
 **Tags:** [go, problem solving, cf]
-]
 
 # Problem 313 - A
 
