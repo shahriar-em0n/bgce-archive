@@ -8,3 +8,9 @@
 ## Problem Link
 
 [CodeForces Problem 313 - A](https://codeforces.com/problemset/problem/313/A)
+
+# Problem 1676 - B
+
+## Problem Link
+
+[CodeForces Problem 1676 - B](https://codeforces.com/problemset/problem/1676/B)
