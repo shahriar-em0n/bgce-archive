@@ -4,7 +4,7 @@
 
 # 🌐 **Golang Community Vault**
 
-Welcome to **Golang Community Vault**, a community-driven digital archive designed to collect, organize, and preserve the vast knowledge, resources, and experiences from the Go programming ecosystem and beyond. Whether you're a beginner, job seeker, seasoned contributor, or mentor — **this is the place** where we give and receive knowledge.
+Welcome to **Golang Community Achive**, a community-driven digital archive designed to collect, organize, and preserve the vast knowledge, resources, and experiences from the Go programming ecosystem and beyond. Whether you're a beginner, job seeker, seasoned contributor, or mentor — **this is the place** where we give and receive knowledge.
 
 ---
 
@@ -207,3 +207,12 @@ Join the **Best Golang Community Ever** and become part of something bigger than
 
 > _“Code fades. Community lasts.”_  
 > Let’s archive knowledge, share what we’ve learned, and help the next generation of Gophers grow. 🐹🚀
+
+## 📄 License
+
+```
+© BGCE(Best GoLang Community Ever). All rights reserved.
+
+This repository and all associated content are the intellectual property of BGCE.
+Unauthorized use, reproduction, or distribution of any portion of this code or design is strictly prohibited.
+```
