@@ -1,4 +1,4 @@
-package main
+{package main
 
 import (
 	"fmt"
@@ -12,4 +12,5 @@ func main() {
 	secondLastRmv := n/100*10 + n%10
 
 	fmt.Print(max(n, lastRmv, secondLastRmv))
+}
 }
