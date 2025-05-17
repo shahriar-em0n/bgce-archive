@@ -133,3 +133,5 @@ go mod init example.com/mathlib
 - প্যাকেজ ব্যবহারে কোড পরিষ্কার ও পুনঃব্যবহারযোগ্য হয়।
 - স্কোপ বুঝে কোড গঠন করলে সমস্যা হয় না।
 - এক্সপোর্টেড ফাংশন ও মডিউল ব্যবস্থাপনা জানলে বড় প্রজেক্টেও কাজ সহজ হয়।
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

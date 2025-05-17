@@ -115,3 +115,5 @@ Call Stack:
 -  Go ফাংশনাল প্রোগ্রামিং এর অনেক ধারণা সমর্থন করে যেমন: first-class ও higher-order functions।
 -  ফাংশনগুলোকে ভেরিয়েবলের মত ব্যবহার করা যায় — কোড মডুলার ও পরিষ্কার হয়।
 -  Parameter বনাম Argument, First vs Higher Order Function, এবং Callback Function ভালোভাবে বোঝা clean এবং power-efficient কোড লেখার জন্য জরুরি।
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

@@ -120,3 +120,5 @@ func(msg string) {
     fmt.Println(msg)
 }("IIFE Example")
 ```
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]
