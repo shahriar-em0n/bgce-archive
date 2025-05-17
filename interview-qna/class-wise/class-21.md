@@ -100,3 +100,5 @@ main() একটি IIFE কল করে:
 - []  expression- মান রিটার্ন করে, এসাইন বা execute করা যায়।
 - []  anonymous function- দ্রুত লজিক ব্লক চালাতে ব্যবহৃত হয়।
 - []  IIFE- ডিফাইন এবং execute একসাথে — একবারের কাজের জন্য দারুন!
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

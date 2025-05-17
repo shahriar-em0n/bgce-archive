@@ -140,3 +140,5 @@ Stack after init():
 -  একটি Go ফাইলে একটাই `main()` থাকতে পারে, কিন্তু একাধিক `init()` থাকতে পারে।
 
 >  Init is like the secret backstage crew. You don’t see them during the show, but they’re the reason the lights come on.
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

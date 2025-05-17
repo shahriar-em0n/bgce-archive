@@ -162,3 +162,5 @@ Go তে তুমি কোনো ভেরিয়েবলকে তার 
 | Shadowing | লোকাল ভেরিয়েবল গ্লোবালটিকে ঢেকে দেয় |
 | Temporal Dead Zone | ডিক্লেয়ারেশনের আগে কোনো ভেরিয়েবল ব্যবহার করা যায় না |
 | IIFE vs Assignment | IIFE সাথে সাথে চলে; অ্যাসাইনমেন্ট পরে কল করতে হয় |
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

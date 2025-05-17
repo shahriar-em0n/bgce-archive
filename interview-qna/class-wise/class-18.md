@@ -90,3 +90,5 @@ func main() {
 -  নতুন scope (যেমন if, for, function block) এ ঢুকলে নতুন variable **স্ট্যাকে** পুশ হয়।
 -  ব্লক শেষ হলে shadow করা variable **স্ট্যাক থেকে মুছে যায়**।
 -  প্রোগ্রাম শেষ হলে স্ট্যাক ক্লিয়ার হয়, কিন্তু ডাটা সেগমেন্ট পুরো সময় জীবিত থাকে।
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]
