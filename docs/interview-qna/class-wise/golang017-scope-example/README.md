@@ -1,9 +1,9 @@
-# 📘 Class 17  
-**Video Name:** Scope with another boring example 🙃
+
+# 🧠 Class 17: Scope with another boring example 
 
 ---
 
-## 🧑‍💻 Code written in this class
+## 🧑‍💻 Code Example :
 
 ```go
 package main
@@ -11,47 +11,46 @@ package main
 import "fmt"
 
 var (
-	a = 10
-	b = 20
+    a = 10
+    b = 20
 )
 
 func printNum(num int) {
-	fmt.Println(num)
+    fmt.Println(num)
 }
 
 func add(x int, y int) {
-	res := x + y
-	printNum(res)
+    res := x + y
+    printNum(res)
 }
 
 func main() {
-	add(a, b)
+    add(a, b)
 }
 ```
-## 🧠 Key Concepts
 
-1. **✅ Order doesn't matter (for package-level stuff)**
-    The order of functions and globally declared variables does not matter in Go.
-    Even if the functions and variables are defined after `main()`, Go will still recognize and compile everything correctly.
+---
 
-2. **🤓 Go ≠ Functional Paradigm**
-    Although Go has borrowed some cool ideas from functional languages (like first-class functions, closures, etc.), **Go is not a functional programming language.**
+## 🧠 মূল ধারণাসমূহ
 
-3. **⚖️ What paradigm is Go really?**
+### ✅ অর্ডার ম্যাটার করে না (প্যাকেজ-লেভেলের জন্য)
 
-    > Go is a **multi-paradigm** language, but its primary style is **imperative** and **procedural**, with **struct-based composition** over classic OOP.
+Go তে ফাংশন এবং গ্লোবাল ভ্যারিয়েবলগুলোর অর্ডার (ক্রম) গুরুত্বপূর্ণ নয়। মানে `main()` ফাংশনের পরেও যদি অন্য ফাংশন বা ভ্যারিয়েবল ডিক্লেয়ার করা হয়, Go ঠিকই সব চিনে নেয় এবং কম্পাইল করে।
 
-It's built to be:
+### 🤓 Go ≠ ফাংশনাল প্রোগ্রামিং প্যারাডাইম
 
-    ✅ Simple
+Go কিছু দারুণ ফিচার ধার করেছে ফাংশনাল ল্যাঙ্গুয়েজ থেকে (যেমন: ফার্স্ট-ক্লাস ফাংশন, ক্লোজার ইত্যাদি), কিন্তু Go নিজে ফাংশনাল প্রোগ্রামিং ল্যাঙ্গুয়েজ নয়।
 
-    🔍 Predictable
+### ⚖️ তাহলে Go কোন প্যারাডাইমে পড়ে?
 
-    📖 Readable
+Go হলো একাধিক প্যারাডাইম সাপোর্ট করে এমন ভাষা, তবে এর মূল স্টাইল হচ্ছে **imperative** এবং **procedural**। এটি ক্লাসিক OOP-এর বদলে **struct-based composition** কে গুরুত্ব দেয়।
 
-You can write in a functional-ish style, but Go wasn’t designed for heavy functional abstractions.
+> এটি ডিজাইন করা হয়েছে যাতে ভাষাটি হয়:
 
-[**Author:** @ifrunruhin12
-**Date:** 2025-05-01
-**Category:** interview-qa/class-wise
-]
+-  সহজ  
+-  ভবিষ্যৎ অনুমানযোগ্য (Predictable)  
+-  সহজে পড়া যায় এমন (Readable)
+
+তুমি চাইলে functional-এর মতো স্টাইলে কোড লিখতে পারো, কিন্তু Go কে ডিজাইন করা হয়নি অনেক জটিল functional abstraction-এর জন্য।
+
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

@@ -1,115 +1,104 @@
-# 📘 Class 21 – Expressions, Anonymous Functions & IIFE in Go
+# Class 21 – expression, anonymous function ও IIFE - in go
 
-### 🎥 Video Name: 
-**Anonymous function, Expression & IIFE**
+## 🎥 ভিডিও নাম: anonymous function, expression ও IIFE
 
----
-
-## 📦 Code Written in This Class
+## 🔤 Code Written in This Class
 
 ```go
-// Anonymous function
-// IIFE - Immediately Invoked Function Expression
+// anonymous function
+// IIFE - ইমিডিয়েটলি ইনভোকড function expression
 
 package main
 
 import "fmt"
 
 func main() {
-	// Anonymous function
-	func(a int, b int) {
-		c := a + b
-		fmt.Println(c)
-	}(5, 7) // IIFE
+    // anonymous function
+    func(a int, b int) {
+        c := a + b
+        fmt.Println(c)
+    }(5, 7) // IIFE
 }
 
 func init() {
-	fmt.Println("I'll be called first")
+    fmt.Println("আমি সবার আগে কল হব")
 }
 ```
-## 🧠 Key Concepts
-### 🧮 Expression in Go
 
-> An expression is any snippet of code that evaluates to a value.
+## 🧠 মূল ধারণাসমূহ
 
-**Examples:**
+###  Go-তে Expression (expression)
+
+expression হলো যেকোনো code snippet যা কোনো মান (value) রিটার্ন করে।
+
+example:
 
 ```go
-a + b          // is an expression
-func(x, y){}   // is a function expression
+a + b          // একটি expression
+func(x, y){}   // একটি function expression
 ```
-Expressions can be used as values, passed around, or even executed immediately — which leads us to…
 
-### **🧙 Anonymous Function**
+expression মান হিসেবে ব্যবহার, pass অথবা সাথে সাথেই execute করা যায়।
 
-An **anonymous function** is a function **without a name.**
+###  anonymous function
 
-Instead of:
-```go
-func add(a, b int) int {
-	return a + b
-}
-```
-You write:
+anonymous function হলো নামবিহীন function।
+
 ```go
 func(a, b int) int {
-	return a + b
+    return a + b
 }
 ```
-✅ You can assign it to a variable, pass it as an argument, or invoke it on the spot.
+
+✅ এটি ভ্যারিয়েবল হিসেবে সংরক্ষণ, আর্গুমেন্ট হিসেবে pass বা সাথে সাথেই কল করা যায়।
 
 ### ⚡ IIFE (Immediately Invoked Function Expression)
 
-> An **IIFE** is an anonymous function that is **executed immediately** right after it's defined.
+IIFE হলো এমন একটি anonymous function যেটি ডিক্লেয়ার করার সাথেসাথে execute হয়।
 
-Syntax:
 ```go
 func(a int, b int) {
-	// do stuff
+    // কাজ
 }(5, 7)
 ```
-**Use-case**: You want to run a small block of logic **immediately, without polluting the namespace** with a new function name.
 
-## 🖥️ CLI-style Execution Visualization
+**ব্যবহার:** ছোট লজিক ব্লক তাৎক্ষণিক চালানোর জন্য উপযোগী, নতুন নাম না দিয়েই।
+
+### 🖥️ CLI-  execution vizualization
 
 ```
-=========== Compilation Phase =============
-Found init() ✅
-Found main() ✅
+=========== compilation ধাপ =============
+init() function খুঁজে পাওয়া গেছে ✅
+main() function খুঁজে পাওয়া গেছে ✅
 
-=========== Execution Phase ===============
+=========== এক্সিকিউশন ধাপ =============
 
-🔁 init() runs first
-→ Prints: I'll be called first
+🔁 init() প্রথমে চলে
+→ আউটপুট: আমি সবার আগে কল হব
 
-🧠 Data Segment:
-(No global vars in this case)
+🧠 ডেটা সেগমেন্ট:
+(কোনো গ্লোবাল ভ্যারিয়েবল নেই)
 
-📚 Stack Frame:
+📚 stack frame:
 ┌─────────────────────┐
 │    main()           │
 │ ┌─────────────────┐ │
-│ │  anonymous func │ │
+│ │  anonymous function │ │
 │ └─────────────────┘ │
 └─────────────────────┘
 
-main() calls an IIFE:
-→ Passes 5 and 7
-→ Inside IIFE: c := 5 + 7 = 12
-→ Prints: 12
+main() একটি IIFE কল করে:
+→ 5 এবং 7 pass করে
+→ ভিতরে: c := 5 + 7 = 12
+→ output: 12
 
-=========== Execution Complete =============
+=========== execution সম্পূর্ণ ============
 ```
 
-## 🧵 TL;DR
+### 🧵 TL;DR (সংক্ষেপে)
 
--[] ✅ Expressions return values and can be assigned or executed.
+- []  expression- মান রিটার্ন করে, এসাইন বা execute করা যায়।
+- []  anonymous function- দ্রুত লজিক ব্লক চালাতে ব্যবহৃত হয়।
+- []  IIFE- ডিফাইন এবং execute একসাথে — একবারের কাজের জন্য দারুন!
 
--[] 🧪 Anonymous functions have no name, great for quick logic blocks.
-
--[] 🚀 IIFE: Define & execute in one go. Great for one-off logic.
-
-[**Author:** @ifrunruhin12
-**Date:** 2025-05-01
-**Category:** interview-qa/class-wise
-]
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

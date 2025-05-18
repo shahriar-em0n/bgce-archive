@@ -1,151 +1,166 @@
-# 📘 Class 22 – Function Expressions & Shadowing in Go
+# 📘 CLass 22 – Go Function Expression & Shadowing
 
-### 🎥 Video Name:
-**Function Expression Example**
+🎥 **ভিডিও নাম:** Function Expression Example
 
 ---
 
-## ✅ Code 1: Working Example
-
+## ✅ Example 1:  
 ```go
 package main
 
 import "fmt"
 
-// Global function expression
+// গ্লোবাল ফাংশন এক্সপ্রেশন
 var add = func(x, y int) {
-	fmt.Println(x + y)
+    fmt.Println(x + y)
 }
 
 func main() {
-	add(4, 7) // Calls the global `add`
+    add(4, 7) // গ্লোবাল `add` কল হচ্ছে
 
-	// Function expression assigned to local variable
-	add := func(a int, b int) {
-		c := a + b
-		fmt.Println(c)
-	}
+    // লোকাল ভেরিয়েবলে ফাংশন এক্সপ্রেশন অ্যাসাইন করা
+    add := func(a int, b int) {
+        c := a + b
+        fmt.Println(c) কোড ২
+    }
 
-	add(2, 3) // Calls the local `add`
+    add(2, 3) // এখন লোকাল `add` কল হচ্ছে
 }
 
 func init() {
-	fmt.Println("I will be called first")
-}
+    fmt.Println("আমি প্রথমে কল হব")
 ```
-## 🧠 Key Concepts
+
+---
+
+## 🧠 মূল ধারণাসমূহ
+
 ### 🔧 Function Expression
 
-A function **assigned to a variable**. It allows us to:
+যখন কোনো ফাংশনকে একটি ভেরিয়েবলে সংরক্ষণ করা হয়। এর মাধ্যমে আমরা —
 
--[] Store logic in a variable
+- logic একটি ভেরিয়েবলে রাখতে পারি
+- ফাংশনকে ফার্স্ট-ক্লাস সিটিজেন হিসেবে ব্যবহার করতে পারি
+- inline বা anonymous ফাংশন তৈরি করতে পারি
 
--[] Treat functions like first-class citizens
-
--[] Create inline, nameless (anonymous) functions
-
-**Example:**
+**উদাহরণ:**
 
 ```go
 add := func(a int, b int) {
-	fmt.Println(a + b)
+    fmt.Println(a + b)
 }
 ```
+
+---
+
 ### 🧱 Shadowing
 
-When a variable in a **smaller (local) scope** has the **same name** as one in a **larger (outer) scope**, it "shadows" or hides it temporarily.
+যখন একটি ছোট স্কোপে (লোকাল স্কোপে) থাকা ভেরিয়েবলের নাম বড় স্কোপে থাকা একই নামের ভেরিয়েবলকে ঢেকে ফেলে বা “শ্যাডো” করে।
 
-In the `main()` function:
 ```go
 add := func(a int, b int) {...}
 ```
-This local `add` shadows the global `add` from that point onward.
 
-## 🖥️ Execution Visualization (Working Example)
+এই `add` লোকাল স্কোপে গ্লোবাল `add` কে ঢেকে দেয়।
+
+---
+
+### 🖥️  CLI-  execution vizualization
+
 ```
-========== Compilation Phase ==========
-✔ Found init()
-✔ Found main()
-✔ Global `add` assigned to function
+========== কম্পাইলেশন ফেজ ==========
+✔ init() পাওয়া গেছে
+✔ main() পাওয়া গেছে
+✔ গ্লোবাল `add` ফাংশন অ্যাসাইন করা হয়েছে
 
-========== Execution Begins ===========
-
+========== এক্সিকিউশন শুরু ==========
 init():
-→ Prints: I will be called first
+→ প্রিন্ট করে: আমি প্রথমে কল হব
 
 main():
-→ Calls global `add(4, 7)` → Prints: 11
+→ গ্লোবাল `add(4, 7)` → প্রিন্ট: 11
 
-Local Scope in main():
+main() এর ভিতরের লোকাল স্কোপ:
 ┌──────── Stack Frame ───────┐
 │ main()                     │
 │ ┌──────────────┐          │
-│ │ add (local)  │────────┐ │
+│ │ add (লোকাল)  │────────┐ │
 │ └──────────────┘        │ │
 └─────────────────────────┘ │
-       (shadows global) ◄───┘
+       (গ্লোবালটিকে ঢেকে দেয়) ◄───┘
 
-→ Calls local `add(2, 3)` → Prints: 5
+→ লোকাল `add(2, 3)` → প্রিন্ট: 5
 
-========== Execution Ends ==========
+========== এক্সিকিউশন শেষ ==========
 ```
-## ❌ Code 2: Fails to Compile
+
+---
+
+## ❌ Example  2: কম্পাইল হয় না
+
 ```go
 package main
 
 import "fmt"
 
-// Global function expression
+// গ্লোবাল ফাংশন এক্সপ্রেশন
 var add = func(x, y int) {
-	fmt.Println(x + y)
+    fmt.Println(x + y)
 }
 
 func main() {
-	adder(4, 7) // ❌ ERROR: undefined: adder
+    adder(4, 7) // ❌ ERROR: undefined: adder
 
-	// Function expression or Assign function in variable
-	adder := func(a int, b int) {
-		c := a + b
-		fmt.Println(c)
-	}
+    adder := func(a int, b int) {
+        c := a + b
+        fmt.Println(c)
+    }
 
-	add(2, 3)
+    add(2, 3)
 }
 
 func init() {
-	fmt.Println("I will be called first")
+    fmt.Println("আমি প্রথমে কল হব")
 }
-```
-### ❌ Why it fails
+``` 
 
-This line:
+---
+
+## ❌ কেন এটা কাজ করে না?
+
+এই লাইনটি:
+
 ```go
 adder(4, 7)
 ```
-is **above** the declaration:
+
+ডিক্লেয়ারেশনের উপরে আছে:
+
 ```go
 adder := func(a int, b int) { ... }
 ```
-### ⛔ The Problem: Temporal Dead Zone
 
-In Go, **you can't use a variable before it's declared**, even if it’s in the same block.
+🛑 **সমস্যা: Temporal Dead Zone**
 
-So, when you try to use `adder`, it hasn’t been declared yet. Hence:
+Go তে তুমি কোনো ভেরিয়েবলকে তার ডিক্লেয়ারেশনের আগে ব্যবহার করতে পারো না even একই ব্লকের মধ্যেও।
+
+তাই `adder` ব্যবহার করার সময়ে সেটি এখনো ডিক্লেয়ার হয়নি।
+
+ভুল:  
 ```bash
 ./main.go:10:2: undefined: adder
 ```
 
+---
+
 ## 📚 TL;DR
 
-Concept | Meaning
-Function Expression | A function assigned to a variable
-Anonymous Function | A function with no name
-Shadowing | Local variable hides the same-named global one
-Temporal Dead Zone | You can't use variables before their declaration in Go
-IIFE vs Assignment | IIFE executes immediately; assignment waits to be called explicitly
+| ধারণা | অর্থ |
+|-------|------|
+| Function Expression | একটি ভেরিয়েবলে সংরক্ষিত ফাংশন |
+| Anonymous Function | নামবিহীন ফাংশন |
+| Shadowing | লোকাল ভেরিয়েবল গ্লোবালটিকে ঢেকে দেয় |
+| Temporal Dead Zone | ডিক্লেয়ারেশনের আগে কোনো ভেরিয়েবল ব্যবহার করা যায় না |
+| IIFE vs Assignment | IIFE সাথে সাথে চলে; অ্যাসাইনমেন্ট পরে কল করতে হয় |
 
-
-[**Author:** @ifrunruhin12
-**Date:** 2025-05-01
-**Category:** interview-qa/class-wise
-]
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]
