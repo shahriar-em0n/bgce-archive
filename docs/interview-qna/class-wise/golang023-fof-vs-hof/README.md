@@ -1,115 +1,119 @@
-# Class 23: Functional Programming Concepts in Go
+# Class 23: Go-তে Functional Programming ধারণা
 
-## Code Example
 ```go
 package main
 
 import "fmt"
 
 func add(a int, b int) { // Parameter: a and b
-	c := a + b
-	fmt.Println(c)
+    c := a + b
+    fmt.Println(c)
 }
 
 func main() {
-	add(2, 5) // 2 and 5 are arguments
-	processOperation(4, 5, add)
-	sum := call() // function expression
-	sum(4, 7)
+    add(2, 5) // 2 এবং 5 হলো argument
+    processOperation(4, 5, add)
+    sum := call() // function expression
+    sum(4, 7)
 }
 
 func processOperation(a int, b int, op func(p int, q int)) { // Higher order function
-	op(a, b)
+    op(a, b)
 }
 
 func call() func(x int, y int) {
-	return add
+    return add
 }
 ```
 
 ---
 
-## 🧠 Key Concepts
+## 🧠 মূল ধারণাসমূহ
 
-### 1. **Parameter vs Argument**
-- **Parameter**: The variable listed inside the function definition. (e.g., `a int, b int` in `add(a, b)`)
-- **Argument**: The actual value passed to the function when it's called. (e.g., `add(2, 5)`)
+### ১. Parameter বনাম Argument
 
-### 2. **First Order Function**
-A regular function that does not take another function as input or return one.
-- Examples:
-  - Named function: `func add(a, b int)`
-  - Anonymous function: `func(a int, b int) { ... }`
-  - IIFE (Immediately Invoked Function Expression): `func(a, b int) { ... }(5, 7)`
-  - Function expression: `sum := func(a, b int) { ... }`
-
-### 3. **Higher Order Function**
-A function that **takes a function as a parameter**, **returns a function**, or **both**.
-- Example:
-  - `processOperation` takes a function `op` as a parameter
-  - `call()` returns a function `add`
-
-### 4. **Callback Function**
-- A function that is passed into another function to be executed later.
-- In `processOperation(4, 5, add)`, the function `add` is a callback.
-
-### 5. **First-Class Citizen (Function)**
-- In Go, functions can be assigned to variables, passed as arguments, and returned from other functions.
-- This makes them *first-class citizens*.
+- **Parameter:** ফাংশনের ভিতরে ডিফাইন করা ভেরিয়েবল (যেমন: `a int`, `b int` in `add(a, b)`).
+- **Argument:** ফাংশন কল করার সময় যেসব মান পাঠানো হয় (যেমন: `add(2, 5)` এ `2` এবং `5`).
 
 ---
 
-## 🧠 Conceptual Context (Functional Paradigm)
+### ২. First Order Function
 
-> Functional programming treats computation as the evaluation of mathematical functions and avoids changing-state and mutable data.
-
-### Inspiration from Mathematics
-- **First Order Logic**: Objects with properties (e.g., `Person`, `Car`, etc.)
-- **Higher Order Logic**: Functions and their relation with other functions (like in Go's higher-order functions)
-
-Languages like **Haskell**, **Racket**, etc., are built on deep functional paradigms.
-
-Go borrows **some** of these concepts, but it is still **imperative and procedural** by nature.
+- এমন ফাংশন যেটি অন্য কোনো ফাংশন নেয় না বা ফেরত দেয় না।
+- উদাহরণ:
+    - Named function: `func add(a, b int)`
+    - Anonymous function: `func(a int, b int) { ... }`
+    - IIFE: `func(a, b int) { ... }(5, 7)`
+    - Function expression: `sum := func(a, b int) { ... }`
 
 ---
 
-## 📟 CLI Visualization (Call Stack + Segments)
+### ৩. Higher Order Function
 
-### 1. **Data Segment**
-- `add` (global function definition)
-- `call` (returns a function)
-- `processOperation` (stored function)
+- এমন ফাংশন যা অন্য ফাংশন নেয়, ফেরত দেয়, অথবা দুটোই করে।
+- উদাহরণ:
+    - `processOperation` একটি ফাংশন নেয়
+    - `call()` একটি ফাংশন রিটার্ন করে
 
-### 2. **Code Execution Flow (Stack Frames)**
-```shell
+---
+
+### ৪. Callback Function
+
+- যেসব ফাংশন অন্য ফাংশনের ভিতরে পাঠানো হয় এবং পরে কল করা হয়।
+- উদাহরণ: `processOperation(4, 5, add)` → এখানে `add` হলো callback function
+
+---
+
+### ৫. First-Class Citizen (Function)
+
+- Go-তে ফাংশনগুলো first-class citizen অর্থাৎ:
+    - ফাংশন ভেরিয়েবলে রাখা যায়
+    - আর্গুমেন্ট হিসেবে পাঠানো যায়
+    - অন্য ফাংশন থেকে রিটার্ন করা যায়
+
+---
+
+## 🧠 ধারণাগত প্রেক্ষাপট (Functional Programming Paradigm)
+
+- Functional programming হলো গণিতের ফাংশনের মত হিসাব করা এবং mutable state পরিহার করা।
+- অনুপ্রেরণা: গণিতের দুইটি লজিক ধারা —
+    - First Order Logic → বস্তু ও তার প্রপার্টি
+    - Higher Order Logic → ফাংশন এবং তার সম্পর্ক
+- Haskell, Racket ইত্যাদি ভাষা ফাংশনাল প্রোগ্রামিং ভিত্তিক।
+- Go এই ধারণা কিছুটা গ্রহণ করলেও মূলত এটি imperative/procedural ভাষা।
+
+---
+
+## 🖥️ CLI Visualization (Call Stack + Segment)
+
+### ডেটা সেগমেন্ট:
+
+- `add` (গ্লোবাল ফাংশন)
+- `call` (ফাংশন রিটার্ন করে)
+- `processOperation` (স্টোর করা ফাংশন)
+
+---
+
+### এক্সিকিউশন ফ্লো (স্ট্যাক ফ্রেম অনুযায়ী):
+
+```
 Call Stack:
 ┌──────────────────────────┐
 │ main()                   │
-│ ├── add(2, 5)            │ => prints 7
+│ ├── add(2, 5)            │ => ৭ প্রিন্ট করে
 │ ├── processOperation     │
-│ │   └── op(4, 5) => add  │ => prints 9
-│ ├── call()               │ => returns add
-│ └── sum(4, 7)            │ => prints 11
+│ │   └── op(4, 5) → add   │ => ৯ প্রিন্ট করে
+│ ├── call()               │ => add রিটার্ন করে
+│ └── sum(4, 7)            │ => ১১ প্রিন্ট করে
 └──────────────────────────┘
 ```
 
-Everything runs in the order written, but since functions are first-class, Go can pass and return them like variables.
-
 ---
 
-## Summary
-- 🌱 Go supports functional programming **concepts** like first-class and higher-order functions.
-- 💡 You can pass around functions like variables — extremely powerful for modular and clean code.
-- 🧠 Understanding **first order vs higher order functions**, **parameters vs arguments**, and **callback functions** gives you a major edge in writing elegant Go code.
+##  সারসংক্ষেপ
 
----
+-  Go ফাংশনাল প্রোগ্রামিং এর অনেক ধারণা সমর্থন করে যেমন: first-class ও higher-order functions।
+-  ফাংশনগুলোকে ভেরিয়েবলের মত ব্যবহার করা যায় — কোড মডুলার ও পরিষ্কার হয়।
+-  Parameter বনাম Argument, First vs Higher Order Function, এবং Callback Function ভালোভাবে বোঝা clean এবং power-efficient কোড লেখার জন্য জরুরি।
 
-✅ This was a big brain class. You crushed it!
-
----
-
-
-[**Author:** @ifrunruhin12
-**Date:** 2025-05-01
-**Category:** interview-qa/class-wise
-]
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]

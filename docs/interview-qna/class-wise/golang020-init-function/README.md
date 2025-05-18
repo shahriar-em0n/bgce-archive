@@ -1,28 +1,28 @@
-# 🧠 Class 19: Init Function
+# 🧠 Class 20: Init Function
 
-**Video Topic**: `init()` Function in Go
-
----
+📺 **Video Topic**: `init()` Function in Go
 
 ## 🔤 Code Written in This Class
 
+### ✅ Example 1
+
 ```go
-//example 1
 package main
 
 import "fmt"
 
 func main() {
-	fmt.Println("Hello Init Function!")
+    fmt.Println("Hello Init Function!")
 }
 
 func init() {
-	fmt.Println("I am the function that is executed first")
+    fmt.Println("I am the function that is executed first")
 }
 ```
 
+### ✅ Example 2
+
 ```go
-//example 2
 package main
 
 import "fmt"
@@ -30,33 +30,29 @@ import "fmt"
 var a = 10
 
 func main() {
-	fmt.Println(a)
+    fmt.Println(a)
 }
 
 func init() {
-	fmt.Println(a)
-	a = 20
+    fmt.Println(a)
+    a = 20
 }
 ```
 
 ## 🔍 Key Concepts
 
-1. `init()` is a special Go function that runs before `main()`, automatically.
+- `init()` একটি বিশেষ Go function যা `main()` এর আগে automatically run হয় ।
+- একাধিক ফাইল এবং প্যাকেজে একাধিক `init()` থাকতে পারে। চালানোর ক্রম:
+  - Dependency packages আগে
+  - তারপর ফাইল অর্ডার অনুযায়ী (উপরে থেকে নিচে)
+- `init()` ম্যানুয়ালি কল করা যায় না। এটি প্রোগ্রাম শুরু হওয়ার আগেই চলে।
 
-2. You can have multiple `init()` functions across different files and packages. They all run in the order of:
+---
 
-    - Dependency packages first
+## 🧠 CLI Memory & Execution Visualization (Example 1)
 
-    - File order (top to bottom) next
-
-3. You don't call `init()` manually. It runs automatically before the program starts.
-
-##  🧠 CLI Memory & Execution Visualization (example 1)
-
-Let’s visualize how Go handles `init()` under the hood:
-```
-// 🛠 Compile Time: Go detects init()
-
+```text
+🛠 Compile Time: Go detects init()
 Found init() in main package ✅
 
 ----------- EXECUTION BEGINS -----------
@@ -85,8 +81,11 @@ Found init() in main package ✅
 ✅ Program ends gracefully
 ```
 
-## 🔍 CLI Visualization: Execution & Memory Layout (example 2)
-```
+---
+
+## 🔍 CLI Visualization: Execution & Memory Layout (Example 2)
+
+```text
 =========== Program Compilation ===========
 Found global variable: a = 10
 Found init() ✅
@@ -118,34 +117,28 @@ Stack after init():
 → Prints: 20
 
 =========== Execution Ends ================
-
-📌 Summary
-
-    ✅ Global variable a is initialized before any function runs.
-
-    ⚙️ init() executes first:
-
-        Reads a = 10
-
-        Changes a = 20
-
-    🧨 main() sees updated value: 20
-
-This is a classic example of how init() can prepare or modify the runtime environment before the actual program logic in main() kicks in.
-
 ```
+
+---
+
+## 📌 Summary
+
+- Global variable `a` প্রোগ্রাম চলার আগেই initialized হয়।
+- `init()` প্রথমে execute হয়:
+  - `a = 10` পড়ে
+  - `a = 20` করে আপডেট করে
+- `main()` updated value দেখায়: `20`
+
+> এটি একটি ক্লাসিক উদাহরণ, যেখানে `init()` মূল প্রোগ্রাম চলার আগে runtime environment প্রস্তুত করে।
+
+---
 
 ## ⚡ Quick Recap
 
-1. ✅ `init()` always runs before `main()` even if it’s written after `main()` in your code.
+-  `init()` সবসময় `main()` এর আগে চলে, এমনকি যদি কোডে পরে লেখা থাকে।
+-  এটি config, database connection, default value ইত্যাদি initialize করার জন্য ব্যবহার করা হয়।
+-  একটি Go ফাইলে একটাই `main()` থাকতে পারে, কিন্তু একাধিক `init()` থাকতে পারে।
 
-2. ⛓️ You can use it to initialize configs, connections, default values, etc.
+>  Init is like the secret backstage crew. You don’t see them during the show, but they’re the reason the lights come on.
 
-3. 💡 A Go file can have at most one `main()`, but multiple `init()`s.
-
-> 🧪 "Init is like the secret backstage crew. You don’t see them during the show, but they’re the reason the lights come on."
-
-[**Author:** @ifrunruhin12
-**Date:** 2025-05-01
-**Category:** interview-qa/class-wise
-]
+[Author: @ifrunruhin12 @shahriar-em0n  Date: 2025-05-01 Category: interview-qa/class-wise ]
