@@ -2740,6 +2740,490 @@ Stack grows downward ↓
 <blockquote>
 <p>debugging, compiler design, এবং low-level programming এর জন্য stack frames বুঝা অত্যন্ত প্রয়োজনীয়।</p>
 </blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="class-38---thread"><a class="header" href="#class-38---thread">Class 38 - Thread</a></h1>
+<h2 id="-thread-কী"><a class="header" href="#-thread-কী">🧵 Thread কী?</a></h2>
+<ul>
+<li><strong>Thread</strong> হল কোন process এর একটি <strong>execution unit</strong>.</li>
+<li>একটি <strong>process creation</strong> এর সাথে সাথে by <strong>default</strong> একটি thread create হয় যাকে <strong>main thread</strong> ও বলা হয়।</li>
+<li>Thread মূলত <strong>RAM এ load করা instruction/program code গুলো execute</strong> করে থাকে।</li>
+</ul>
+<hr />
+<h2 id="-thread-কোথায়-থাকে"><a class="header" href="#-thread-কোথায়-থাকে">🧠 Thread কোথায় থাকে?</a></h2>
+<pre><code class="language-plaintext">                User software/program এ double click করে
+                                  ⬇️
+            RAM এ লোড হওয়া program এর binary executable code load হয়
+                                  ⬇️
+                      OS একটি process create করে
+                                  ⬇️
+                      default thread create হয়
+
+</code></pre>
+<ul>
+<li>Thread কে <strong>process এর একটি অংশ</strong> বলা যায়।</li>
+<li><strong>Process creation</strong> এর শুরুতে thread এবং process একই থাকে।</li>
+<li>Process is <strong>container</strong>, thread is <strong>executor</strong></li>
+</ul>
+<hr />
+<h2 id="-thread-কে-virtual-process-কেন-বলা-হয়"><a class="header" href="#-thread-কে-virtual-process-কেন-বলা-হয়">🔍 Thread কে Virtual Process কেন বলা হয়?</a></h2>
+<ul>
+<li><strong>New Process create</strong> ➡️ <strong>Default Thread Create</strong> হয়</li>
+<li>Thread এর <strong>Code Segment, Data Segment, Stack, Heap</strong> ইত্যাদি থাকে ➡️ Process এর অনুরূপ</li>
+<li>Process এর মতোই behave করে থাকে।</li>
+<li><strong>Logical Process</strong> বলা হয়।</li>
+</ul>
+<hr />
+<h2 id="-multi-threading"><a class="header" href="#-multi-threading">🧶🔄 Multi-threading</a></h2>
+<p>একটি process এর মধ্যে অনেকগুলো কাজ বা functionality execute করার জন্য, OS ওই process এর ভেতরে একাধিক execution unit তৈরি করে, যেগুলো একসাথে কাজ করে, তখন তাকে <strong><code>Multi-threading</code></strong> বলে।</p>
+<h3 id="-একই-process-এর-অনতরভুকত-multiple-threads-এর-কিছু-characteristics"><a class="header" href="#-একই-process-এর-অনতরভুকত-multiple-threads-এর-কিছু-characteristics">✨ একই Process এর অন্তর্ভুক্ত Multiple Threads এর কিছু Characteristics</a></h3>
+<ul>
+<li>প্রতিটি Thread এর নিজস্ব CPU state (যেমন: Register, Program Counter) এবং Stack থাকে।</li>
+<li>সব Thread একই Process এর code section, data section এবং OS resources (e.g. open files and signals) share করে।</li>
+<li>প্রতিটি Thread এর নিজস্ব <strong>TCB (Thread Control Block)</strong> থাকে।</li>
+<li>Thread গুলো <strong>lightweight</strong> হওয়ায় <strong>context switching</strong> দ্রুত হয়।</li>
+<li>একে অপরের সাথে সহজে Data শেয়ার করতে পারে → Fast Communication সম্ভব।</li>
+<li>এক Thread এ bug থাকলে পুরো process crash করতে পারে।</li>
+<li>Data sharing এর জন্য synchronization দরকার (mutex/semaphore)।</li>
+</ul>
+<hr />
+<h2 id="-visualization-multi-threading-inside-a-process"><a class="header" href="#-visualization-multi-threading-inside-a-process">🧵 Visualization: Multi-threading Inside a Process</a></h2>
+<pre><code>                  +-----------------------------+
+                  |         Process             |
+                  |  (e.g., Media Player App)   |
+                  |                             |
+                  |  +-----------------------+  |
+                  |  |       Thread 1        |  |  --&gt; Play Audio
+                  |  +-----------------------+  |
+                  |                             |
+                  |  +-----------------------+  |
+                  |  |       Thread 2        |  |  --&gt; Display Video
+                  |  +-----------------------+  |
+                  |                             |
+                  |  +-----------------------+  |
+                  |  |       Thread 3        |  |  --&gt; Handle User Input
+                  |  +-----------------------+  |
+                  |                             |
+                  +-----------------------------+
+</code></pre>
+<h3 id="-explanation"><a class="header" href="#-explanation">🔍 Explanation</a></h3>
+<p>Process হচ্ছে একটি চলমান প্রোগ্রাম (যেমন: VLC Player)। সেই প্রোগ্রামের ভেতরে একাধিক Thread কাজ করছে। যেমন:</p>
+<ul>
+<li>🎵 <strong>Thread 1:</strong> অডিও প্লে করছে</li>
+<li>📺 <strong>Thread 2:</strong> ভিডিও দেখাচ্ছে</li>
+<li>🎮 <strong>Thread 3:</strong> ইউজারের কীবোর্ড/মাউস ইনপুট নিচ্ছে</li>
+</ul>
+<p>সব thread মিলে একটি process এর কাজকে দ্রুত ও কার্যকর করে।</p>
+<h2 id="-context-switching-in-thread"><a class="header" href="#-context-switching-in-thread">🔄 Context Switching in Thread</a></h2>
+<ul>
+<li>Thread ➡️ একটি নির্দিষ্ট কাজ/functionality এর জন্য দায়ী</li>
+<li>Process দ্রুত execute করার লক্ষ্যে ➡️ OS, multiple thread create করে</li>
+<li>Program Counter একটি নির্দিষ্ট সময়ে শুধু একটি thread এর instruction address ধরে রাখতে পারে ➡️ CPU একসাথে সব থ্রেড চালাতে পারে না</li>
+<li>CPU কিছু সময় একটি thread execute করে ➡️ একটি thread এর সময় শেষ বা thread blocked (যেমন: I/O wait)</li>
+<li>OS সেই thread এর current state (registers, stack pointer, program counter) সংরক্ষণ করে ➡️ <strong>TCB (Thread Control Block)</strong></li>
+<li>এরপর OS অন্য thread এর state load করে</li>
+<li>এই পুরো প্রক্রিয়াটিকেই বলা হয় ➡️ <strong>Thread Context Switching</strong></li>
+</ul>
+<h2 id="thread-pool-"><a class="header" href="#thread-pool-">Thread Pool 🧵🧵</a></h2>
+<p><strong>Thread pool</strong> হলো আগেই তৈরি করা কিছু Thread, যেগুলো Process এ বসে থাকে আর কাজ এলে তা করে ফেলে।
+প্রতিবার নতুন Thread না বানিয়ে আগের তৈরি Thread ব্যবহার করায় সময় ও রিসোর্স বাঁচে; বিশেষভাবে ছোট ও অনেক কাজ থাকলে এটা খুবই উপকারী।</p>
+<h2 id="-process-vs-thread-"><a class="header" href="#-process-vs-thread-">⚙️ Process Vs Thread 🧵</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Feature</th><th>Process</th><th>Thread</th></tr></thead><tbody>
+<tr><td>🔒 <strong>Resource Isolation</strong></td><td>প্রতিটি Process এর নিজস্ব memory ও resources থাকে</td><td>একই Process এর মধ্যে সব Thread একই memory ও resources শেয়ার করে</td></tr>
+<tr><td>🔄 <strong>Communication</strong></td><td>জটিল; Inter-Process Communication (IPC) mechanisms প্রয়োজন হয়</td><td>সহজ; shared memory ব্যবহার করে Thread গুলো একে অপরের সাথে যোগাযোগ করে</td></tr>
+<tr><td>⚡ <strong>Overhead</strong></td><td>Process তৈরি ও পরিচালনার জন্য বেশি overhead লাগে</td><td>Thread তৈরি ও পরিচালনা তুলনামূলকভাবে কম overhead</td></tr>
+<tr><td>⏱️ <strong>Concurrency</strong></td><td>Concurrency সম্ভব, তবে cost বেশি</td><td>একই Process এর মধ্যে concurrency অর্জনে বেশি কার্যকর</td></tr>
+<tr><td>🛡️ <strong>Isolation</strong></td><td>এক Process অন্য Process এর memory তে সরাসরি প্রবেশ করতে পারে না</td><td>Threads একে অপরের উপর প্রভাব ফেলতে পারে, কারণ তারা memory শেয়ার করে</td></tr>
+<tr><td>📌 <strong>Example</strong></td><td>প্রতিটি browser tab আলাদা Process হিসেবে চলে</td><td>rendering, networking, JavaScript execution ইত্যাদি আলাদা Thread এ হয়</td></tr>
+</tbody></table>
+</div>
+<hr />
+<p>[<strong>Author:</strong> @nazma98
+<strong>Date:</strong> 2025-06-02
+<strong>Category:</strong> interview-qa/class-wise
+]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-class-39---vogus-data-types"><a class="header" href="#-class-39---vogus-data-types">💐 Class 39 - Vogus Data Types</a></h1>
+<h2 id="-signed-integer-type"><a class="header" href="#-signed-integer-type">🔢 Signed Integer Type</a></h2>
+<p>Golang এ <code>int8</code>, <code>int16</code>, <code>int32</code>, এবং <code>int64</code> হল signed integer types যাদের specific bit size থাকে। নিচে এ সম্পর্কে বিস্তারিত দেওয়া হল:</p>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Size</th><th>Range</th></tr></thead><tbody>
+<tr><td><code>int8</code></td><td><code>8 bit</code> / <code>1 byte</code></td><td><code>-128</code> to <code>127</code></td></tr>
+<tr><td><code>int16</code></td><td><code>16 bit</code> / <code>2 bytes</code></td><td><code>-32,768</code> to <code>32,767</code></td></tr>
+<tr><td><code>int32</code></td><td><code>32 bit</code> / <code>4 bytes</code></td><td><code>-2,147,483,648</code> to <code>2,147,483,647</code></td></tr>
+<tr><td><code>int64</code></td><td><code>64 bit</code> / <code>8 bytes</code></td><td><code>-9,223,372,036,854,775,808</code> to <code>9,223,372,036,854,775,807</code></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>Go Runtime</strong> handles how to store each type of variable</p>
+</blockquote>
+<h3 id="-int-type-কী"><a class="header" href="#-int-type-কী"><strong>🧠 int type কী?</strong></a></h3>
+<p>Golang এ <code>int</code> টাইপের কোন নির্দিষ্ট সাইজ নেই। এটি Computer architecture এর উপর নির্ভর করে:</p>
+<p>32-bit computer → int = 32 bit</p>
+<p>64-bit computer → int = 64 bit</p>
+<h3 id="-example"><a class="header" href="#-example">🌷 Example</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var a int8 = 5
+
+    fmt.Println(a)
+}
+</code></pre>
+<h3 id="-visualization-of-storing-int8-in-32-bit-computer"><a class="header" href="#-visualization-of-storing-int8-in-32-bit-computer">🖼️ Visualization of storing <code>int8</code> in 32-bit computer</a></h3>
+<p><strong>Decimal to Binary (8-bit signed)</strong>:</p>
+<p>5 in binary = <code>00000101</code> (as <code>int8</code>)</p>
+<h4 id="-32-bit-memory-cell-visualization-for-int8-a--5"><a class="header" href="#-32-bit-memory-cell-visualization-for-int8-a--5">🧮 32-bit Memory Cell Visualization for <code>int8 a = 5</code></a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>31 ... 8 (Unused/Padding)</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr></thead><tbody>
+<tr><td>Bit Values</td><td>00000000 00000000 00000000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+</tbody></table>
+</div>
+<h3 id="-tips"><a class="header" href="#-tips">📌 Tips:</a></h3>
+<ul>
+<li>Memory save → <code>int8</code>, <code>int16</code></li>
+<li>Performance / Process easy → <code>int</code> বা <code>int32</code></li>
+<li>সব সময় Range এর মধ্যে data থাকবে কিনা তা আগে ভাবুন।</li>
+</ul>
+<hr />
+<h2 id="-unsigned-integer-type"><a class="header" href="#-unsigned-integer-type">📦 Unsigned Integer Type</a></h2>
+<p>Golang এ unsigned int - <code>uint</code> টাইপ হলো এমন সংখ্যা যা কখনোই ঋণাত্মক (negative) হতে পারে না।</p>
+<ul>
+<li>👉 শুধুমাত্র ধনাত্মক সংখ্যা (positive) বা শূন্য (0) নিতে পারে।</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Size</th><th>Range</th></tr></thead><tbody>
+<tr><td><code>uint8</code></td><td><code>8 bit</code> / <code>1 byte</code></td><td><code>0</code> to <code>255</code></td></tr>
+<tr><td><code>uint16</code></td><td><code>16 bit</code> / <code>2 bytes</code></td><td><code>0</code> to <code>65,535</code></td></tr>
+<tr><td><code>uint32</code></td><td><code>32 bit</code> / <code>4 bytes</code></td><td><code>0</code> to <code>4,294,967,295</code></td></tr>
+<tr><td><code>uint64</code></td><td><code>64 bit</code> / <code>8 bytes</code></td><td><code>0</code> to <code>18,446,744,073,709,551,615</code></td></tr>
+</tbody></table>
+</div>
+<h3 id="-example-1"><a class="header" href="#-example-1">🧪 Example</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var age uint8 = 25
+    fmt.Println(age)
+}
+</code></pre>
+<h3 id="-uint-type"><a class="header" href="#-uint-type"><strong>🧠 uint type</strong></a></h3>
+<p>Golang এ <code>uint</code> টাইপের কোন নির্দিষ্ট সাইজ নেই। এটি Computer architecture এর উপর নির্ভর করে:</p>
+<p>32-bit computer → uint = 32 bit</p>
+<p>64-bit computer → uint = 64 bit</p>
+<h2 id="-float-type"><a class="header" href="#-float-type">🔢 Float Type</a></h2>
+<p>দশমিক সংখ্যা (fractional numbers) রাখার জন্য <code>float</code> টাইপ ব্যবহার করা হয়। যেমনঃ <code>3.14</code>, <code>-2.75</code>, <code>0.001</code>।</p>
+<h3 id="-golang-এ-float-দুই-types"><a class="header" href="#-golang-এ-float-দুই-types">🧪 Golang এ Float দুই types:</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>type</th><th>size</th><th>Precision</th></tr></thead><tbody>
+<tr><td><code>float32</code></td><td>32-bit</td><td>প্রায় ৭ দশমিক ঘর পর্যন্ত সঠিক</td></tr>
+<tr><td><code>float64</code></td><td>64-bit</td><td>প্রায় ১৫-১৭ দশমিক ঘর পর্যন্ত সঠিক</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>শুধু float নামে কোনো type নেই।</p>
+</blockquote>
+<h3 id="-example-2"><a class="header" href="#-example-2">🧪 Example</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var x float32 = 3.1415
+    var y float64 = 2.7182818284
+
+    fmt.Println("x =", x)
+    fmt.Println("y =", y)
+}
+
+</code></pre>
+<blockquote>
+<p>📌 Note: Golang এ দশমিক সংখ্যা লিখলে সেটা default <code>float64</code> হয়।</p>
+</blockquote>
+<pre><code class="language-go">f := 1.5 // float64
+</code></pre>
+<h2 id="-boolean-type"><a class="header" href="#-boolean-type">🔢 Boolean Type</a></h2>
+<p>Boolean টাইপ <code>bool</code> শুধু দুইটি value রাখতে পারে:</p>
+<ul>
+<li><code>true</code></li>
+<li><code>false</code></li>
+</ul>
+<h3 id="-example-3"><a class="header" href="#-example-3">🌸 Example</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var isActive bool = true
+
+    fmt.Println("isActive:", isActive)
+}
+</code></pre>
+<blockquote>
+<p><code>bool</code> type memory তে সঠিকভাবে 1 bit নয়, বরং 1 byte (8 bits) জায়গা নেয়।</p>
+</blockquote>
+<h2 id="-byte-type"><a class="header" href="#-byte-type">✳️ Byte Type</a></h2>
+<ul>
+<li>alias for <code>uint8</code></li>
+<li>8 bits per character</li>
+</ul>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var a byte = 65
+    fmt.Println(a)           // Output: 65
+    fmt.Println(string(a))   // Output: A
+}
+</code></pre>
+<h4 id="-note"><a class="header" href="#-note">🔎 Note:</a></h4>
+<ul>
+<li><code>byte</code> শুধু <code>0</code> থেকে <code>255</code> পর্যন্ত value রাখতে পারে।</li>
+<li>character encoding এর সাথে কাজ করতে গেলে byte খুবই দরকারি।</li>
+</ul>
+<h2 id="-rune"><a class="header" href="#-rune">🧮 Rune</a></h2>
+<ul>
+<li>alias for <code>int32</code> (unicode point) - <code>32 bits</code> / <code>4 bytes</code></li>
+<li>Unicode character রাখে</li>
+</ul>
+<h3 id="-example-4"><a class="header" href="#-example-4">🌻 Example</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    r := '❤'
+    fmt.Printf("%c\n", r) // Output: ❤
+}
+</code></pre>
+<h2 id="-format-specifiers-table"><a class="header" href="#-format-specifiers-table">🔢 Format Specifiers Table</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>Type</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>%d</code></td><td>int</td><td>Decimal integer</td><td><code>42</code></td></tr>
+<tr><td><code>%f</code></td><td>float</td><td>Decimal float (default precision)</td><td><code>3.14</code></td></tr>
+<tr><td><code>%.2f</code></td><td>float</td><td>Float with 2 decimal points</td><td><code>3.14</code></td></tr>
+<tr><td><code>%s</code></td><td>string</td><td>String</td><td><code>"Hello"</code></td></tr>
+<tr><td><code>%t</code></td><td>bool</td><td>true/false</td><td><code>true</code></td></tr>
+<tr><td><code>%c</code></td><td>rune</td><td>Character (Unicode)</td><td><code>🙂</code></td></tr>
+<tr><td><code>%U</code></td><td>rune</td><td>Unicode format</td><td><code>U+1F642</code></td></tr>
+<tr><td><code>%v</code></td><td>any</td><td>Default value (auto detect)</td><td><code>true</code>, <code>42</code>, etc.</td></tr>
+<tr><td><code>%T</code></td><td>any</td><td>Type of the variable</td><td><code>int</code>, <code>string</code>, etc.</td></tr>
+</tbody></table>
+</div>
+<h3 id="-example-5"><a class="header" href="#-example-5">🌻 Example</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	var a int8 = -128
+
+	var x uint8 = 255
+
+	var j float32 = 10.23343
+	var k float64 = 10.4455235
+
+	var flag bool = true
+
+	var s string = "The sky is beautiful"
+
+	r := '❤'
+
+	fmt.Printf("%c\n", r) // Output: ❤
+	fmt.Printf("%d\n", a) // Output: -128
+    fmt.Printf("%d\n", x) // Output: 255
+	fmt.Printf("%.2f\n", j) // Output: 10.23
+    fmt.Printf("%.5f\n", k) // Output: 10.44552
+	fmt.Printf("%v\n", flag) // Output: true
+	fmt.Printf("%s\n", s) // Output: The sky is beautiful
+
+	fmt.Printf("** Type of variable s = %T", s) // Output: string
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="-golang-এর-defer-ভিতরের-সটযাক-রিটারন-ফাঁদ-এবং-বাসতব-উদাহরণে-ডুব"><a class="header" href="#-golang-এর-defer-ভিতরের-সটযাক-রিটারন-ফাঁদ-এবং-বাসতব-উদাহরণে-ডুব">🌀 Golang এর <code>defer</code>: ভিতরের স্ট্যাক, রিটার্ন ফাঁদ, এবং বাস্তব উদাহরণে ডুব</a></h2>
+<blockquote>
+<p>"<code>defer</code> মানে হচ্ছে — তোমার কাজ হবে, কিন্তু পরে হবে।"</p>
+</blockquote>
+<p>Go-এর <code>defer</code> হলো এমন একটা ফিচার যেটা clean code লেখার জন্য অনবদ্য, কিন্তু ভুল বুঝলে subtle bug এর উৎস। চলুন আজ <code>defer</code>-কে সম্পূর্ণভাবে বোঝার চেষ্টা করি — তার পেছনের স্টোরি সহ।</p>
+<hr />
+<h3 id="-defer-কি"><a class="header" href="#-defer-কি">🔸 <code>defer</code> কি?</a></h3>
+<p><code>defer</code> একটি কিওয়ার্ড যেটি কোন ফাংশনের শেষ মুহূর্তে অন্য একটি ফাংশনকে চালাতে বলে। মূলতঃ এটি ব্যবহৃত হয় cleanup কাজের জন্য — যেমন:</p>
+<ul>
+<li><code>file.Close()</code></li>
+<li><code>unlock()</code></li>
+<li><code>recover()</code></li>
+<li>লগিং</li>
+</ul>
+<hr />
+<h3 id="-কীভাবে-কাজ-করে-defer"><a class="header" href="#-কীভাবে-কাজ-করে-defer">🎯 কীভাবে কাজ করে <code>defer</code>?</a></h3>
+<p>Go কম্পাইলার <code>defer</code> স্টেটমেন্টগুলোকে compile time এ detect করে এবং runtime এ একটি internal stack এ রেখে দেয়। যখন function return করে, তখন এই stack থেকে একে একে ফাংশনগুলো <strong>পিছন থেকে সামনে (LIFO)</strong> চালানো হয়।</p>
+<pre><code class="language-go">func main() {
+    defer fmt.Println("A")
+    defer fmt.Println("B")
+    fmt.Println("C")
+}
+</code></pre>
+<p>🖨️ Output:</p>
+<pre><code>C
+B
+A
+</code></pre>
+<p>📌 <code>defer</code> গুলো পিছনের দিকে যায় কারণ: Go stack এ <code>push</code> করে defer গুলোকে → পরে reverse করে <code>pop</code> করে।</p>
+<hr />
+<h3 id="-পিছনের-দিক-থেকে-বযাখযা-behind-the-scenes"><a class="header" href="#-পিছনের-দিক-থেকে-বযাখযা-behind-the-scenes">🔧 পিছনের দিক থেকে ব্যাখ্যা (Behind-the-scenes)</a></h3>
+<pre><code class="language-go">func sayHello() {
+    defer log("1")
+    defer log("2")
+    defer log("3")
+}
+</code></pre>
+<p>Go internally কিছুটা এরকম করে:</p>
+<pre><code class="language-go">deferStack := []func(){}
+deferStack = append(deferStack, log("1"))
+deferStack = append(deferStack, log("2"))
+deferStack = append(deferStack, log("3"))
+
+for i := len(deferStack)-1; i &gt;= 0; i-- {
+    deferStack[i]()
+}
+</code></pre>
+<p>Go runtime defer গুলিকে একটি linked list structure-এ সংরক্ষণ করে, কিন্তু সেটা <strong>Stack behavior</strong> অনুযায়ী কাজ করে।</p>
+<hr />
+<h3 id="-named-return-vs-unnamed-return--defer-এর-দুইরকম-বযবহার"><a class="header" href="#-named-return-vs-unnamed-return--defer-এর-দুইরকম-বযবহার">🎭 Named Return vs Unnamed Return — <code>defer</code> এর দুইরকম ব্যবহার</a></h3>
+<p>এই হলো <code>defer</code> এর “দুই মুখো” চরিত্র। 🤹‍♂️</p>
+<h4 id="-named-return-value-বযবহার-করলে"><a class="header" href="#-named-return-value-বযবহার-করলে">✅ Named Return Value ব্যবহার করলে:</a></h4>
+<pre><code class="language-go">func example1() (result int) {
+    defer func() {
+        result = 99
+    }()
+    return 10
+}
+</code></pre>
+<p>📌 এখানে <code>result</code> হল named return variable, তাই <code>defer</code> যখন চলে, তখন <code>result</code> এখনও accessible, এবং সেটাকে modify করা যায়।</p>
+<p>🖨️ Output:</p>
+<pre><code>99
+</code></pre>
+<hr />
+<h4 id="-unnamed-return-value-বযবহার-করলে"><a class="header" href="#-unnamed-return-value-বযবহার-করলে">❌ Unnamed Return Value ব্যবহার করলে:</a></h4>
+<pre><code class="language-go">func example2() int {
+    result := 10
+    defer func() {
+        result = 99
+    }()
+    return result
+}
+</code></pre>
+<p>📌 এখানে <code>return result</code> বলার সাথে সাথে result এর ভ্যালু রিটার্ন buffer-এ কপি হয়ে যায় — তারপরে <code>defer</code> চালানো হয়, তাই এর কোনো প্রভাব পড়ে না।</p>
+<p>🖨️ Output:</p>
+<pre><code>10
+</code></pre>
+<hr />
+<h3 id="-আরও-কিছু-মন-ভোলানো-example"><a class="header" href="#-আরও-কিছু-মন-ভোলানো-example">🧠 আরও কিছু মন ভোলানো Example</a></h3>
+<h4 id="-defer-with-loop"><a class="header" href="#-defer-with-loop">🔄 <code>defer</code> with loop</a></h4>
+<pre><code class="language-go">func loopDefer() {
+    for i := 1; i &lt;= 3; i++ {
+        defer fmt.Println("Deferred:", i)
+    }
+}
+</code></pre>
+<p>🖨️ Output:</p>
+<pre><code>Deferred: 3
+Deferred: 2
+Deferred: 1
+</code></pre>
+<p>📌 প্রতিবার loop এ <code>defer</code> নতুন করে register হয়। তাই stack অনুযায়ী উল্টোভাবে execute হয়।</p>
+<hr />
+<h4 id="-variable-capture-trap-closure"><a class="header" href="#-variable-capture-trap-closure">📛 Variable Capture Trap (Closure)</a></h4>
+<pre><code class="language-go">func closureDefer() {
+    for i := 1; i &lt;= 3; i++ {
+        defer func() {
+            fmt.Println("Deferred:", i)
+        }()
+    }
+}
+</code></pre>
+<p>🖨️ Output:</p>
+<pre><code>Deferred: 4
+Deferred: 4
+Deferred: 4
+</code></pre>
+<p>😵‍💫 কেন?</p>
+<p>কারণ closure-এ <code>i</code> capture হচ্ছে by reference — প্রতিবার একই i এর address!</p>
+<p>👉 Fix:</p>
+<pre><code class="language-go">func fixedClosureDefer() {
+    for i := 1; i &lt;= 3; i++ {
+        val := i
+        defer func() {
+            fmt.Println("Deferred:", val)
+        }()
+    }
+}
+</code></pre>
+<p>🖨️ Output:</p>
+<pre><code>Deferred: 3
+Deferred: 2
+Deferred: 1
+</code></pre>
+<hr />
+<h3 id="-practical-use-cases"><a class="header" href="#-practical-use-cases">🛠️ Practical Use Cases</a></h3>
+<ol>
+<li><strong>File Handling</strong>:</li>
+</ol>
+<pre><code class="language-go">func readFile(path string) error {
+    f, err := os.Open(path)
+    if err != nil {
+        return err
+    }
+    defer f.Close()
+
+    // read file...
+    return nil
+}
+</code></pre>
+<ol start="2">
+<li><strong>Mutex Unlock</strong>:</li>
+</ol>
+<pre><code class="language-go">mu.Lock()
+defer mu.Unlock()
+// critical section
+</code></pre>
+<ol start="3">
+<li><strong>Recover from panic</strong>:</li>
+</ol>
+<pre><code class="language-go">func safe() {
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Println("Recovered:", r)
+        }
+    }()
+    panic("something went wrong")
+}
+</code></pre>
+<hr />
+<h3 id="-key-takeaways-সংকষেপে"><a class="header" href="#-key-takeaways-সংকষেপে">🧾 Key Takeaways (সংক্ষেপে)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>বৈশিষ্ট্য</th><th>ব্যাখ্যা</th></tr></thead><tbody>
+<tr><td>Execution order</td><td>LIFO (Last In, First Out)</td></tr>
+<tr><td>Internal structure</td><td>Linked List with Stack behavior</td></tr>
+<tr><td>Named return</td><td><code>defer</code> can modify it</td></tr>
+<tr><td>Unnamed return</td><td><code>defer</code> can’t modify it</td></tr>
+<tr><td>Variable capture</td><td>Closure captures by reference — careful!</td></tr>
+<tr><td>Use cases</td><td>File close, Mutex unlock, Panic recovery</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h3 id="-bonus-debug-suggestion"><a class="header" href="#-bonus-debug-suggestion">🎁 Bonus: Debug Suggestion</a></h3>
+<p>✅ If you're debugging <code>defer</code> issues:</p>
+<ul>
+<li>Use <code>go run -gcflags=all="-m"</code> to see escape analysis.</li>
+<li>Print log inside defer to see the order.</li>
+<li>Add named returns if defer needs to modify output.</li>
+</ul>
+<hr />
+<h3 id="-শেষ-কথা"><a class="header" href="#-শেষ-কথা">🧠 শেষ কথা</a></h3>
+<p>Go-এর <code>defer</code> যত ছোট দেখতে, তত গভীর তার আচরণ। একে সঠিকভাবে বোঝা মানে হচ্ছে —</p>
+<ul>
+<li>Cleaner code</li>
+<li>Resource leak রোধ</li>
+<li>কম Bug</li>
+</ul>
+<p>শুধু syntax জানলেই হবে না — এর ভিতরের Stack-মাথা, Return-trap, এবং Variable-capture খেলাও বোঝা জরুরি।</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="topic-wise"><a class="header" href="#topic-wise">Topic wise</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @mdimamhosen
 <strong>Date:</strong> 2025-04-19
@@ -7993,6 +8477,156 @@ Popular coding interview questions organized by data structures and algorithms.<
 ]</p>
 <h2 id="problem-link-2"><a class="header" href="#problem-link-2">Problem Link:</a></h2>
 <p><a href="https://leetcode.com/problems/find-numbers-with-even-number-of-digits/description/">LeetCode 1295</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-a-journey-through-memory-the-tale-of-global-variables"><a class="header" href="#-a-journey-through-memory-the-tale-of-global-variables">🚀 A Journey Through Memory: The Tale of Global Variables</a></h1>
+<p>আজ আমরা একটা fascinating journey এ যাব - আপনার C program এর global variable গুলো কিভাবে memory তে তাদের ঘর খুঁজে নেয়। এটা একটা adventure story যেখানে আমাদের heroes হলো different types of global variables।</p>
+<h2 id="-meet-our-characters"><a class="header" href="#-meet-our-characters">🎭 Meet Our Characters</a></h2>
+<p>আমাদের story তে তিনজন main character আছে:</p>
+<pre><code class="language-c">const int MAX_USERS = 1000;    // 👑 Raja: Read-only hero
+int current_users = 0;         // 🏠 Homeowner: Initialized hero  
+int user_buffer[500];          // 👻 Ghost: Uninitialized hero
+</code></pre>
+<p>প্রত্যেকের আলাদা personality, আলাদা needs, আর আলাদা destination!</p>
+<h2 id="-the-memory-kingdom-four-districts"><a class="header" href="#-the-memory-kingdom-four-districts">🏰 The Memory Kingdom: Four Districts</a></h2>
+<p>Memory kingdom এ চারটা distinct district আছে, প্রত্যেকটার নিজস্ব rules এবং residents:</p>
+<pre><code>Memory Kingdom Map:
+┌─────────────────────────────────────┐
+│  👑  .rodata District (Royal Court) │  ← Read-only constants
+├─────────────────────────────────────┤  
+│  🏠  .data District (Residential)   │  ← Initialized globals
+├─────────────────────────────────────┤
+│  👻  .bss District (Ghost Town)     │  ← Uninitialized globals
+└─────────────────────────────────────┘
+</code></pre>
+<h2 id="-chapter-1-rajas-journey-to-rodata-district"><a class="header" href="#-chapter-1-rajas-journey-to-rodata-district">👑 Chapter 1: Raja's Journey to .rodata District</a></h2>
+<p>আমাদের প্রথম hero <strong>Raja</strong> (<code>const int MAX_USERS = 1000</code>) একজন nobleman। তার একটা fixed value আছে যা কখনো change হবে না।</p>
+<h3 id="rajas-story"><a class="header" href="#rajas-story">Raja's Story:</a></h3>
+<ul>
+<li><strong>Personality</strong>: "আমি কখনো change হবো না! আমার value permanent!"</li>
+<li><strong>Destination</strong>: <strong>.rodata section</strong> (Read-Only Data)</li>
+<li><strong>Journey</strong>: Compile time এ ROM এ store হয়, runtime এ RAM এ copy হয় কিন্তু <strong>read-only</strong> থাকে</li>
+</ul>
+<pre><code class="language-c">const char company_name[] = "TechCorp";  // Another royal resident
+const float PI = 3.14159;               // Mathematical royalty
+</code></pre>
+<p><strong>কেন .rodata আলাদা section?</strong></p>
+<ul>
+<li>Security: কেউ accidentally change করতে পারবে না</li>
+<li>Memory protection: Hardware level এ write-protected</li>
+<li>Optimization: Compiler জানে এগুলো কখনো change হবে না</li>
+</ul>
+<h3 id="rajas-house-rules"><a class="header" href="#rajas-house-rules">Raja's House Rules:</a></h3>
+<pre><code class="language-c">// ✅ Legal - Reading is allowed
+printf("Max users: %d\n", MAX_USERS);
+
+// ❌ Illegal - Trying to modify const
+// MAX_USERS = 2000;  // Compiler error!
+</code></pre>
+<h2 id="-chapter-2-homeowners-journey-to-data-district"><a class="header" href="#-chapter-2-homeowners-journey-to-data-district">🏠 Chapter 2: Homeowner's Journey to .data District</a></h2>
+<p>আমাদের দ্বিতীয় hero <strong>Homeowner</strong> (<code>int current_users = 0</code>) একজন responsible resident। তার একটা initial value আছে কিন্তু পরে change করতে পারে।</p>
+<h3 id="homeowners-story"><a class="header" href="#homeowners-story">Homeowner's Story:</a></h3>
+<ul>
+<li><strong>Personality</strong>: "আমার একটা starting value আছে, কিন্তু আমি grow করতে পারি!"</li>
+<li><strong>Destination</strong>: <strong>.data section</strong></li>
+<li><strong>Journey</strong>: একটা interesting dual-phase adventure</li>
+</ul>
+<h4 id="phase-1-the-packing-compile-time"><a class="header" href="#phase-1-the-packing-compile-time">Phase 1: The Packing (Compile Time)</a></h4>
+<pre><code>Executable File Suitcase:
+┌──────────────────┐
+│ current_users=0  │ ← Packed with initial value
+│ pi=3.14159       │
+│ name="Default"   │
+└──────────────────┘
+</code></pre>
+<h4 id="phase-2-the-moving-runtime"><a class="header" href="#phase-2-the-moving-runtime">Phase 2: The Moving (Runtime)</a></h4>
+<p>যখন program start হয়:</p>
+<ol>
+<li>Loader সব .data contents ROM থেকে RAM এ <strong>copy</strong> করে</li>
+<li>এখন RAM এ modification করা যায়</li>
+<li>Original ROM copy unchanged থাকে (backup এর মতো)</li>
+</ol>
+<pre><code class="language-c">// Runtime এ এই changes শুধু RAM এ হয়
+current_users = 50;        // RAM copy modified
+strcpy(name, "TechCorp");  // RAM copy modified
+// কিন্তু ROM এ এখনো 0 আর "Default" আছে!
+</code></pre>
+<h2 id="-chapter-3-ghosts-journey-to-bss-district"><a class="header" href="#-chapter-3-ghosts-journey-to-bss-district">👻 Chapter 3: Ghost's Journey to .bss District</a></h2>
+<p>আমাদের তৃতীয় hero <strong>Ghost</strong> (<code>int user_buffer[500]</code>) একজন mysterious character। তার কোনো initial value নেই, কিন্তু runtime এ জীবিত হয়ে ওঠে।</p>
+<h3 id="ghosts-story"><a class="header" href="#ghosts-story">Ghost's Story:</a></h3>
+<ul>
+<li><strong>Personality</strong>: "আমি শুরুতে invisible, কিন্তু runtime এ powerful হয়ে উঠি!"</li>
+<li><strong>Destination</strong>: <strong>.bss section</strong> (Block Started by Symbol)</li>
+<li><strong>Journey</strong>: The most efficient adventure</li>
+</ul>
+<h4 id="the-invisible-phase-compile-time"><a class="header" href="#the-invisible-phase-compile-time">The Invisible Phase (Compile Time):</a></h4>
+<pre><code>Executable File:
+┌──────────────────┐
+│ .bss metadata:   │
+│ "Need 2KB space" │ ← শুধু size info, actual data নেই!
+│ "Zero everything"│
+└──────────────────┘
+</code></pre>
+<h4 id="the-materialization-runtime"><a class="header" href="#the-materialization-runtime">The Materialization (Runtime):</a></h4>
+<pre><code class="language-c">// Startup sequence:
+// 1. Loader: "আমার 2KB RAM দরকার"
+// 2. System: "নিয়ে যাও, সব zero করে দিলাম"
+// 3. Ghost: "এখন আমি 500টা zero দিয়ে ready!"
+
+user_buffer[0] = 100;  // এখন Ghost জীবিত এবং কাজ করছে!
+</code></pre>
+<h3 id="ghosts-superpower-space-efficiency"><a class="header" href="#ghosts-superpower-space-efficiency">Ghost's Superpower: Space Efficiency</a></h3>
+<pre><code>File Size Comparison:
+int initialized_array[100000] = {1,2,3...};  // 🏠 400KB in file
+int uninitialized_array[100000];             // 👻 0 bytes in file!
+</code></pre>
+<h2 id="-the-complete-journey-map"><a class="header" href="#-the-complete-journey-map">🗺️ The Complete Journey Map</a></h2>
+<pre><code>Program Lifecycle Journey:
+
+Compile Time:                    Runtime Memory:
+┌─────────────────┐             ┌─────────────────┐
+│ Executable File │             │   Active RAM    │
+├─────────────────┤             ├─────────────────┤
+│ 👑 .rodata      │ ─────────►  │ 👑 .rodata      │ (Read-only)
+│ MAX_USERS=1000  │             │ MAX_USERS=1000  │
+├─────────────────┤             ├─────────────────┤
+│ 🏠 .data        │ ─────────►  │ 🏠 .data        │ (Modifiable)
+│ current_users=0 │             │ current_users=0 │
+├─────────────────┤             ├─────────────────┤
+│ 👻 .bss         │ ─────────►  │ 👻 .bss         │ (Auto-zeroed)
+│ (size only)     │             │ user_buffer=0   │
+└─────────────────┘             └─────────────────┘
+</code></pre>
+<h2 id="-the-moral-of-our-story"><a class="header" href="#-the-moral-of-our-story">🎯 The Moral of Our Story</a></h2>
+<h3 id="each-hero-has-their-purpose"><a class="header" href="#each-hero-has-their-purpose">Each Hero Has Their Purpose:</a></h3>
+<ul>
+<li><strong>👑 Raja (.rodata)</strong>: Security guard - protects important constants</li>
+<li><strong>🏠 Homeowner (.data)</strong>: Flexible resident - can change but starts with values</li>
+<li><strong>👻 Ghost (.bss)</strong>: Efficient minimalist - appears when needed, saves space</li>
+</ul>
+<h3 id="the-three-laws-of-memory-kingdom"><a class="header" href="#the-three-laws-of-memory-kingdom">The Three Laws of Memory Kingdom:</a></h3>
+<ol>
+<li><strong>Law of Separation</strong>: "প্রত্যেক type এর variable এর আলাদা district আছে"</li>
+<li><strong>Law of Efficiency</strong>: "Ghost district file এ কোনো space নেয় না"</li>
+<li><strong>Law of Protection</strong>: "Royal court read-only, residential district modifiable"</li>
+</ol>
+<h2 id="-practical-magic-spells-commands"><a class="header" href="#-practical-magic-spells-commands">🛠️ Practical Magic Spells (Commands)</a></h2>
+<p>আপনার program এর memory journey দেখতে চান?</p>
+<pre><code class="language-bash"># See the districts and their sizes
+size your_program
+#    text   data    bss    dec    hex filename
+#    1024     64   2000   3088   c10 your_program
+
+# Detailed district information  
+objdump -h your_program | grep -E "\.(text|rodata|data|bss)"
+</code></pre>
+<h2 id="-journeys-end-key-wisdom"><a class="header" href="#-journeys-end-key-wisdom">🚀 Journey's End: Key Wisdom</a></h2>
+<p>এই journey থেকে আমরা শিখলাম:</p>
+<ul>
+<li><strong>Memory kingdom এ চারটা আলাদা district আছে</strong>, প্রত্যেকের নিজস্ব purpose</li>
+<li><strong>.rodata, .data, .bss are separate sections</strong> - একে অপরের মধ্যে included নয়</li>
+<li><strong>Compiler intelligently decides</strong> কোন variable কোন district এ যাবে</li>
+<li><strong>Runtime efficiency</strong> depends on understanding এই journey</li>
+</ul>
+<p>এখন যখনই আপনি global variable declare করবেন, মনে রাখবেন - আপনি একটা character এর journey শুরু করে দিচ্ছেন memory kingdom এ!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="students-will-keep"><a class="header" href="#students-will-keep">Students will keep</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="documentation-for-the-mini-cards-project"><a class="header" href="#documentation-for-the-mini-cards-project">Documentation for the mini cards project</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @mdimamhosen
@@ -8515,6 +9149,11 @@ docker run -it --name go-debug jsiqbal/go-debug-ready
 <tr><td>সেশন ৫</td><td>২০২৫-০৫-১৭</td><td>1. Complexity জিনিসটা আসলে কি?<br>2. দুই ধরণের complexity : time complexity এবং memory complexity<br>3. কেন complexity সম্পর্কে ধারণা থাকটা important<br>4. CP তে complexity কীভাবে কাজে লাগে<br>5. কীভাবে complexity সম্পর্কে জানার মাধ্যমে আমরা একটি algorithm কতটুকু efficient সে সম্পর্কে ধারণা পেতে পারি<br>6. complexity প্রকাশ করার বিভিন্ন Notation (যেমন Big O, Big omega, Big theta)<br>7. কীভাবে Notation গুলো কাজ করে এবং কীভাবে এই notation গুলোর মাধ্যমে complexity হিসেব করা যায়?<br>8. Big O calculate করার বিভিন্ন rules<br>9. বিভিন্ন ধরণের time complexity (O(1), O(logn), O(n), O(nlogn), O(n^2) ইত্যাদি)<br>10. বিভিন্ন ধরণের memory complexity<br>11. Recursive function, nested loop, array declaration এর complexity</td><td>MArhamAA</td></tr>
 <tr><td>সেশন ৬</td><td>২০২৫-০৫-১৯</td><td>1. Golang এ normal input এবং output method<br>2. <code>bufio</code> এবং <code>os</code> এর মাধ্যমে I/O handling<br>3. <code>.txt</code> file এবং অন্যান্য text file থেকে input এবং output handle করা<br>4. FastIO কি? buffered IO কেন fast?<br>5. buffer কি? buffered IO কীভাবে ভিতরে ভিতরে কাজ করে?<br>6. Buffered I/O vs unbuffered I/O<br>7. Buffered I/O inside Internal Memory<br>8. CP তে fastIO কেন necessary?</td><td>popcycle</td></tr>
 <tr><td>সেশন ৭</td><td>২০২৫-০৫-২১</td><td>1. BruteForce কি এবং কেন BruteForce দরকার?<br>2. প্রত্যেকটা problem কি BruteForce দিয়ে solve করা উচিত?<br>3. BruteForce নিয়ে কি প্রথমেই ভাবা উচিত? কেন?<br>4. বিভিন্ন ধরণের problem BruteForce দিয়ে solve করার উদাহরণ</td><td>MArhamAA</td></tr>
+<tr><td>সেশন ৮</td><td>২০২৫-০৫-২৪</td><td>1. FastIO in Golang part 2<br>2. FastIO template of Golang for CP<br>3. <code>defer</code> function এবং এটি কী করে?<br>4. Buffered I/O flush করার ক্ষেত্রে <code>defer</code> কীভাবে কাজ করে</td><td>popcycle</td></tr>
+<tr><td>সেশন ৯</td><td>২০২৫-০৫-২৬</td><td>1. Greedy technique আসলে কী?<br>2. আমাদের এটা কেন দরকার? brute force কি যথেষ্ট না?<br>3. বাস্তব problem-এ greedy technique দিয়ে কীভাবে approach করতে হয়<br>4. প্রথমে brute force চিন্তা করা → এরপর কীভাবে greedy দিয়ে optimize করা যায়</td><td>toji</td></tr>
+<tr><td>সেশন ১০</td><td>২০২৫-০৫-২৮</td><td>1. Post contest আলোচনা<br>2. NC002 Problems Uplsolving<br>3. Q&amp;A related to contest</td><td>MArhamAA, popcycle</td></tr>
+<tr><td>সেশন ১১</td><td>২০২৫-০৬-০১</td><td>1. Linear search কী এবং naming convention-এর ব্যাপারটা<br>2. Binary search: এর implementation, complexity, এবং বিভিন্ন use case<br>3. Binary search ভিত্তিক practice problems</td><td>toji</td></tr>
+<tr><td>সেশন ১২</td><td>২০২৫-০৬-০২</td><td>1. Binary search part 2<br>2. Lower bound এবং Upper bound concepts<br>3. Binary Search on Answer technique<br>4. Floating point number এর উপর binary search<br>5. Binary search ভিত্তিক আরও কিছু practice problems</td><td>MArhamAA</td></tr>
 </tbody></table>
 </div>
 <blockquote>
@@ -8579,6 +9218,19 @@ Function ব্যবহার করে দুই সংখ্যার গড় 
 <li><a href="https://toph.co/p/make-it-big">Make it Big</a> (dncpc6)</li>
 <li><a href="https://codeforces.com/problemset/problem/1709/A">Three Doors</a> (dncpc6)</li>
 </ol>
+<h4 id="-problems-made-by-the-community"><a class="header" href="#-problems-made-by-the-community">🧩 Problems made by the community</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Problem Code</th><th>Problem Name &amp; Link</th><th>Author(Discord name)</th></tr></thead><tbody>
+<tr><td>2101</td><td><a href="https://www.hackerrank.com/contests/nebula-clash/challenges/challenge-5718">সমান ভাগের রহস্য</a></td><td>popcycle</td></tr>
+<tr><td>2102</td><td><a href="https://www.hackerrank.com/contests/nebula-clash/challenges/challenge-5719">চেস বোর্ডের সংকেত</a></td><td>popcycle</td></tr>
+<tr><td>2103</td><td><a href="https://www.hackerrank.com/contests/nebula-clash/challenges/challenge-5720">একই হিরে দু’বার!</a></td><td>popcycle</td></tr>
+<tr><td>2201</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002/challenges/bgce-cp-sessions">BGCE CP sessions</a></td><td>popcycle</td></tr>
+<tr><td>2202</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002/challenges/mad-tai-lung">Tai Lung’s Trial of Balance</a></td><td>popcycle</td></tr>
+<tr><td>2203</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002/challenges/an-easy-problem-revisited-to-combination">An Easy Problem : Revisited to Combination</a></td><td>toji</td></tr>
+<tr><td>2204</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002/challenges/challenge-to-kraken">Challenge to Kraken</a></td><td>toji</td></tr>
+<tr><td>2205</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002/challenges/divisible-positive-subset">Divisible Positive Subset</a></td><td>MArhamAA</td></tr>
+<tr><td>2206</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002/challenges/yet-another-lcs-problem-1">Yet Another LCS Problem</a></td><td>MArhamAA</td></tr>
+</tbody></table>
+</div>
 <blockquote>
 <p>পরবর্তীতে আরও প্রব্লেম এবং ক্যাটাগরি যুক্ত করা হবে।</p>
 </blockquote>
@@ -8609,6 +9261,7 @@ Function ব্যবহার করে দুই সংখ্যার গড় 
 <tr><td>5.</td><td>Daily</td><td><a href="https://vjudge.net/contest/717751">dncpc4</a></td></tr>
 <tr><td>6.</td><td>Daily</td><td><a href="https://vjudge.net/contest/718350">dncpc5</a></td></tr>
 <tr><td>7.</td><td>Daily</td><td><a href="https://vjudge.net/contest/718594">dncpc6</a></td></tr>
+<tr><td>8.</td><td>Weekly</td><td><a href="https://www.hackerrank.com/contests/nebula-clash-002">NC002</a></td></tr>
 </tbody></table>
 </div>
 <hr />
