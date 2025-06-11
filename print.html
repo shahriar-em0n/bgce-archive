@@ -703,6 +703,175 @@ Eventually turn this entire <code>golang/</code> folder into part of the <code>b
 <strong>Date:</strong> 2025-05-01
 <strong>Category:</strong> interview-qa/class-wise
 ]</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="class-07-hello-world"><a class="header" href="#class-07-hello-world">Class 07: Hello, World!</a></h2>
+<hr />
+<h3 id="-কোড"><a class="header" href="#-কোড">📄 কোড:</a></h3>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+</code></pre>
+<hr />
+<h2 id="-বযাখযা"><a class="header" href="#-বযাখযা">🔍 ব্যাখ্যা:</a></h2>
+<h3 id="-package-main"><a class="header" href="#-package-main">✅ <code>package main</code></a></h3>
+<ul>
+<li>Go-তে প্রতিটি প্রোগ্রাম একটি প্যাকেজের অংশ।</li>
+<li><code>main</code> প্যাকেজ মানে এটি একটি <strong>executable program</strong>  এটি চালানো যাবে।</li>
+<li>যদি <code>main</code> না দাও, তাহলে Go বুঝবে এটা লাইব্রেরি।</li>
+</ul>
+<hr />
+<h3 id="-import-fmt"><a class="header" href="#-import-fmt">✅ <code>import "fmt"</code></a></h3>
+<ul>
+<li><code>fmt</code> Go এর স্ট্যান্ডার্ড প্যাকেজ, যেটা <strong>input/output</strong> এর কাজ করে।</li>
+<li>এখানে আমরা <code>fmt.Println</code> ব্যবহার করেছি স্ক্রিনে কিছু প্রিন্ট করতে।</li>
+</ul>
+<hr />
+<h3 id="-func-main---"><a class="header" href="#-func-main---">✅ <code>func main() { ... }</code></a></h3>
+<ul>
+<li><code>main()</code> ফাংশন হলো Go প্রোগ্রামের <strong>entry point</strong>।</li>
+<li>প্রোগ্রাম চালালে প্রথমেই এই ফাংশনটি রান হয়।</li>
+</ul>
+<hr />
+<h3 id="-fmtprintlnhello-world"><a class="header" href="#-fmtprintlnhello-world">✅ <code>fmt.Println("Hello, World!")</code></a></h3>
+<ul>
+<li>এটি Go এর স্ট্যান্ডার্ড ফাংশন যা স্ক্রিনে <code>"Hello, World!"</code> প্রিন্ট করে।</li>
+<li><code>Println</code> মানে print line  এটি নতুন লাইনে প্রিন্ট করে।</li>
+</ul>
+<hr />
+<h2 id="-মনে-রাখার-মতো-কিছু-বিষয়"><a class="header" href="#-মনে-রাখার-মতো-কিছু-বিষয়">🧠 মনে রাখার মতো কিছু বিষয়:</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>বিষয়</th><th>ব্যাখ্যা</th></tr></thead><tbody>
+<tr><td><code>package main</code></td><td>executable প্রোগ্রামের জন্য বাধ্যতামূলক</td></tr>
+<tr><td><code>import "fmt"</code></td><td>I/O operations এর জন্য দরকারি</td></tr>
+<tr><td><code>func main()</code></td><td>Go প্রোগ্রামের execution শুরু এখান থেকে</td></tr>
+<tr><td><code>fmt.Println()</code></td><td>কনসোলে কিছু প্রিন্ট করার জন্য ব্যবহৃত হয়</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-রান-করার-নিয়ম-go-ইনসটল-থাকার-পর"><a class="header" href="#-রান-করার-নিয়ম-go-ইনসটল-থাকার-পর">🚀 রান করার নিয়ম (Go ইনস্টল থাকার পর):</a></h2>
+<pre><code class="language-bash">go run (file name).go
+</code></pre>
+<hr />
+<h3 id="extra-"><a class="header" href="#extra-">Extra :</a></h3>
+<ul>
+<li>
+<p>Go একটি compiled language, যার মানে হলো কোড compile হয়ে এক্সিকিউটেবল ফাইল তৈরি করে।</p>
+</li>
+<li>
+<p>Go এর compiler খুব দ্রুত এবং lightweight।</p>
+</li>
+<li>
+<p>Go concurrency-friendly, অর্থাৎ একই সাথে অনেক কাজ (goroutines) সহজে হ্যান্ডেল করতে পারে।</p>
+</li>
+<li>
+<p>Go এ garbage collection থাকে, যা অপ্রয়োজনীয় মেমোরি নিজে থেকে ম্যানেজ করে।</p>
+</li>
+<li>
+<p>Go এর syntax খুব সহজ এবং readable, যা নতুনদের জন্য শেখা সহজ করে তোলে।</p>
+</li>
+</ul>
+<p>[Author : @shahriar-em0n  Date: 2025-06-09 Category: interview-qa/class-wise ]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="class-08-variables-and-data-types"><a class="header" href="#class-08-variables-and-data-types">Class 08: Variables and Data Types</a></h1>
+<blockquote>
+<p>Go একটি strongly typed এবং statically typed compiled language, যার ফলে প্রতিটি ভ্যারিয়েবলের টাইপ স্পষ্টভাবে নির্ধারিত এবং গুরুত্বপূর্ণ</p>
+</blockquote>
+<h2 id="-variable-declare-করার-নিয়ম"><a class="header" href="#-variable-declare-করার-নিয়ম">🧠 Variable Declare করার নিয়ম</a></h2>
+<p>Go তে ভেরিয়েবল declare করার তিনটি পদ্ধতি আছে:</p>
+<h3 id="1-short-variable-declaration--"><a class="header" href="#1-short-variable-declaration--">1. Short Variable Declaration (<code>: =</code>)</a></h3>
+<p>Short declaration (<code>:=</code>) শুধুমাত্র ফাংশনের ভেতরে ব্যবহার করা যায়:</p>
+<pre><code class="language-go">func main() {
+    a := 10
+}
+</code></pre>
+<ul>
+<li>টাইপ উল্লেখ করতে হয় না, Go নিজে থেকে টাইপ নির্ধারণ করে নেয় (Type Inference)৷</li>
+</ul>
+<h3 id="2-explicit-type-declaration"><a class="header" href="#2-explicit-type-declaration">2. Explicit Type Declaration</a></h3>
+<pre><code class="language-go">var x int = 10
+</code></pre>
+<ul>
+<li>এখানে <code>x</code> explicitly <code>int</code> টাইপের বলে দেওয়া হয়েছে।</li>
+</ul>
+<h3 id="3-implicit-type-declaration"><a class="header" href="#3-implicit-type-declaration">3. Implicit Type Declaration</a></h3>
+<pre><code class="language-go">var a = 10
+</code></pre>
+<ul>
+<li>টাইপ উল্লেখ করা হয়নি, তবে <code>a</code> এর টাইপ <code>int</code> হিসাবে নির্ধারিত হবে ১০ দেখে।</li>
+</ul>
+<hr />
+<h2 id="-data-types"><a class="header" href="#-data-types">📘 Data Types</a></h2>
+<p>Go ভাষায় বিভিন্ন ধরনের ডেটা টাইপ আছে, যেগুলো মূলত 3 টি ভাগে ভাগ করা যায়।</p>
+<h2 id="১-numeric-types"><a class="header" href="#১-numeric-types">১. Numeric Types</a></h2>
+<blockquote>
+<p>Go-তে numeric types মূলত তিনটি ভাগে বিভক্ত থাকে।</p>
+</blockquote>
+<h3 id="integer-types"><a class="header" href="#integer-types">Integer Types</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Size</th><th>Description</th></tr></thead><tbody>
+<tr><td>int</td><td>platform-dependent</td><td>সাধারন পূর্ণসংখ্যা</td></tr>
+<tr><td>int8</td><td>8-bit</td><td>-128 to 127</td></tr>
+<tr><td>int16</td><td>16-bit</td><td>-32,768 to 32,767</td></tr>
+<tr><td>int32</td><td>32-bit</td><td>-2,147,483,648 to 2,147,483,647</td></tr>
+<tr><td>int64</td><td>64-bit</td><td>খুব বড় পূর্ণসংখ্যা</td></tr>
+<tr><td>uint</td><td>unsigned int</td><td>ধনাত্মক পূর্ণসংখ্যা</td></tr>
+<tr><td>uint8</td><td>0 to 255</td><td>Unsigned 8-bit integer</td></tr>
+<tr><td>uint16</td><td>0 to 65535</td><td>Unsigned 16-bit integer</td></tr>
+<tr><td>uint32</td><td>0 to 4 billion+</td><td>Unsigned 32-bit</td></tr>
+<tr><td>uint64</td><td>বিশাল ধনাত্মক সংখ্যা</td><td>Unsigned 64-bit</td></tr>
+</tbody></table>
+</div>
+<h3 id="floating-point-types"><a class="header" href="#floating-point-types">Floating Point Types</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>float32</td><td>32-bit decimal</td></tr>
+<tr><td>float64</td><td>64-bit decimal (default)</td></tr>
+</tbody></table>
+</div>
+<h3 id="complex-types"><a class="header" href="#complex-types">Complex Types</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>complex64</td><td>Real + Imaginary (float32)</td></tr>
+<tr><td>complex128</td><td>Real + Imaginary (float64)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="২-string-type"><a class="header" href="#২-string-type">২. String Type</a></h2>
+<ul>
+<li>Represents text.</li>
+</ul>
+<pre><code class="language-go">var message string = "Hello, Go!"
+</code></pre>
+<hr />
+<h2 id="৩-boolean-type"><a class="header" href="#৩-boolean-type">৩. Boolean Type</a></h2>
+<ul>
+<li>Holds either <code>true</code> or <code>false</code>.</li>
+</ul>
+<pre><code class="language-go">var isGoFun bool = true
+</code></pre>
+<h2 id="-summary-table"><a class="header" href="#-summary-table">✅ Summary Table</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Category</th><th>Example Type</th></tr></thead><tbody>
+<tr><td>Numeric</td><td>int, float64</td></tr>
+<tr><td>Boolean</td><td>bool</td></tr>
+<tr><td>String</td><td>string</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-valid-examples-with-different-data-types"><a class="header" href="#-valid-examples-with-different-data-types">✅ Valid Examples with Different Data Types</a></h2>
+<pre><code class="language-go">a := 10           // int
+a := 40.34        // float64
+a := "Hello"      // string
+a := true         // bool
+a = false         // bool (reassigned)
+</code></pre>
+<blockquote>
+<p>⚠️ Note: একই স্কোপে একই ভেরিয়েবলকে বারবার <code>:=</code> দিয়ে declare করা যাবে না।</p>
+</blockquote>
+<h2 id="-constant-declaration"><a class="header" href="#-constant-declaration">🔒 Constant Declaration</a></h2>
+<pre><code class="language-go">const p = 100
+</code></pre>
+<blockquote>
+<p><code>const</code> দিয়ে declare করা ভেরিয়েবল পরিবর্তন করা যাবে না।</p>
+</blockquote>
+<p>[Author : @shahriar-em0n  Date: 2025-06-09 Category: interview-qa/class-wise ]</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-class-16-golang-package-scope"><a class="header" href="#-class-16-golang-package-scope">🧠 Class 16: GoLang package scope</a></h1>
 <hr />
 <h2 id="১--package-কী"><a class="header" href="#১--package-কী">১.  Package কী?</a></h2>
@@ -2808,6 +2977,293 @@ MS-DOS এবং Windows-এর মাধ্যমে Microsoft সফটওয়�
 Apple এবং Microsoft ছিল সেই দুই কোম্পানি যারা সাধারণ মানুষের হাতে কম্পিউটার এনে দেয় - Apple হার্ডওয়্যার দিয়ে আর Microsoft সফটওয়্যার দিয়ে।</p>
 <p>তাদের তৈরি কম্পিউটার ও OS গুলোর bit size শুরুতে 8-bit, পরে 16-bit → 32-bit → 64-bit পর্যন্ত উন্নত হয়, যার ফলে গতি, ক্ষমতা ও ব্যবহারযোগ্যতা অনেক বাড়ে।</p>
 <p>[Author:@shahriar-em0n  Date: 2025-06-05 Category: interview-qa/class-wise ]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-class-33---into-the-operating-system"><a class="header" href="#-class-33---into-the-operating-system">✨ CLass 33 - Into The Operating System</a></h1>
+<h2 id="-eniac-ও-punch-card"><a class="header" href="#-eniac-ও-punch-card">🖥️ ENIAC ও Punch Card</a></h2>
+<p><strong>ENIAC (Electronic Numerical Integrator and Computer)</strong> ছিল একেবারে প্রথম দিকের একটি general purpose computer যা Punch card ব্যবহার করত:</p>
+<ul>
+<li>Input (Data এবং Instruction)</li>
+<li>Output (Result)</li>
+<li>Storage (Storing temporary data)</li>
+</ul>
+<p>ENIAC সাধারণত IBM এর <strong>৮০ কলামের Punch card</strong> ব্যবহার করত।</p>
+<h3 id="-punch-card-80x12"><a class="header" href="#-punch-card-80x12">🧠 Punch Card (80x12)</a></h3>
+<ul>
+<li>শক্ত কাগজ, যাতে ৮০টি কলাম ও ১২টি সারি থাকে।</li>
+<li>ছিদ্র দিয়ে তথ্য encode করা হয়</li>
+<li>ছিদ্র = <code>1</code></li>
+<li>ছিদ্র না থাকলে = <code>0</code></li>
+</ul>
+<hr />
+<h3 id="-punch-card-ram-এ-লোড-এবং-program-execute"><a class="header" href="#-punch-card-ram-এ-লোড-এবং-program-execute">🧾 Punch card RAM এ লোড এবং Program execute</a></h3>
+<ul>
+<li><strong>Punch Card তৈরি</strong>
+<ul>
+<li>প্রোগ্রামের কোড বা ডেটা আগে কাগজে Punch card এ লেখা হতো (প্রতিটি কার্ড = ১ লাইন কোড বা তথ্য)।</li>
+<li><strong>keypunch machine</strong> দিয়ে ছিদ্র করা হতো।</li>
+</ul>
+</li>
+<li><strong>Computer এ Feed</strong>
+<ul>
+<li>Punch card গুলো card reader এ ঢোকানো হতো।</li>
+<li>Reader ছিদ্রগুলো পড়ে Binary signal এ (1 বা 0) রূপান্তর করত।</li>
+</ul>
+</li>
+<li><strong>RAM এ Load</strong>
+<ul>
+<li>Binary signal গুলো কম্পিউটারের Memory ইউনিটে পাঠানো হতো।</li>
+<li>সেই সময়কার RAM ছিল টিউব বা flip-flop ধরনের মেমোরি।</li>
+<li>প্রতিটি instruction বা data নির্দিষ্ট location এ সংরক্ষিত হতো।</li>
+</ul>
+</li>
+<li><strong>Execution</strong>
+<ul>
+<li>কম্পিউটারের control unit(CU), memory থেকে একে একে instruction নিত।</li>
+<li>Pointing Register (Program Counter) প্রথমে প্রথম instruction address কে point করে।</li>
+<li>CPU সেই instruction -&gt; fetch -&gt; decode -&gt; execute করে।</li>
+<li>Instruction শেষ হলে, Pointing register এক ধাপ বাড়ে, অর্থাৎ পরবর্তী instruction address এ চলে যায়।</li>
+<li>Loop বা condition থাকলে সেটা plugboards বা বিশেষ কার্ডে আগে থেকেই সেট করে দিতে হতো।</li>
+</ul>
+</li>
+</ul>
+<h3 id="-note"><a class="header" href="#-note">🛠️ Note:</a></h3>
+<ul>
+<li>তখন কোনো operating system ছিল না। সব কিছু manually করতে হতো।</li>
+<li>RAM আজকের মতো উন্নত ছিল না; বরং ছিল একটি সীমিত মেমোরি ইউনিট।</li>
+<li>পুরো কাজটি ছিল ধীর ও খুবই টেকনিক্যাল।</li>
+</ul>
+<blockquote>
+<p>CPU = Register Set (ডেটা রাখে) + Processing Unit (ডেটা প্রসেস করে) এবং Processing Unit = ALU + Control Unit</p>
+</blockquote>
+<h2 id="-the-idea-of-operating-system"><a class="header" href="#-the-idea-of-operating-system">💡 The Idea of Operating System</a></h2>
+<p><strong>🕰️ ১৯৪০ - ৫০ দশকে</strong>, কম্পিউটারে প্রতিটি প্রোগ্রাম manually চালাতে হতো - punch card, আলাদা কোড, অনেক সময়।</p>
+<p><strong>🎯 সমাধান :</strong></p>
+<p>"একটা সফটওয়্যার থাকুক, যা প্রোগ্রাম চালানোসহ সব কাজ নিজে করবে" - এটাই Operating System।</p>
+<p>প্রথম দিকে OS শুধু প্রোগ্রাম চালাত, পরে I/O, memory, file, security management যুক্ত হয়।</p>
+<hr />
+<h2 id="-os-এর-pointing-register-program-counter-বযবহার-করে-program-execution"><a class="header" href="#-os-এর-pointing-register-program-counter-বযবহার-করে-program-execution">⚙️ OS এর Pointing Register (Program Counter) ব্যবহার করে Program Execution</a></h2>
+<p>💡 Pointing Register (Program Counter aka PC)</p>
+<ul>
+<li>CPU-র একটি register।</li>
+<li>পরবর্তী যেই instruction execute হবে, তার address রাখে।</li>
+</ul>
+<h3 id="-program-execution-steps"><a class="header" href="#-program-execution-steps">👣 Program Execution Steps:</a></h3>
+<ul>
+<li>Computer On -&gt; OS প্রথমে HDD থেকে RAM এ Load হয়</li>
+<li>OS sets up -&gt; Hardware, memory, File System ইত্যাদি</li>
+<li>একটি Program execute -&gt; Click app icon</li>
+<li>OS সেই Program টি HDD থেকে খুঁজে বের করে এবং RAM এ লোড করে</li>
+<li>OS এরপর Pointing Register কে program এর first instruction address সেট করে দেয়</li>
+<li>CPU সেই address থেকে instruction -&gt; fetch -&gt; decode -&gt; execute করতে শুরু করে</li>
+</ul>
+<blockquote>
+<p>➡️ প্রতিটি Instruction শেষ হওয়ার পর, Pointing Register নিজে থেকেই পরবর্তী address update হয়। যদি কোনো loop, function call বা condition থাকে, তাহলে Pointing Register সেই অনুযায়ী নতুন address এ jump করে।</p>
+</blockquote>
+<hr />
+<h2 id="-evolution-of-operating-system"><a class="header" href="#-evolution-of-operating-system">🧬 Evolution of Operating System</a></h2>
+<h3 id="-early-stages-1940s-1960s"><a class="header" href="#-early-stages-1940s-1960s">🕰️ <strong><em>Early Stages (1940s-1960s):</em></strong></a></h3>
+<p><strong>🔹 1st Generation: Batch Processing Systems:</strong></p>
+<ul>
+<li>প্রথমদিকে কম্পিউটার OS ছাড়াই কাজ করত, প্রোগ্রাম manually load করতে হতো।</li>
+<li><em>GM-NAA I/O</em> (1956) ছিল <strong>First Operating System</strong>, যা <code>IBM 704</code> এর জন্য input/output ম্যানেজ করত।</li>
+</ul>
+<p><strong>🔹 2nd Generation: Multiprogramming &amp; Timesharing:</strong></p>
+<ul>
+<li>Multiprogramming: CPU একাধিক প্রোগ্রামের মাঝে কাজ ভাগ করে efficiency বাড়ায়।</li>
+<li>Time-sharing systems (যেমন: <em>CTSS</em>, <em>Multics</em>): একাধিক ব্যবহারকারী একসাথে কম্পিউটারের সাথে কাজ করতে পারে।</li>
+</ul>
+<h3 id="-the-rise-of-user-friendly-interfaces-1970s-1990s"><a class="header" href="#-the-rise-of-user-friendly-interfaces-1970s-1990s">🖥️ <strong><em>The Rise of User-Friendly Interfaces (1970s-1990s)</em></strong>:</a></h3>
+<p><strong>🔹 3rd Generation: Graphical User Interfaces (GUIs)</strong>
+Apple Macintosh ও Microsoft Windows. Graphical User Interface (GUI) চালু করে, যা কম্পিউটারকে সহজ করে তোলে।</p>
+<p><strong>🔹 Unix ও Personal Computers</strong></p>
+<ul>
+<li>Unix: সহজ, বহনযোগ্য ও multitasking সাপোর্টের জন্য জনপ্রিয়।
+<ul>
+<li>🏛️ History:
+<ul>
+<li>📅 1970 সালে <em>AT&amp;T Bell Labs</em> এ <em>Ken Thompson</em> ও <em>Dennis Ritchie</em> Unix তৈরি করেন।</li>
+<li>🧪 এটি <strong>C programming language</strong> ব্যবহার করে লেখা হয়, যা একে আরও বহনযোগ্য করে তোলে।</li>
+</ul>
+</li>
+<li>📚 Unix থেকে জন্ম নেওয়া জনপ্রিয় OS:
+<ul>
+<li>Linux 🐧</li>
+<li>Mac OS 🍎</li>
+<li>BSD, Solaris ইত্যাদি</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>CP/M</em>, <em>PC-DOS</em>: ব্যক্তিগত কম্পিউটারের জন্য সহজ Operating System।</li>
+</ul>
+<p><strong>🔹 Linux ও উন্নত GUI</strong></p>
+<ul>
+<li>Linux: Open source OS হিসেবে জনপ্রিয় হয়।</li>
+</ul>
+<p><strong>🔹 Windows ও Mac OS</strong></p>
+<ul>
+<li>GUI আরও উন্নত করে।</li>
+</ul>
+<h3 id="-modern-era-2000s-present"><a class="header" href="#-modern-era-2000s-present"><strong><em>📱 Modern Era (2000s-Present)</em></strong>:</a></h3>
+<p><strong>🔹 Mobile &amp; Cloud Computing</strong>
+iOS, Android: মোবাইল OS বাজারে আধিপত্য বিস্তার করে।</p>
+<p>Cloud ও Virtualization প্রযুক্তি কম্পিউটিংকে নতুন রূপ দেয়।</p>
+<p><strong>🔹 AI Integration</strong>
+AI, Machine Learning, Quantum Computing OS কে আরও বুদ্ধিমান ও অভিযোজিত করে তুলছে।</p>
+<h3 id="-key-milestones"><a class="header" href="#-key-milestones">📌 Key Milestones:</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Year</th><th>Events</th></tr></thead><tbody>
+<tr><td>1990</td><td><strong>Windows 3.0</strong> – GUI, computing experience এ ব্যাপক পরিবর্তন আনে</td></tr>
+<tr><td>1995</td><td><strong>Windows 95</strong> – Taskbar, Start Menu ও Plug-and-Play</td></tr>
+<tr><td>2009</td><td><strong>Windows 7</strong> – Enhanced features, speed, and resource usage</td></tr>
+<tr><td>2012</td><td><strong>Windows 8</strong> – Metro Interface, significant revamp</td></tr>
+</tbody></table>
+</div>
+<p>[<strong>Author:</strong> @nazma98
+<strong>Date:</strong> 2025-06-09
+<strong>Category:</strong> interview-qa/class-wise
+]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="class-34---breaking-the-cpu-and-process"><a class="header" href="#class-34---breaking-the-cpu-and-process">Class-34 : 🧩 Breaking The CPU and Process</a></h1>
+<h2 id="-central-processing-unit-cpu"><a class="header" href="#-central-processing-unit-cpu">🧠 Central Processing Unit (CPU)</a></h2>
+<ul>
+<li><strong>The brain of the computer</strong></li>
+<li>Process instructions</li>
+</ul>
+<p>CPU এর ২টি প্রধান অংশ হলো:</p>
+<p><strong>1. Processing Unit (PU)</strong></p>
+<ul>
+<li>Arithmetic Logic Unit(ALU) + Control Unit(CU) থাকে।</li>
+</ul>
+<p><strong>2. Register Set</strong></p>
+<ul>
+<li>Data ও Instructions সাময়িক রাখা হয়।</li>
+<li>Processing Unit এর কাজ সহজ করতে সাহায্য করে।</li>
+</ul>
+<h2 id="-register-set"><a class="header" href="#-register-set">🔹 Register Set</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>রেজিস্টার নাম</th><th>পূর্ণরূপ / বর্ণনা</th><th>কাজের ধরন</th></tr></thead><tbody>
+<tr><td><strong>SP</strong></td><td>Stack Pointer</td><td>stack এর Top কে point করে</td></tr>
+<tr><td><strong>BP</strong></td><td>Base Pointer</td><td>Stack frame এর base কে point করে</td></tr>
+<tr><td><strong>IR</strong></td><td>Instruction Register</td><td>বর্তমানে execute হওয়া instruction রাখে</td></tr>
+<tr><td><strong>PC</strong></td><td>Program Counter</td><td>পরবর্তী instruction address ধরে রাখে</td></tr>
+<tr><td><strong>General Purpose Registers</strong></td><td>(যেমন AX, BX, CX, DX)</td><td>Data transfer, calculation ইত্যাদিতে ব্যবহৃত</td></tr>
+</tbody></table>
+</div>
+<h3 id="-general-purpose-registers"><a class="header" href="#-general-purpose-registers">🗄️ General Purpose Registers</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Register</th><th>Size</th><th>Description</th><th>Typical Use</th></tr></thead><tbody>
+<tr><td>AL</td><td>8-bit</td><td>Lower 8 bits of AX</td><td>store data during arithmetic, logic, or data transfer operations</td></tr>
+<tr><td>BL</td><td>8-bit</td><td>Lower 8 bits of BX</td><td>General-purpose data storage</td></tr>
+<tr><td>CL</td><td>8-bit</td><td>Lower 8 bits of CX</td><td>Loop counters, shift/rotate counts</td></tr>
+<tr><td>DL</td><td>8-bit</td><td>Lower 8 bits of DX</td><td>I/O operations, data storage</td></tr>
+</tbody></table>
+</div>
+<h3 id="-registers-al-bl-cl-dl-in-x86-architecture"><a class="header" href="#-registers-al-bl-cl-dl-in-x86-architecture">🧮 Registers AL, BL, CL, DL in x86 Architecture</a></h3>
+<p>AL, BL, CL, এবং DL respective general-purpose register এর lower 8 bits কে represent করে। CPU architecture এর ওপর ভিত্তি করে এগুলো 16-bit, 32-bit, এবং 64-bit হয়।</p>
+<div class="table-wrapper"><table><thead><tr><th>8-bit</th><th>16-bit</th><th>32-bit</th><th>64-bit</th><th>Description</th></tr></thead><tbody>
+<tr><td>AL</td><td>AX</td><td>EAX</td><td>RAX</td><td><strong>Accumulator register family</strong></td></tr>
+<tr><td>BL</td><td>BX</td><td>EBX</td><td>RBX</td><td><strong>Base register family</strong></td></tr>
+<tr><td>CL</td><td>CX</td><td>ECX</td><td>RCX</td><td><strong>Count register family</strong> <em>(used for loops, shifts)</em></td></tr>
+<tr><td>DL</td><td>DX</td><td>EDX</td><td>RDX</td><td><strong>Data register family</strong></td></tr>
+</tbody></table>
+</div>
+<hr />
+<h3 id="-register-hierarchy"><a class="header" href="#-register-hierarchy">🏛️ Register Hierarchy</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Register</th><th>64-bit part</th><th>32-bit part</th><th>16-bit part</th><th>8-bit high</th><th>8-bit low</th></tr></thead><tbody>
+<tr><td>RAX</td><td>RAX</td><td>EAX</td><td>AX</td><td>AH</td><td>AL</td></tr>
+<tr><td>RBX</td><td>RBX</td><td>EBX</td><td>BX</td><td>BH</td><td>BL</td></tr>
+<tr><td>RCX</td><td>RCX</td><td>ECX</td><td>CX</td><td>CH</td><td>CL</td></tr>
+<tr><td>RDX</td><td>RDX</td><td>EDX</td><td>DX</td><td>DH</td><td>DL</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-control-unit-cu-executes-a-program-stored-on-a-hdd"><a class="header" href="#-control-unit-cu-executes-a-program-stored-on-a-hdd">⚙️ Control Unit (CU) executes a program stored on a HDD</a></h2>
+<h3 id="-program-যখন-hdd-এ-থাকে"><a class="header" href="#-program-যখন-hdd-এ-থাকে">💾 Program যখন HDD এ থাকে</a></h3>
+<ul>
+<li>Program file → HDD এ থাকে</li>
+<li>Direct access → Slow</li>
+</ul>
+<h3 id="-ram-এ-load"><a class="header" href="#-ram-এ-load">⚡ RAM এ Load</a></h3>
+<ul>
+<li>Operating System → Program, HDD থেকে RAM এ নিয়ে আসে → <em>Program Load</em> / <em>Fetch</em></li>
+</ul>
+<h3 id="-execution-শুরু"><a class="header" href="#-execution-শুরু">🚀 Execution শুরু</a></h3>
+<ul>
+<li>Control Unit (CU) → RAM থেকে Program এর First memory address নেয়</li>
+<li>memory address → Program Counter (PC) এ set করা হয়</li>
+</ul>
+<h3 id="-cu-ram-থেকে-instruction-fetch"><a class="header" href="#-cu-ram-থেকে-instruction-fetch">📥 CU RAM থেকে Instruction Fetch</a></h3>
+<ul>
+<li>CU → PC থেকে memeory address নিয়ে RAM থেকে Instruction fetch করে</li>
+<li>Instruction → Instruction Register (IR) এ store হয়</li>
+</ul>
+<h3 id="-decode--execute"><a class="header" href="#-decode--execute">⚙️ Decode &amp; Execute</a></h3>
+<ul>
+<li>CU → IR এর Instruction কে Decode করে</li>
+<li>CU → ALU/অন্যান্য ইউনিটকে কাজ করতে নির্দেশ দেয়</li>
+<li>PC → পরের Instruction memory address update হয়</li>
+</ul>
+<hr />
+<h2 id="-go-program-execution-flow-by-cpu"><a class="header" href="#-go-program-execution-flow-by-cpu">⚙️ Go Program Execution Flow by CPU</a></h2>
+<h3 id="-go-পরোগরাম-রান"><a class="header" href="#-go-পরোগরাম-রান">🧠 Go প্রোগ্রাম রান</a></h3>
+<ul>
+<li><code>go run main.go</code> → Go compiler → binary executable file</li>
+<li>CPU, load এবং execute করে → binary executable file</li>
+</ul>
+<h3 id="-memory-division"><a class="header" href="#-memory-division">📦 Memory Division</a></h3>
+<ul>
+<li><code>Code Segment</code> → <code>const</code>, <code>func</code> / instructions (যা পরিবর্তন হবে না / Read only)</li>
+<li><code>Data Segment</code> → global variable</li>
+<li><code>Stack</code> → function calls &amp; local variable</li>
+<li><code>Heap</code> → dynamic memory</li>
+</ul>
+<h3 id="-stack-frame"><a class="header" href="#-stack-frame">🧱 Stack Frame</a></h3>
+<p><code>main()</code> (বা অন্য কোনো function) call হলে Stack Frame create হয়। Stack Frame এ থাকে:</p>
+<ul>
+<li>Local variables (<code>a := 10</code>)</li>
+<li>Return address (function শেষে কোথায় return)</li>
+<li>Function parameters (যদি থাকে)</li>
+<li>Saved registers (CPU registers)</li>
+</ul>
+<h3 id="-stack-frame-structure"><a class="header" href="#-stack-frame-structure">📊 Stack Frame Structure</a></h3>
+<pre><code class="language-plaintext">↑ Higher memory address
+---------------------
+| Return Address    | ← main() call
+--------------------
+| Old Base Pointer  | ← BP
+--------------------
+| Local variable y  |
+| Local variable x  | ← SP (grows downwards)
+--------------------
+↓ Lower memory address
+
+</code></pre>
+<p>Stack pointer (SP) এবং Base pointer (BP) হল CPU registers, যা stack frame manage করতে ব্যবহৃত হয়।</p>
+<h2 id="-process"><a class="header" href="#-process">💡 Process</a></h2>
+<ul>
+<li>
+<p>Program execution শুরু হলে → process create হয়</p>
+</li>
+<li>
+<p>Process → Program execution সাহায্য করে</p>
+</li>
+<li>
+<p>এর ভেতরে থাকে → Code Segment, Data Segment, Stack, Heap, এবং CPU রেজিস্টার</p>
+</li>
+<li>
+<p>Process <strong>Dead</strong> বা <strong>Terminated</strong> → OS সমস্ত memory ও resources (RAM, file, etc.) free করে</p>
+<pre><code>  | অংশ                  |
+  | -------------------- |
+  | Code Segment         |
+  | Data Segment         |
+  | Heap                 |
+  | Stack                |
+  | Registers            |
+  | Program Counter (PC) |
+  | File Descriptors     |
+</code></pre>
+</li>
+</ul>
+<p>[<strong>Author:</strong> @nazma98
+<strong>Date:</strong> 2025-06-11
+<strong>Category:</strong> interview-qa/class-wise
+]</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-cpu-structure-and-stack-frame-execution-notes"><a class="header" href="#-cpu-structure-and-stack-frame-execution-notes">🧠 CPU Structure and Stack Frame Execution Notes</a></h1>
 <h2 id="-cpu-two-core-components"><a class="header" href="#-cpu-two-core-components">🔹 CPU: Two Core Components</a></h2>
 <ol>
@@ -2929,14 +3385,14 @@ Stack grows downward ↓
 <h2 id="context-switching-কী-"><a class="header" href="#context-switching-কী-">context switching কী ?</a></h2>
 <p><strong>Context Switching</strong> মানে হল, <strong>CPU একটা প্রসেস রেখে আরেকটা প্রসেস চালানো শুরু করে</strong>।</p>
 <blockquote>
-<p>ঠিক যেমন ক্লাসে তুমি ম্যাথ করছিলে, হঠাৎ টিচার বলল “এবার ইংরেজি করো” — তখন তুমি ম্যাথের খাতা বন্ধ করে ইংরেজির খাতা খুললে।<br />
+<p>ঠিক যেমন ক্লাসে তুমি ম্যাথ করছিলে, হঠাৎ টিচার বলল “এবার ইংরেজি করো”  তখন তুমি ম্যাথের খাতা বন্ধ করে ইংরেজির খাতা খুললে।<br />
 এই খাতা বদলানোই হলো <em>Context Switch</em>! 🧑‍🏫</p>
 </blockquote>
 <hr />
 <h2 id="-কিভাবে-কাজ-করে"><a class="header" href="#-কিভাবে-কাজ-করে">🧱 কিভাবে কাজ করে?</a></h2>
 <ol>
 <li><strong>CPU</strong> এখন একটা প্রসেস (ধরো গেম) চালাচ্ছে।</li>
-<li>হঠাৎ OS বলে — “এই তো, ভিডিও কল আসছে! আগে এটাকে চালাও।”</li>
+<li>হঠাৎ OS বলে  “এই তো, ভিডিও কল আসছে! আগে এটাকে চালাও।”</li>
 <li>তখন CPU <strong>গেমের অবস্থা (registers, state)</strong> একটা <strong>PCB-তে রেখে দেয়</strong>।</li>
 <li>এরপর <strong>নতুন প্রসেস (ভিডিও কল)</strong> এর অবস্থা PCB থেকে নিয়ে চালানো শুরু করে।</li>
 </ol>
@@ -2951,10 +3407,10 @@ Stack grows downward ↓
 <hr />
 <h1 id="-process-control-block-pcb"><a class="header" href="#-process-control-block-pcb">🔍 Process Control Block (PCB)</a></h1>
 <p>কম্পিউটার যখন একসাথে অনেকগুলো প্রোগ্রাম চালায় (যেমন: গেম, মিউজিক, ব্রাউজার), তখন প্রতিটা প্রোগ্রাম একেকটা আলাদা <strong>Process (প্রসেস)</strong> হয়ে চলে।<br />
-এই প্রসেসগুলোকে চিনে রাখা, মনিটর করা আর নিয়ন্ত্রণ করার জন্য অপারেটিং সিস্টেম (OS) ব্যবহার করে একটা বিশেষ জিনিস — যেটার নাম <strong>Process Control Block (PCB)</strong>।</p>
+এই প্রসেসগুলোকে চিনে রাখা, মনিটর করা আর নিয়ন্ত্রণ করার জন্য অপারেটিং সিস্টেম (OS) ব্যবহার করে একটা বিশেষ জিনিস  যেটার নাম <strong>Process Control Block (PCB)</strong>।</p>
 <hr />
 <h2 id="-pcb-কী-"><a class="header" href="#-pcb-কী-">🧠 PCB কী ❓</a></h2>
-<p><strong>PCB হলো একটি ছোট্ট তথ্যের বাক্স (Data Structure)</strong> — যেখানে একটি প্রসেস সম্পর্কিত সব দরকারি তথ্য জমা থাকে।</p>
+<p><strong>PCB হলো একটি ছোট্ট তথ্যের বাক্স (Data Structure)</strong>  যেখানে একটি প্রসেস সম্পর্কিত সব দরকারি তথ্য জমা থাকে।</p>
 <blockquote>
 <p>একে তুমি ভাবতে পারো, প্রতিটা প্রসেসের <strong>আইডি কার্ড</strong> বা <strong>রিপোর্ট কার্ড</strong> হিসেবে।</p>
 </blockquote>
@@ -3029,17 +3485,17 @@ Stack grows downward ↓
 <li>এটা অপারেটিং সিস্টেমের অদৃশ্য সেনাপতি!</li>
 </ul>
 <hr />
-<h1 id="-concurrency--একসাথে-অনেক-কাজ"><a class="header" href="#-concurrency--একসাথে-অনেক-কাজ">⏱️ Concurrency — একসাথে অনেক কাজ!</a></h1>
+<h1 id="-concurrency--একসাথে-অনেক-কাজ"><a class="header" href="#-concurrency--একসাথে-অনেক-কাজ">⏱️ Concurrency  একসাথে অনেক কাজ!</a></h1>
 <h2 id="-সহজভাবে-বললে"><a class="header" href="#-সহজভাবে-বললে">👶 সহজভাবে বললে:</a></h2>
-<p><strong>Concurrency</strong> মানে হলো, CPU যেন <strong>একসাথে অনেকগুলো কাজ করছে — এমন একটা ধোঁকা দেয়</strong>।</p>
+<p><strong>Concurrency</strong> মানে হলো, CPU যেন <strong>একসাথে অনেকগুলো কাজ করছে  এমন একটা ধোঁকা দেয়</strong>।</p>
 <blockquote>
-<p>ধরো তোমার মা একসাথে ভাত রান্না করছে, ডাল দিচ্ছে, আবার ফোনেও কথা বলছে — মানে কাজগুলো একসাথে চলছে।<br />
+<p>ধরো তোমার মা একসাথে ভাত রান্না করছে, ডাল দিচ্ছে, আবার ফোনেও কথা বলছে  মানে কাজগুলো একসাথে চলছে।<br />
 একসাথে সব কাজ না করলেও, অল্প অল্প করে সবকিছু সামলাচ্ছে। এটাকেই বলে <strong>Concurrency</strong>।</p>
 </blockquote>
 <hr />
 <h2 id="-কমপিউটারে-কিভাবে-হয়"><a class="header" href="#-কমপিউটারে-কিভাবে-হয়">👨‍💻 কম্পিউটারে কিভাবে হয়?</a></h2>
 <ul>
-<li>CPU একসাথে অনেক <strong>Process</strong> চালায় না, কিন্তু <strong>একটা একটু চালায়, তারপর আরেকটা, তারপর আবার প্রথমটা</strong> — এভাবে।</li>
+<li>CPU একসাথে অনেক <strong>Process</strong> চালায় না, কিন্তু <strong>একটা একটু চালায়, তারপর আরেকটা, তারপর আবার প্রথমটা</strong>  এভাবে।</li>
 <li>এতে মনে হয়, সবকিছু একসাথে চলছে।</li>
 </ul>
 <hr />
@@ -3051,6 +3507,63 @@ Stack grows downward ↓
 </tbody></table>
 </div>
 <p>[Author : @shahriar-em0n  Date: 2025-06-05 Category: interview-qa/class-wise ]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-parallelism-vs-concurrency"><a class="header" href="#-parallelism-vs-concurrency">🧠 Parallelism vs Concurrency</a></h1>
+<hr />
+<h2 id="১-concurrency"><a class="header" href="#১-concurrency">১. Concurrency</a></h2>
+<blockquote>
+<p><strong>Concurrency</strong> এমন একটি প্রক্রিয়া যেখানে CPU একসাথে অনেকগুলো কাজ একইসাথে run  করছে এমন একটি illusion তৈরি  করা, এটি  এমনভাবে কাজ করে যেন সবগুলো কাজ একইসাথে চলছে অর্থাৎ ব্যবহারকারীর চোখে এটি যেন একসাথে অনেক কাজ হচ্ছে এমন একটি illusion তৈরি করে।</p>
+</blockquote>
+<h3 id="-উদাহরণ--"><a class="header" href="#-উদাহরণ--">🛠 উদাহরণ  :</a></h3>
+<p><strong>YouTube অ্যাপ</strong> চালানোর সময় তুমি দেখতে পারো:</p>
+<ul>
+<li>ভিডিও প্লে হচ্ছে</li>
+<li>কমেন্ট লোড হচ্ছে</li>
+<li>বিজ্ঞাপন আসছে</li>
+<li>স্ক্রল করলে নতুন ভিডিও সাজেশন আসছে</li>
+</ul>
+<p>সবকিছুই একসাথে ঘটছে বলে মনে হয়, কিন্তু মূলত এই কাজগুলো context switching এর মাধ্যমে একে একে execute হচ্ছে।</p>
+<h3 id="-মূল-বৈশিষটয"><a class="header" href="#-মূল-বৈশিষটয">✅ মূল বৈশিষ্ট্য:</a></h3>
+<ul>
+<li>একসাথে অনেক কাজ handle করা হয়</li>
+<li>CPU এক সময়ে একটিই কাজ করে, কিন্তু দ্রুত context switch করে</li>
+<li>Single-core CPU-তেও কাজ করে</li>
+</ul>
+<hr />
+<h2 id="২-parallelism"><a class="header" href="#২-parallelism">২. Parallelism</a></h2>
+<blockquote>
+<p><strong>Parallelism</strong> বোঝায় একাধিক কাজ একই সময়ে, একাধিক CPU বা processor/core ব্যবহার করে execute হওয়া। প্রতিটি কাজ আলাদা processor/core দ্বারা একসাথে চালানো হয়।</p>
+</blockquote>
+<h3 id="-উদাহরণ-"><a class="header" href="#-উদাহরণ-">🛠 উদাহরণ :</a></h3>
+<p>ধরো, তুমি Adobe Premiere Pro তে ভিডিও এক্সপোর্ট দিচ্ছো  একি সময়ে</p>
+<ul>
+<li>একটি core ভিডিও প্রসেস করছে</li>
+<li>অন্য core অডিও রেন্ডার করছে</li>
+<li>আরেকটি core এফেক্ট প্রসেস করছে</li>
+</ul>
+<p>এই কাজগুলো processor/CPU multiple core দ্বারা একসাথে চলায় যাতে রেন্ডারিং দ্রুত সম্পন্ন হয়। এটি Parallelism।</p>
+<h3 id="-মূল-বৈশিষটয-1"><a class="header" href="#-মূল-বৈশিষটয-1">✅ মূল বৈশিষ্ট্য:</a></h3>
+<ul>
+<li>একাধিক কাজ একই সময়ে সত্যিকারের parallel চলে</li>
+<li>Multi-core processor দরকার</li>
+<li>সময় বাঁচে এবং efficiency বাড়ে</li>
+</ul>
+<hr />
+<h2 id="৩-তুলনামূলক-পারথকয"><a class="header" href="#৩-তুলনামূলক-পারথকয">৩. তুলনামূলক পার্থক্য</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>বিষয়</th><th>Concurrency</th><th>Parallelism</th></tr></thead><tbody>
+<tr><td>কাজের ধরন</td><td>একাধিক কাজ context switch করে execute হয়</td><td>একাধিক কাজ একসাথে চলতে থাকে</td></tr>
+<tr><td>প্রয়োজনীয়তা</td><td>Single-core CPU-তেও সম্ভব</td><td>Multi-core CPU প্রয়োজন</td></tr>
+<tr><td>বাস্তব উদাহরণ</td><td>YouTube অ্যাপের বিভিন্ন ফিচার একসাথে চলা</td><td>Video rendering-এ একাধিক core কাজ করে</td></tr>
+<tr><td>উদ্দেশ্য</td><td>অনেক কাজকে একসাথে handle করা</td><td>কাজগুলো দ্রুত এবং একযোগে শেষ  করা</td></tr>
+<tr><td>Task Execution Style</td><td>Interleaved (ক্রমাগত পালাক্রমে)</td><td>Simultaneous (একসাথে একযোগে)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="৪-সংকষেপে"><a class="header" href="#৪-সংকষেপে">৪. সংক্ষেপে:</a></h2>
+<ul>
+<li><strong>Concurrency</strong> হলো কাজগুলোকে একসাথে handle করার কৌশল, যেখানে একসাথে অনেক কিছু ঘটলেও, CPU এক সময়ে একটিই কাজ করে।</li>
+<li><strong>Parallelism</strong> হলো সত্যিকারের একসাথে অনেক কাজ করা, যেখানে প্রতিটি কাজ ভিন্ন ভিন্ন processor/core দ্বারা চলে।</li>
+</ul>
+<p>[Author : @shahriar-em0n  Date: 2025-06-09 Category: interview-qa/class-wise ]</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="class-38---thread"><a class="header" href="#class-38---thread">Class 38 - Thread</a></h1>
 <h2 id="-thread-কী"><a class="header" href="#-thread-কী">🧵 Thread কী?</a></h2>
 <ul>
@@ -3285,7 +3798,7 @@ func main() {
     fmt.Println(string(a))   // Output: A
 }
 </code></pre>
-<h4 id="-note"><a class="header" href="#-note">🔎 Note:</a></h4>
+<h4 id="-note-1"><a class="header" href="#-note-1">🔎 Note:</a></h4>
 <ul>
 <li><code>byte</code> শুধু <code>0</code> থেকে <code>255</code> পর্যন্ত value রাখতে পারে।</li>
 <li>character encoding এর সাথে কাজ করতে গেলে byte খুবই দরকারি।</li>
@@ -3348,6 +3861,10 @@ func main() {
 	fmt.Printf("** Type of variable s = %T", s) // Output: string
 }
 </code></pre>
+<p>[<strong>Author:</strong> @nazma98
+<strong>Date:</strong> 2025-06-05
+<strong>Category:</strong> interview-qa/class-wise
+]</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="-golang-এর-defer-ভিতরের-সটযাক-রিটারন-ফাঁদ-এবং-বাসতব-উদাহরণে-ডুব"><a class="header" href="#-golang-এর-defer-ভিতরের-সটযাক-রিটারন-ফাঁদ-এবং-বাসতব-উদাহরণে-ডুব">🌀 Golang এর <code>defer</code>: ভিতরের স্ট্যাক, রিটার্ন ফাঁদ, এবং বাস্তব উদাহরণে ডুব</a></h2>
 <blockquote>
 <p>"<code>defer</code> মানে হচ্ছে — তোমার কাজ হবে, কিন্তু পরে হবে।"</p>

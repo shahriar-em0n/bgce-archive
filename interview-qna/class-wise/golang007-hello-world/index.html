@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Golang035 Bp Sp - BGCE ARCHIVE</title>
+        <title>Golang007 Hello World - BGCE ARCHIVE</title>
 
 
         <!-- Custom HTML head -->
@@ -169,133 +169,86 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="-cpu-structure-and-stack-frame-execution-notes"><a class="header" href="#-cpu-structure-and-stack-frame-execution-notes">🧠 CPU Structure and Stack Frame Execution Notes</a></h1>
-<h2 id="-cpu-two-core-components"><a class="header" href="#-cpu-two-core-components">🔹 CPU: Two Core Components</a></h2>
-<ol>
-<li>
-<p><strong>Processing Unit</strong></p>
-<ul>
-<li><strong>Arithmetic Logic Unit (ALU)</strong>: সব ধরনের গাণিতিক (arithmetic) এবং যৌক্তিক (logical) operations করে থাকে।</li>
-<li><strong>Control Unit (CU)</strong>: CPU এর মধ্যে গাণিতিক (arithmetic) এবং যৌক্তিক (logical) operations পরিচালনা করে, input/output এবং instruction decoding কীভাবে হবে তা কন্ট্রোল করে।</li>
-</ul>
-</li>
-<li>
-<p><strong>Register Set</strong></p>
-<ul>
-<li><strong>Program Counter (PC)</strong>: পরবর্তীতে যেই Instruction টি execute হবে তার address ধারণ করে ।</li>
-<li><strong>Stack Pointer (SP)</strong>: মেমরিতে বর্তমানে যে stack আছে তার Top কে point করে।</li>
-<li><strong>Base Pointer (BP)</strong>: বর্তমান stack frame এর base কে point করে।</li>
-<li><strong>Instruction Register (IR)</strong>: এই মুহূর্তে যে instruction টি execute হচ্ছে সেটি রাখে।</li>
-<li><strong>General Purpose Registers</strong>: Data manipulation যেমন arithmetic ও logical operation এবং data movement এর জন্য অস্থায়ীভাবে data রাখে।</li>
-</ul>
-</li>
-</ol>
+                        <h2 id="class-07-hello-world"><a class="header" href="#class-07-hello-world">Class 07: Hello, World!</a></h2>
 <hr />
-<h2 id="-bits-and-bytes"><a class="header" href="#-bits-and-bytes">🔹 Bits and Bytes</a></h2>
-<ul>
-<li><strong>8-bit = 1 byte</strong></li>
-<li><strong>16-bit = 2 bytes</strong></li>
-<li><strong>32-bit = 4 bytes</strong></li>
-<li><strong>64-bit = 8 bytes</strong></li>
-</ul>
-<p>Memory addressing = ( 2^n )</p>
-<hr />
-<h2 id="-ram-addressing-on-32-bit-system"><a class="header" href="#-ram-addressing-on-32-bit-system">🔹 RAM Addressing on 32-bit System</a></h2>
-<p>Memory cell 4 bytes করে বাড়তে থাকে। (since 32-bit = 4 bytes):</p>
-<pre><code>Address:  0   4   8  12  16  20  24  ...
-         [ ] [ ] [ ] [ ] [ ] [ ] [ ]
-</code></pre>
-<hr />
-<h2 id="-os-ram-and-process-execution"><a class="header" href="#-os-ram-and-process-execution">🔹 OS, RAM, and Process Execution</a></h2>
-<ol>
-<li><strong>OS executable code আনে</strong> HDD থেকে → <strong>RAM</strong> এ লোড করে</li>
-<li><strong>OS একটি process create করে</strong></li>
-<li><strong>RAM process memory কে কয়েকটি ভাগে ভাগ করে:</strong></li>
-</ol>
-<ul>
-<li>Code Segment (constants এবং instructions এর জন্য)</li>
-<li>Data Segment (global/static variables এর জন্য)</li>
-<li>Stack (function calls এবং local variables এর জন্য)</li>
-<li>Heap (dynamically memory allocate করার জন্য)</li>
-</ul>
-<hr />
-<h2 id="-stack-frame-in-function-call"><a class="header" href="#-stack-frame-in-function-call">🔹 Stack Frame in Function Call</a></h2>
-<ul>
-<li>OS, <strong>SP</strong> এবং <strong>BP</strong> set করে দেয়।</li>
-<li><strong>SP</strong> &lt; <strong>BP</strong> ( SP memory তে lower address কে point করে)।</li>
-</ul>
-<h3 id="stack-frame-layout"><a class="header" href="#stack-frame-layout">Stack Frame Layout:</a></h3>
-<pre><code>[ Local Variables        ]   &lt;-- SP (grows downward)
-[ Old Base Pointer       ]
-[ Return Address         ]
-[ Parameters (right→left)]   &lt;-- BP
-</code></pre>
-<ul>
-<li><strong>Return Address</strong> সাধারণত রাখা হয় <code>BP + 4</code> (32 bit computer), <code>BP + 8</code> (64 bit computer) etc. ( Base pointer এর ঠিক উপরে )</li>
-<li><strong>BP</strong> ব্যবহার করে CPU সহজেই যা access করতে পারে:
-<ul>
-<li>Function parameters</li>
-<li>Return address</li>
-<li>Local variables</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h2 id="-stack-frame-exit"><a class="header" href="#-stack-frame-exit">🔹 Stack Frame Exit</a></h2>
-<ul>
-<li>Stack frame যা pop করে (সরিয়ে ফেলে):
-<ul>
-<li>Local variables</li>
-<li>Old BP value register set এর BP তে restore হয়</li>
-<li>SP reset হয়</li>
-<li>Execution, Return Address কে follow করে সেখানে jump করে</li>
-</ul>
-</li>
-</ul>
-<h3 id="final-condition"><a class="header" href="#final-condition">Final Condition:</a></h3>
-<pre><code>BP == SP  =&gt; Stack Frame Close হয়ে যায়
-</code></pre>
-<hr />
-<h2 id="-diagram-stack-frame-example-32-bit"><a class="header" href="#-diagram-stack-frame-example-32-bit">🧭 Diagram: Stack Frame Example (32-bit)</a></h2>
-<pre><code class="language-plaintext">Memory Address ↓
+<h3 id="-কোড"><a class="header" href="#-কোড">📄 কোড:</a></h3>
+<pre><code class="language-go">package main
 
-+----------------------+  &lt;- BP
-| Parameter 1          |
-+----------------------+
-| Parameter 2          |
-+----------------------+
-| Return Address       | &lt;- BP + 4
-+----------------------+
-| Old Base Pointer     | &lt;- BP + 8
-+----------------------+
-| Local Variable A     | &lt;- SP
-+----------------------+
+import "fmt"
 
-Stack grows downward ↓
+func main() {
+    fmt.Println("Hello, World!")
+}
 </code></pre>
 <hr />
-<h2 id="-summary"><a class="header" href="#-summary">✅ Summary</a></h2>
+<h2 id="-বযাখযা"><a class="header" href="#-বযাখযা">🔍 ব্যাখ্যা:</a></h2>
+<h3 id="-package-main"><a class="header" href="#-package-main">✅ <code>package main</code></a></h3>
 <ul>
-<li>CPU mainly <strong>Processing Unit</strong> এবং <strong>Register Set</strong> এ বিভক্ত।</li>
-<li><strong>Stack Frame</strong> function call handling এর জন্য responsible থাকে।</li>
-<li><strong>Base Pointer (BP)</strong> একটি fixed reference point হিসেবে কাজ করে।</li>
-<li><strong>Stack Pointer (SP)</strong> function execution এর সময় move করতে থাকে।</li>
-<li>একটি function <strong>Return</strong> করলে <strong>BP</strong> এবং <strong>SP</strong> reset হয়ে যায়।</li>
+<li>Go-তে প্রতিটি প্রোগ্রাম একটি প্যাকেজের অংশ।</li>
+<li><code>main</code> প্যাকেজ মানে এটি একটি <strong>executable program</strong>  এটি চালানো যাবে।</li>
+<li>যদি <code>main</code> না দাও, তাহলে Go বুঝবে এটা লাইব্রেরি।</li>
 </ul>
 <hr />
-<blockquote>
-<p>debugging, compiler design, এবং low-level programming এর জন্য stack frames বুঝা অত্যন্ত প্রয়োজনীয়।</p>
-</blockquote>
+<h3 id="-import-fmt"><a class="header" href="#-import-fmt">✅ <code>import "fmt"</code></a></h3>
+<ul>
+<li><code>fmt</code> Go এর স্ট্যান্ডার্ড প্যাকেজ, যেটা <strong>input/output</strong> এর কাজ করে।</li>
+<li>এখানে আমরা <code>fmt.Println</code> ব্যবহার করেছি স্ক্রিনে কিছু প্রিন্ট করতে।</li>
+</ul>
+<hr />
+<h3 id="-func-main---"><a class="header" href="#-func-main---">✅ <code>func main() { ... }</code></a></h3>
+<ul>
+<li><code>main()</code> ফাংশন হলো Go প্রোগ্রামের <strong>entry point</strong>।</li>
+<li>প্রোগ্রাম চালালে প্রথমেই এই ফাংশনটি রান হয়।</li>
+</ul>
+<hr />
+<h3 id="-fmtprintlnhello-world"><a class="header" href="#-fmtprintlnhello-world">✅ <code>fmt.Println("Hello, World!")</code></a></h3>
+<ul>
+<li>এটি Go এর স্ট্যান্ডার্ড ফাংশন যা স্ক্রিনে <code>"Hello, World!"</code> প্রিন্ট করে।</li>
+<li><code>Println</code> মানে print line  এটি নতুন লাইনে প্রিন্ট করে।</li>
+</ul>
+<hr />
+<h2 id="-মনে-রাখার-মতো-কিছু-বিষয়"><a class="header" href="#-মনে-রাখার-মতো-কিছু-বিষয়">🧠 মনে রাখার মতো কিছু বিষয়:</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>বিষয়</th><th>ব্যাখ্যা</th></tr></thead><tbody>
+<tr><td><code>package main</code></td><td>executable প্রোগ্রামের জন্য বাধ্যতামূলক</td></tr>
+<tr><td><code>import "fmt"</code></td><td>I/O operations এর জন্য দরকারি</td></tr>
+<tr><td><code>func main()</code></td><td>Go প্রোগ্রামের execution শুরু এখান থেকে</td></tr>
+<tr><td><code>fmt.Println()</code></td><td>কনসোলে কিছু প্রিন্ট করার জন্য ব্যবহৃত হয়</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-রান-করার-নিয়ম-go-ইনসটল-থাকার-পর"><a class="header" href="#-রান-করার-নিয়ম-go-ইনসটল-থাকার-পর">🚀 রান করার নিয়ম (Go ইনস্টল থাকার পর):</a></h2>
+<pre><code class="language-bash">go run (file name).go
+</code></pre>
+<hr />
+<h3 id="extra-"><a class="header" href="#extra-">Extra :</a></h3>
+<ul>
+<li>
+<p>Go একটি compiled language, যার মানে হলো কোড compile হয়ে এক্সিকিউটেবল ফাইল তৈরি করে।</p>
+</li>
+<li>
+<p>Go এর compiler খুব দ্রুত এবং lightweight।</p>
+</li>
+<li>
+<p>Go concurrency-friendly, অর্থাৎ একই সাথে অনেক কাজ (goroutines) সহজে হ্যান্ডেল করতে পারে।</p>
+</li>
+<li>
+<p>Go এ garbage collection থাকে, যা অপ্রয়োজনীয় মেমোরি নিজে থেকে ম্যানেজ করে।</p>
+</li>
+<li>
+<p>Go এর syntax খুব সহজ এবং readable, যা নতুনদের জন্য শেখা সহজ করে তোলে।</p>
+</li>
+</ul>
+<p>[Author : @shahriar-em0n  Date: 2025-06-09 Category: interview-qa/class-wise ]</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../../interview-qna/class-wise/golang034-breaking-the-cpu-and-process/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../../interview-qna/class-wise/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../../interview-qna/class-wise/golang036-Context-Switching-PCB-Concurrency/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../interview-qna/class-wise/golang008-Variables-and-Data-Types/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -305,11 +258,11 @@ Stack grows downward ↓
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../../interview-qna/class-wise/golang034-breaking-the-cpu-and-process/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../../interview-qna/class-wise/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../../interview-qna/class-wise/golang036-Context-Switching-PCB-Concurrency/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../interview-qna/class-wise/golang008-Variables-and-Data-Types/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
