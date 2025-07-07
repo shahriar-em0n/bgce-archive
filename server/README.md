@@ -25,8 +25,8 @@ This project serves as the foundation for category management, RBAC (Role-Based 
 
 ### 1. Clone the repo & enter the `/server` directory
 ```bash
-git clone https://github.com/yourusername/bgce-backend.git
-cd bgce-backend/server
+git clone https://github.com/yourusername/bgce-archive.git
+cd bgce-archive/server
 ```
 
 ### 2. Initialize dependencies (if needed)
@@ -76,7 +76,7 @@ We welcome PRs, ideas, and improvements! Here's how to get started:
    git switch -c feature/your-feature-name
    ```
 3. Add your changes (modular, readable, minimal)
-4. **If adding route logic**, place it under `/main/`
+4. **If adding route logic**, place it under `/categories/`
 5. **If adding role or auth logic**, place it under `/rbac/`
 6. Push and open a PR with a clear title and message
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"server/categories"
+	"server/categories/classnotes"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,6 +17,8 @@ func main() {
 	mux.HandleFunc("/", HomeHandler)
 
 	mux.HandleFunc("/categories", categories.CategoryHandler)
+
+	mux.HandleFunc("/categories/classnotes", classnotes.ClassnotesHandler)
 
 	port := ":8080"
 	fmt.Println("Server is running on http://localhost" + port)
