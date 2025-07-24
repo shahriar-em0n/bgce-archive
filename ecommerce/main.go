@@ -43,7 +43,7 @@ func main() {
 
 	mux.HandleFunc("/hello", helloHandler) // route
 
-	mux.HandleFunc("/about", helloHandler) // route
+	mux.HandleFunc("/about", aboutHandler) // route
 
 	mux.HandleFunc("/products", getProducts)
 
