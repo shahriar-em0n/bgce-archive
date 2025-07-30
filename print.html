@@ -37,6 +37,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
@@ -93,10 +94,13 @@
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -150,7 +154,12 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -488,22 +497,40 @@ If you want to contribute code or projects, follow our code contribution guideli
 🔗 <a href="contribution-guide/CONTRIBUTING.html">Contributor’s Guide (Code)</a></p>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h3 id="-commit-strategy"><a class="header" href="#-commit-strategy">📌 COMMIT STRATEGY</a></h3>
-<h4 id="-format"><a class="header" href="#-format">✅ Format:</a></h4>
-<pre><code>[&lt;type&gt;] &lt;short-description&gt;
+<div style="break-before: page; page-break-before: always;"></div><h3 id="-commit-strategy"><a class="header" href="#-commit-strategy">📌 <strong>COMMIT STRATEGY</strong></a></h3>
+<h4 id="-setup"><a class="header" href="#-setup">🔧 <strong>Setup</strong></a></h4>
+<pre><code class="language-bash">make setup-commit-hook
 </code></pre>
-<h4 id="-types"><a class="header" href="#-types">💡 Types:</a></h4>
+<hr />
+<h4 id="-commit-message-format"><a class="header" href="#-commit-message-format">✅ <strong>Commit Message Format</strong></a></h4>
+<pre><code>[&lt;service&gt;] (&lt;type/feature-name&gt;): &lt;Capitalized short description&gt;
+</code></pre>
+<hr />
+<h4 id="-allowed-types"><a class="header" href="#-allowed-types">💡 <strong>Allowed Types</strong></a></h4>
 <ul>
-<li><code>feat</code>: New content or file</li>
-<li><code>fix</code>: Fixes formatting or broken links</li>
-<li><code>docs</code>: Changes to README, guides</li>
-<li><code>refactor</code>: Structural changes</li>
+<li><code>feat</code> – New feature or functionality</li>
+<li><code>fix</code> – Bug fix or issue correction</li>
+<li><code>patch</code> – Minor updates or hotfixes</li>
+<li><code>docs</code> – Documentation changes</li>
+<li><code>style</code> – Code style changes (formatting, linting)</li>
+<li><code>refactor</code> – Code restructuring without behavior change</li>
+<li><code>test</code> – Adding or updating tests</li>
+<li><code>chore</code> – Build tasks, CI configs, or other maintenance</li>
 </ul>
-<h4 id="-example-commits"><a class="header" href="#-example-commits">🧪 Example Commits:</a></h4>
-<pre><code>[feat] Add interview questions for GCP
-[fix] Correct broken link in course summary
-[docs] Add README to cli-tools
+<hr />
+<h4 id="-example-commits"><a class="header" href="#-example-commits">🧪 <strong>Example Commits</strong></a></h4>
+<pre><code>[inventory] (feat/add-product): Add product listing endpoint
+[auth] (fix/token-expiry): Correct token expiry issue
+[payment] (patch/update-paypal): Update PayPal integration
+[docs] (docs/readme): Update CLI tool usage instructions
 </code></pre>
+<hr />
+<p>✅ <strong>Notes for contributors:</strong></p>
+<ul>
+<li><strong>Service</strong>: Use the relevant service or package name in square brackets.</li>
+<li><strong>Type/feature-name</strong>: Specify the type and concise feature name in parentheses.</li>
+<li><strong>Description</strong>: Must start with an uppercase letter and clearly state the change.</li>
+</ul>
 <hr />
 <div style="break-before: page; page-break-before: always;"></div><h2 id="-contribution-templates-for-golang-community-vault"><a class="header" href="#-contribution-templates-for-golang-community-vault">🧩 CONTRIBUTION TEMPLATES FOR GOLANG COMMUNITY VAULT</a></h2>
 <h4 id="welcome-to-the-golang-community-vault"><a class="header" href="#welcome-to-the-golang-community-vault">Welcome to the Golang Community Vault!</a></h4>
@@ -1328,116 +1355,6 @@ func display() {}
 <tr><td>SOLID এর 'S' – Single Responsibility</td><td>✅ উদাহরণসহ</td></tr>
 </tbody></table>
 </div>
-<h3 id="-সমসযা-1"><a class="header" href="#-সমসযা-1">🧠 সমস্যা:</a></h3>
-<ul>
-<li>একই <code>main()</code> ফাংশনে সবকিছু একত্রে থাকায় কোডটি বড় ও জটিল হয়ে গেছে</li>
-<li>পুনরায় ব্যবহারযোগ্যতা নেই</li>
-<li>মেইনটেন করা কঠিন</li>
-</ul>
-<hr />
-<h2 id="-ফাংশন-বযবহার-করার-পরে-1"><a class="header" href="#-ফাংশন-বযবহার-করার-পরে-1">✅ ফাংশন ব্যবহার করার পরে</a></h2>
-<p>একই কাজকে ফাংশনের মাধ্যমে ভাগ করে সহজ করা হয়েছে:</p>
-<pre><code class="language-go">package main
-
-import "fmt"
-
-func printWelcomeMessage() {
-    fmt.Println("Welcome to the application")
-}
-
-func getUserName() string {
-    var name string
-    fmt.Println("Enter your name - ")
-    fmt.Scanln(&amp;name)
-    return name
-}
-
-func getTowNumbers() (int, int) {
-    var num1 int
-    var num2 int
-    fmt.Println("Enter first number - ")
-    fmt.Scanln(&amp;num1)
-    fmt.Println("Enter second number - ")
-    fmt.Scanln(&amp;num2)-
-    return num1, num2
-}
-
-func add(num1 int, num2 int) int {
-    sum := num1 + num2
-    return sum
-}
-
-func display(name string, sum int) {
-    fmt.Println("Hello, ", name)
-    fmt.Println("Summation = ", sum)
-}
-
-func printGoodByeMessage() {
-    fmt.Println("Thank you for using the application")
-    fmt.Println("Goodbye")
-}
-
-func main() {
-    printWelcomeMessage()
-    name := getUserName()
-    num1, num2 := getTowNumbers()
-    sum := add(num1, num2)
-    display(name, sum)
-    printGoodByeMessage()
-}
-</code></pre>
-<h3 id="-সুবিধা-1"><a class="header" href="#-সুবিধা-1">✅ সুবিধা:</a></h3>
-<ul>
-<li>প্রতিটি কাজ আলাদা ফাংশনে রাখা হয়েছে</li>
-<li>কোড সহজ ও সুন্দর হয়েছে</li>
-<li>বারবার ব্যবহারযোগ্যতা বেড়েছে</li>
-<li>মেইনটেন করা সহজ হয়েছে</li>
-</ul>
-<hr />
-<h2 id="-২-মডুলার-কোড-কাকে-বলে-1"><a class="header" href="#-২-মডুলার-কোড-কাকে-বলে-1">✅ ২. মডুলার কোড কাকে বলে?</a></h2>
-<p><strong>Modular code</strong> মানে হচ্ছে, পুরো প্রোগ্রামকে ছোট ছোট "module" বা অংশে ভাগ করে লেখা। প্রতিটি অংশ একটা নির্দিষ্ট কাজ করে।</p>
-<p>📌 উদাহরণ:</p>
-<div class="table-wrapper"><table><thead><tr><th>ফাংশনের নাম</th><th>কাজ</th></tr></thead><tbody>
-<tr><td><code>getUserName()</code></td><td>ইউজারের নাম নেওয়া</td></tr>
-<tr><td><code>getTwoNumbers()</code></td><td>দুটি সংখ্যা ইনপুট নেওয়া</td></tr>
-<tr><td><code>add()</code></td><td>যোগফল বের করা</td></tr>
-<tr><td><code>display()</code></td><td>ফলাফল দেখানো</td></tr>
-</tbody></table>
-</div>
-<p>এভাবে প্রতিটি কাজের জন্য আলাদা ফাংশন থাকলে:</p>
-<p>✅ বুঝতে সহজ<br />
-✅ পুনঃব্যবহারযোগ্য (Reusable)<br />
-✅ টেস্ট/বাগ ফিক্স সহজ<br />
-✅ ভবিষ্যতে বড় সফটওয়্যারে সহজে এক্সটেন্ড করা যায়</p>
-<hr />
-<h3 id="-৩-solid-এর-s--single-responsibility-principle-1"><a class="header" href="#-৩-solid-এর-s--single-responsibility-principle-1">✅ ৩. SOLID এর S – Single Responsibility Principle</a></h3>
-<p><strong>S = Single Responsibility Principle (SRP)</strong><br />
-👉 এটি বলে: "একটি ফাংশনের <strong>মাত্র একটি কাজ</strong> (responsibility) থাকা উচিত।"</p>
-<hr />
-<h3 id="-কেন-srp-গুরুতবপূরণ-1"><a class="header" href="#-কেন-srp-গুরুতবপূরণ-1">🧠 কেন SRP গুরুত্বপূর্ণ?</a></h3>
-<ul>
-<li>এতে কোড <strong>সুস্পষ্ট</strong> ও <strong>সহজবোধ্য</strong> হয়</li>
-<li>একটি ফাংশনে পরিবর্তন করলে অন্যগুলো <strong>ভাঙে না</strong></li>
-<li><strong>বাগ ফিক্সিং সহজ</strong> হয়</li>
-<li><strong>টেস্টিং সহজ</strong> হয়</li>
-</ul>
-<hr />
-<p>📌 উদাহরণ:</p>
-<p><strong>❌ খারাপ ডিজাইন (SRP ভঙ্গ করছে):</strong></p>
-<pre><code class="language-go">func handleEverything() {
-    // ইনপুট নেয়
-    // হিসাব করে
-    // প্রিন্ট করে
-}
-</code></pre>
-<p>এই ফাংশন অনেক কাজ করছে একসাথে - যা SRP ভঙ্গ করে।</p>
-<p><strong>✅ ভালো ডিজাইন (SRP মেনে চলছে):</strong></p>
-<pre><code class="language-go">func getUserName() {}
-func getTwoNumbers()
-func add() {}
-func display() {}
-</code></pre>
-<p>এখানে প্রতিটি ফাংশন একটি মাত্র কাজ করছে - এটিই SRP।</p>
 <p>[Author : @shahriar-em0n  Date: 2025-06-13 Category: interview-qa/class-wise ]</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-class-14-what-is-scope"><a class="header" href="#-class-14-what-is-scope">🧱 Class 14: What is Scope</a></h1>
 <p>Scope বলতে code এর part বুঝায় যেখানে একটি নির্দিষ্ট variable কে access করা যাবে।</p>
@@ -3383,7 +3300,7 @@ func main() {
 </code></pre>
 <p>Slice কে মূলত একটি array এর "window" হিসেবে ভাবা যেতে পারে।</p>
 <hr />
-<h1 id="-৩-pointer-lenth-এবং-capacity-নিরধারণ-করার-উপায"><a class="header" href="#-৩-pointer-lenth-এবং-capacity-নিরধারণ-করার-উপায">🕵️‍♂️ ৩. POinter, lenth এবং capacity নির্ধারণ করার উপায়</a></h1>
+<h1 id="-৩-pointer-length-এবং-capacity-নিরধারণ-করার-উপায"><a class="header" href="#-৩-pointer-length-এবং-capacity-নিরধারণ-করার-উপায">🕵️‍♂️ ৩. Pointer, length এবং capacity নির্ধারণ করার উপায়</a></h1>
 <p>নিম্নোক্ত built-in ফাংশন ব্যবহার করে Slice এর length এবং capacity বের করা যায়:</p>
 <ul>
 <li><code>len(slice)</code> ➡️ Length</li>
@@ -3433,7 +3350,7 @@ s := arr[1:4] // slice ["is", "a", "Go"]
 <li><code>len = 3</code>, কিন্তু capacity <code>cap = 5</code> পর্যন্ত হতে পারে reallocation এর আগ পর্যন্ত</li>
 </ul>
 <hr />
-<h1 id="-9-empty--nil-slice-slice-তৈরি"><a class="header" href="#-9-empty--nil-slice-slice-তৈরি">🕳 9. Empty / Nil Slice Slice তৈরি</a></h1>
+<h1 id="-9-empty--nil-slice-তৈরি"><a class="header" href="#-9-empty--nil-slice-তৈরি">🕳 9. Empty / Nil Slice তৈরি</a></h1>
 <pre><code class="language-go">var s5 []int
 </code></pre>
 <ul>
@@ -3530,7 +3447,7 @@ fmt.Println(len(s), cap(s)) // 1025, 1536
 <p>Go-এর slice বৃদ্ধি কৌশল অনেক ইফিশিয়েন্ট কোড লিখা সম্ভব। ছোট সাইজের slice এর ক্ষেত্রে, Go capacity দ্বিগুণ করে যাতে কম রি-অ্যালোকেশনে আরও element ধারণ করতে পারে। বড় slice (1024 এবং এর বেশি) হলে, এটি capacity ২৫% বৃদ্ধি করে এবং মাঝে মাঝে অপ্টিমাল মেমরি ব্লকের সাথে সামঞ্জস্য রাখে। এই পদ্ধতিটি slice কে দ্রুত এবং মেমরি সাশ্রয়ী করে তোলে।</p>
 <hr />
 <h1 id="১৩-কিছু-ইনটারেসটিং-ইনটারভিউ-পরশনের-উদাহরণ"><a class="header" href="#১৩-কিছু-ইনটারেসটিং-ইনটারভিউ-পরশনের-উদাহরণ">🤯১৩. কিছু ইন্টারেস্টিং ইন্টারভিউ প্রশ্নের উদাহরণ</a></h1>
-<h3 id="-same-underlying-array-trick"><a class="header" href="#-same-underlying-array-trick">⚡ Same Underlying Array Trick</a></h3>
+<h3 id="-some-underlying-array-trick"><a class="header" href="#-some-underlying-array-trick">⚡ Some Underlying Array Trick</a></h3>
 <pre><code class="language-go">var x []int
 x = append(x, 1)
 x = append(x, 2)
@@ -4942,7 +4859,539 @@ defer mu.Unlock()
 <li>কম Bug</li>
 </ul>
 <p>শুধু syntax জানলেই হবে না — এর ভিতরের Stack-মাথা, Return-trap, এবং Variable-capture খেলাও বোঝা জরুরি।</p>
-<div style="break-before: page; page-break-before: always;"></div><p>kraken init</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-class-41--separate-stack-for-separate-thread"><a class="header" href="#-class-41--separate-stack-for-separate-thread">🧵 Class 41 : Separate Stack For Separate Thread</a></h1>
+<h2 id="-recap"><a class="header" href="#-recap">🔁 Recap</a></h2>
+<ul>
+<li><a href="https://nesohq.github.io/bgce-archive/interview-qna/class-wise/golang038-thread/index.html">Thread</a> সম্পর্কে জানতে হবে।</li>
+<li><a href="https://nesohq.github.io/bgce-archive/interview-qna/class-wise/golang034-breaking-the-cpu-and-process/index.html">Process</a> সম্পর্কে জানতে হবে।</li>
+<li><a href="https://nesohq.github.io/bgce-archive/interview-qna/class-wise/golang035-BP-SP/index.html">SP BP</a> সম্পর্কে ভালো ধারনা থাকতে হবে।</li>
+</ul>
+<h2 id="-program-execution"><a class="header" href="#-program-execution">🧠 Program Execution</a></h2>
+<ul>
+<li>Program execute → Process create</li>
+<li>Process create → default একটি thread create (main thread)</li>
+<li>OS (Kernel) → Thread execute করে</li>
+<li>Thread execute → Independent task / features</li>
+</ul>
+<h3 id="-example-6"><a class="header" href="#-example-6">🧪 Example</a></h3>
+<p>একটি প্রোগ্রাম যেমন Music Player — তার অনেক গুলো কাজ (functionality) একসাথে চালানো লাগে:
+যেমন:</p>
+<ul>
+<li>🎵 Music List দেখানো</li>
+<li>▶️ Music PLay</li>
+<li>🎶 বিট/Visualizer দেখানো</li>
+</ul>
+<p>এগুলো একসাথে চলতে পারে, কিন্তু একটার কাজ আরেকটাকে আটকে রাখতে পারে না।
+এই জন্যই Thread ব্যবহার করা হয়।</p>
+<pre><code class="language-plaintext">
+Program (Process)
+│
+├── Thread 1 (Main Thread)
+│   └── Stack: funcA(), var x, return addr
+│
+├── Thread 2
+│   └── Stack: funcPlay(), var song, return addr
+│
+└── Thread 3
+    └── Stack: funcVisual(), var beat, return addr
+</code></pre>
+<h2 id="-main-function-execution"><a class="header" href="#-main-function-execution">🧷 Main Function Execution</a></h2>
+<p>প্রায় প্রতিটি compiled এবং structured language-এ execution শুরু হয় main() function দিয়ে, কারণ এটি একটি নির্ধারিত entry point যা runtime system বা OS খুঁজে নিয়ে চালায়।</p>
+<ul>
+<li><code>main</code> function → stackframe create হয়</li>
+<li><code>main()</code> এর ভিতর অন্য function invoke → তার জন্য stackframe create হয়</li>
+<li>প্রতিটি Stack, একটি Thread এর জন্য বরাদ্দ থাকে</li>
+<li>Stack Execute → Thread Execute</li>
+</ul>
+<blockquote>
+<p>Stack একটা একটা করে সব function execute করে।</p>
+</blockquote>
+<blockquote>
+<p>Stack কে Thread execute করে।</p>
+</blockquote>
+<h2 id="-thread-এবং-stack"><a class="header" href="#-thread-এবং-stack">🗂️ Thread এবং Stack</a></h2>
+<p>একটি Program execute করতে হলে multiple tasks parallely করতে হতে পারে।</p>
+<p>এর জন্য দরকার হয় Multiple Threads।</p>
+<p>প্রতিটি Thread যখন তৈরি হয়, তখন নিজস্ব Stack memory বরাদ্দ পায়।</p>
+<p>এই Stack এ থাকে:</p>
+<ul>
+<li>ফাংশন কলের return address</li>
+<li>Local variables</li>
+<li>Function arguments</li>
+</ul>
+<h2 id="-stack-কোথায়-থাকে"><a class="header" href="#-stack-কোথায়-থাকে">💾 Stack কোথায় থাকে</a></h2>
+<ul>
+<li>main thread → main stack</li>
+<li>Linux → RAM এ Stack এর জন্য <code>8MB</code> allocate হয়</li>
+<li>Independent task এর জন্য আলাদা Thread লাগবে → new Stack → RAM এ 8MB Storage</li>
+<li>Process এর জন্য → No. of Thread <code>*</code> 8MB allcoate হয়
+<ul>
+<li>Process এ <code>10</code> Thread থাকলে <code>10 * 8 = 80</code> MB RAM allocated হয়</li>
+</ul>
+</li>
+<li>Stack, RAM এর যে কোন ফাঁকা জায়গায় থাকতে পারে</li>
+<li>Code Segment, Data Segment, Heap → সব thread access / use করতে পারে</li>
+<li>Process, main thread বাদে অন্য thread track / execute করে না</li>
+<li>Thread → Stack এ কোন variable / function না থাকলে → kernel কে code segment, data segment এ search করতে request করে</li>
+</ul>
+<blockquote>
+<p>📌 Code Segment, Data Segment, Stack এর size fixed থাকে। Heap dynamically grow / shrink করতে পারে তাই data, Heap এ বেশি রাখা হয়।</p>
+</blockquote>
+<h2 id="-kernel"><a class="header" href="#-kernel">🖥️ Kernel</a></h2>
+<ul>
+<li>main thread বাদে অন্য thread → Kernel create করে</li>
+<li>Thread execute → Opeating System (Kernel)</li>
+<li>Kernel decide করে → কোন processor কোন process / thread কে execute করবে</li>
+<li>Kernel track রাখে → কোন process এর under এ কয়টি thread থাকে</li>
+<li>Kernel (Modern computer) → execution এর ক্ষেত্রে only thread count রাখে</li>
+</ul>
+<blockquote>
+<p>🧠 Operating System core component → Kernel; Kernel process schedule, concurrency / parallelism handle করে।</p>
+</blockquote>
+<blockquote>
+<p>🧾 Programming language এর উপর depend করে কীভাবে thread create হবে।</p>
+</blockquote>
+<h2 id="-default-stack-sizes-by-platform"><a class="header" href="#-default-stack-sizes-by-platform">📊 Default Stack Sizes by Platform</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>OS</th><th>Default Stack Size (main thread)</th><th>Default Stack Size (new threads)</th><th>Notes</th></tr></thead><tbody>
+<tr><td>🪟 Windows</td><td>1 MB</td><td>1 MB</td><td>Can be changed via linker or <code>CreateThread</code></td></tr>
+<tr><td>🐧 Linux</td><td>8 MB</td><td>8 MB</td><td>Controlled by <code>ulimit -s</code> and <code>pthread_attr_setstacksize()</code></td></tr>
+<tr><td>🍎 macOS</td><td>8 MB</td><td>512 KB</td><td>Main thread gets 8MB, but <code>pthread</code> threads get 512KB by default</td></tr>
+</tbody></table>
+</div>
+<p>[<strong>Author:</strong> @nazma98
+<strong>Date:</strong> 2025-06-19
+<strong>Category:</strong> interview-qa/class-wise
+]</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="class-42---complex-and-beautiful-go-routine"><a class="header" href="#class-42---complex-and-beautiful-go-routine">Class 42 : ✨ Complex And Beautiful Go Routine</a></h1>
+<h2 id="-goroutine"><a class="header" href="#-goroutine">🌀 Goroutine</a></h2>
+<ul>
+<li><strong>Lightweight thread</strong> / <strong>Virtual thread</strong></li>
+<li><strong>Logically thread</strong> এর মতো কাজ করে</li>
+<li>Concurrently অনেকগুলো function execute করে</li>
+<li><strong>Go Runtime</strong> একে manage করে</li>
+</ul>
+<h2 id="-creating-a-goroutine"><a class="header" href="#-creating-a-goroutine">🛠️ Creating a Goroutine</a></h2>
+<p>কোনো function এর আগে <code>go</code> keyword লিখে দিলে সেটা <em>goroutine</em> হয়।</p>
+<h3 id="-example-7"><a class="header" href="#-example-7">💡 Example</a></h3>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+    )
+
+var a = 10
+
+const p = 11
+
+func printHello(num int) {
+	fmt.Println("Hello Habib", num)
+}
+
+func main() {
+	go printHello(1)
+
+	go printHello(2)
+
+	go printHello(3)
+
+	go printHello(4)
+
+	go printHello(5)
+
+	fmt.Println(a, " ", p)
+
+	time.Sleep(5 * time.Second)
+}
+</code></pre>
+<p>এই Go কোডে একটা <code>printHello</code> নামের ফাংশন আছে, যেটা <code>"Hello Habib"</code> লিখে সাথে একটা সংখ্যা প্রিন্ট করে।</p>
+<p><code>main()</code> ফাংশনে এই ফাংশনটা ৫ বার <em>goroutine</em> দিয়ে চালানো হয়েছে</p>
+<p>সবগুলা <em>goroutine</em> যেন কাজ শেষ করতে পারে, তাই শেষে <code>time.Sleep(5 * time.Second)</code> দিয়ে ৫ সেকেন্ড প্রোগ্রামটাকে অপেক্ষা করানো হয়েছে।</p>
+<h2 id="-how-gorouitne-works-internally"><a class="header" href="#-how-gorouitne-works-internally">📦 How gorouitne works Internally</a></h2>
+<p><strong>Goroutine</strong> কীভাবে কাজ করে বুঝার জন্য আমাদের একটি Go program এর <em>compilation</em>, <em>execution phase</em> এবং <em>Thread</em> ভালভাবে বুঝতে হবে।</p>
+<h3 id="-compilation-phase-of-go-program"><a class="header" href="#-compilation-phase-of-go-program">🔧 Compilation Phase of Go Program</a></h3>
+<p>Go program কে compile করার জন্য নিচের command টি ব্যবহার করা হয়</p>
+<pre><code class="language-go">go build main.go
+</code></pre>
+<ul>
+<li>এতে একটি binary executable file তৈরি হবে (<em>Linux</em> এ <code>main</code>, <em>Windows</em> এ <code>main.exe</code>)</li>
+<li>Binary executable file → Code Segment</li>
+<li>Code Segment → <code>const</code> (read only)
+→ <strong>functions</strong></li>
+<li><code>main</code> binary executable file store → <strong>HDD</strong></li>
+</ul>
+<pre><code class="language-plaintext">                        **Code Segment**
+
+			p = 11
+			printHello = printHello() {...}
+			main = main() {...}
+
+</code></pre>
+<h3 id="-execution-phase-of-go-program"><a class="header" href="#-execution-phase-of-go-program">🚀 Execution Phase of Go Program</a></h3>
+<p>Binary executable file run করার জন্য command -</p>
+<pre><code class="language-bash">./main
+</code></pre>
+<ul>
+<li>Binary executable file load → RAM</li>
+<li>RAM Memory Layout → Code Segment, Data Segment, Stack, Heap</li>
+<li><code>main</code> program → Process create হয়</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>Segment</th><th>Purpose</th><th>Size / Behavior</th></tr></thead><tbody>
+<tr><td>Code Segment</td><td>compiled machine code (functions)</td><td>Fixed size</td></tr>
+<tr><td>Data Segment</td><td>global &amp; static variables</td><td>Fixed or small</td></tr>
+<tr><td>Heap</td><td>dynamically allocated data (<code>make</code>, etc.)</td><td>Grows <strong>upward</strong></td></tr>
+<tr><td>Stack</td><td>function call info, local vars</td><td>Grows <strong>downward</strong>, ~8MB (Linux)</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>যে কোনও programming language (যেমন C, C++, Go, Rust) এর প্রোগ্রাম যখন compile হয়ে binary (.exe / .out) তে convert হয় এবং execution শুরু হয়, তখন একটা process তৈরি হয় এবং সেই process এর জন্য memory তে <em>Code Segment, Data Segment, Stack, Heap</em> থাকে।</p>
+</blockquote>
+<h3 id="-ram-memory-layout-visualization"><a class="header" href="#-ram-memory-layout-visualization">🔍 RAM Memory Layout Visualization</a></h3>
+<pre><code class="language-plaintext">┌──────────────────────────┐
+│       Heap               │ ← Grows Upward
+├──────────────────────────┤
+│     Stack (Top ↓)        │ ← Grows Downward
+├──────────────────────────┤
+│     Data Segment         │ ← Initialized global/static variables
+├──────────────────────────┤
+│     Code Segment         │ ← Machine Instructions
+└──────────────────────────┘
+</code></pre>
+<h3 id="-program-execution-process-visualization"><a class="header" href="#-program-execution-process-visualization">⚙️ Program Execution Process Visualization</a></h3>
+<pre><code class="language-plaintext">
+HDD ➜ OS Loader ➜ RAM ➜ CPU Executes
+
+📁 HDD (Hard Disk)
+│
+│  → Executable File (.exe, .out, etc.)
+│
+▼
+📥 Loader (Operating System)
+│
+│  → Loads program into RAM
+│
+▼
+🧠 RAM (Main Memory)
+│
+├── 📄 Code Segment        → compiled machine code (instructions)
+│
+├── 🗃️ Data Segment        → global &amp; static variables
+│
+├── 📦 Heap Segment        → dynamic memory (malloc/new)
+│
+├── 📚 Stack Segment       → function calls, local variables
+│
+▼
+⚡ CPU (Processor)
+   ├── Fetch → Decode → Execute instructions
+   ├── Uses Registers (like AL, BL, etc.)
+   └── Uses Stack Pointer (SP), Base Pointer (BP)
+</code></pre>
+<h3 id="-process--thread"><a class="header" href="#-process--thread">🖥️ Process &amp; Thread</a></h3>
+<ul>
+<li>Process initially একটি Thread থাকে → Deafult Thread / Main Thread</li>
+<li>Thread কে OS এর kernel execute করলে → Stack execute হয়</li>
+<li>Stack execute → Stack frame create &amp; execute হয়</li>
+</ul>
+<h3 id="-go-runtime--a-mini-os-or-virtual-operating-system"><a class="header" href="#-go-runtime--a-mini-os-or-virtual-operating-system">🌀 Go Runtime = A Mini OS or Virtual Operating System</a></h3>
+<p>Go program → Run → <code>main</code> binary load → Code Segment</p>
+<blockquote>
+<p>⚙️ <strong><code>main</code> Binary – More Than Just Code Segment</strong></p>
+<ul>
+<li>শুধু code segment নয়</li>
+<li>আরও অনেক binary থাকে</li>
+<li>code segment শুধু একটা অংশ মাত্র</li>
+</ul>
+</blockquote>
+<ul>
+<li>Thread execute → Process start</li>
+<li>Process → Virtual computer</li>
+<li>Go Runtime → Virtual Operating System</li>
+<li>Process start → Go Runtime execute</li>
+</ul>
+<h4 id="-go-runtime-code-execute"><a class="header" href="#-go-runtime-code-execute">🧩 Go Runtime Code Execute</a></h4>
+<ul>
+<li>Stack → 8MB Stack (main stack) → Stack Frame create</li>
+<li>main thread execute করে → Go runtime</li>
+</ul>
+<p>Go Runtime initialize করে -</p>
+<ul>
+<li><strong>1. Go Routine Scheduler</strong></li>
+<li><strong>2. Heap Allocator</strong></li>
+<li><strong>3. Garbage Collector</strong></li>
+<li><strong>4. Logical Processors</strong></li>
+</ul>
+<h4 id="go-routine-scheduler"><a class="header" href="#go-routine-scheduler">Go Routine Scheduler</a></h4>
+<p><em>OS Kernel scheduler</em> → Process schedule, Concurrency, Parallelism handle করে।</p>
+<p><em>Go Routine Scheduler</em> ও Real OS Kernel Scheduler এর মতো কাজ করে।</p>
+<h4 id="logical-processors"><a class="header" href="#logical-processors">Logical Processors</a></h4>
+<blockquote>
+<p>🔁 <em>Recap</em></p>
+<ul>
+<li><a href="https://nesohq.github.io/bgce-archive/interview-qna/class-wise/golang034-breaking-the-cpu-and-process/index.html">CPU কীভাবে Code execute করে</a></li>
+</ul>
+</blockquote>
+<ul>
+<li>OS এর ভিতর → virtual processors (vCPU) create হয়</li>
+<li>CPU তে যে কয়টি vCPU (virtual CPU / logical Processor) থাকে → Go Runtime সে কয়টি logical processor create করে</li>
+<li>প্রতিটি logical processor এর জন্য → OS আলাদা OS Thread create করে
+<ul>
+<li>CPU 2 core → 4 vCPU</li>
+<li>Go Runtime initilize করে → 4 logical processors</li>
+<li>4 logical processors এর জন্য → OS আলাদা 4 OS Thread create করে</li>
+<li>4 OS Thread → 4 stack</li>
+<li>Total threads in process → 4 (OS thread) + 1 (main thread) → 5 threads</li>
+<li>OS kernel → 5 threads কে track করে</li>
+<li>1 main thread এর জন্য → 1 main stack</li>
+<li>4 supporting thread এর জন্য → 4 supporting stack</li>
+</ul>
+</li>
+<li>go runtime kernel → go routine schedule করে
+<ul>
+<li>4 thread → 10 goroutine execute করে concurrency follow করে</li>
+</ul>
+</li>
+</ul>
+<h3 id="-go-runtime-os-thread-scheduler-and-logical-processor-mapping"><a class="header" href="#-go-runtime-os-thread-scheduler-and-logical-processor-mapping">🧠 Go Runtime: OS Thread, Scheduler, and Logical Processor Mapping</a></h3>
+<pre><code class="language-plaintext">                    🌀 Go Runtime Scheduler
+                             │
+                             ▼
+──────────────────────────────────────────────────────
+|                   Logical Processors (P)           |
+|────────────────────────────────────────────────────|
+|      P1               P2              P3           |
+|        										     |
+|   [G1, G4, G6]     [G2, G5]        [G3, G7, G8]    |
+──────────────────────────────────────────────────────
+      │               │              │
+      ▼               ▼              ▼
+  Assigned to     Assigned to    Assigned to
+      │               │              │
+      ▼               ▼              ▼
+─────────────────────────────────────────────
+|             OS Threads (M)                 |
+|─────────────────────────────────────────── |
+|     M1             M2             M3       |
+|   (running)     (running)      (idle)      |
+─────────────────────────────────────────────
+      │               │
+      ▼               ▼
+   🖥️ CPU Core 1     🖥️ CPU Core 2
+
+</code></pre>
+<blockquote>
+<p>Go runtime, OS Thread কীভাবে create করতে হয় সেটি handle করে।</p>
+</blockquote>
+<blockquote>
+<p>Go runtime শুরুতেই সিস্টেমের vCPU (logical core) অনুযায়ী Logical Processor (P) তৈরি করে।</p>
+</blockquote>
+<ul>
+<li>Go Runtime নিজেই একটি kernel এর মতো কাজ করে</li>
+<li>এই "kernel" এর scheduler থাকে</li>
+<li>Scheduler, Goroutine গুলোকে execute করতে OS thread কে কাজ ভাগ করে দেয়</li>
+<li>OS Thread গুলোই CPU তে বসে goroutine গুলো execute করে</li>
+<li>Go Scheduler ঠিক করে কোন goroutine কখন execute হবে</li>
+<li>Scheduler OS thread এ map করে thousands of goroutine efficiently চালায়</li>
+</ul>
+<h3 id="-go-runtime-kernel--goroutine-scheduling"><a class="header" href="#-go-runtime-kernel--goroutine-scheduling">🖥️ Go Runtime Kernel &amp; Goroutine Scheduling</a></h3>
+<pre><code class="language-plaintext">                       🌀 Go Runtime (Mini Kernel)
+                               │
+                               ▼
+                      🧠 Go Routine Scheduler (Scheduler)
+                               │
+      -----------------------------------------------------
+      |                       |                           |
+      ▼                       ▼                           ▼
+  G1: Goroutine         G2: Goroutine               G3: Goroutine
+ (Task 1)                 (Task 2)                     (Task 3)
+      \_______________________|________________________/
+                               │
+                               ▼
+                    📦 Placed into P's Run Queue
+                               │
+                               ▼
+        🔄 Scheduler decides which G to run on which M
+                               │
+      -----------------------------------------------------
+      |                       |                          |
+      ▼                       ▼                          ▼
+   🧵 M1: OS Thread        🧵 M2: OS Thread           🧵 M3: OS Thread
+ (Executes Gs)          (Executes Gs)              (Executes Gs)
+      |                       |                          |
+      ▼                       ▼                          ▼
+   🖥️ CPU Core 1          🖥️ CPU Core 2             🖥️ CPU Core 3
+
+
+   → G (goroutine)
+   → P (Processor)
+   → M (OS Thread)
+
+</code></pre>
+<blockquote>
+<p>Programmer Goroutine create করে।</p>
+</blockquote>
+<h4 id="-effects-of-excessive-goroutines-in-go"><a class="header" href="#-effects-of-excessive-goroutines-in-go">📈🧵 Effects of Excessive Goroutines in Go</a></h4>
+<ul>
+<li>Scheduler notice করে → excessive gorutines</li>
+<li>Go Runtime → প্রয়োজন অনুযায়ী logical processors &amp; OS Thread create করে</li>
+<li>RAM full → OS Thread create করা possible হয় না</li>
+<li>❌ OS Thread → ❌ Goroutine execution</li>
+</ul>
+<blockquote>
+<p>First যে goroutine run হয় → main goroutine</p>
+</blockquote>
+<blockquote>
+<p>main function execute হয় → main goroutine এ</p>
+</blockquote>
+<h2 id="-goroutines-home-stack--heap"><a class="header" href="#-goroutines-home-stack--heap">🏠 Goroutine's Home: Stack &amp; Heap</a></h2>
+<p>Goroutine - mini thread / virtual thread / logical thread</p>
+<p>প্রতিটি goroutine</p>
+<ul>
+<li>এর <strong>stack থাকে heap</strong> memory এ</li>
+<li>শুরুতে মাত্র <strong>2KB stack</strong> পায়</li>
+</ul>
+<h3 id="main--main-goroutine"><a class="header" href="#main--main-goroutine"><code>main()</code> → Main Goroutine</a></h3>
+<ul>
+<li>Go প্রোগ্রাম রান হলেই <code>main()</code> function চালু হয়</li>
+<li>এটিই প্রথম goroutine - যাকে বলে <strong>Main Goroutine</strong></li>
+<li>সব normal function call (যেমন <code>f()</code>, <code>g()</code>) এর stack frame তৈরি হয় এই একই stack এ</li>
+</ul>
+<h3 id="go-functionname--new-goroutine"><a class="header" href="#go-functionname--new-goroutine"><code>go functionName()</code> → New Goroutine</a></h3>
+<p><code>go functionName()</code> লিখলে তখন Go runtime:</p>
+<ul>
+<li>নতুন goroutine তৈরি করে</li>
+<li>সেটার জন্য আলাদা stack তৈরি করে (initially 2KB)</li>
+<li>এটিকে scheduling queue তে দেয়</li>
+</ul>
+<h4 id="-example-8"><a class="header" href="#-example-8">🖼️ Example</a></h4>
+<pre><code class="language-go">var a = 10
+
+const p = 11
+
+func add(a, b int) {
+  fmt.Println(a + b)
+}
+
+func printHello(num int) {
+	fmt.Println("Hello Habib", num)
+
+     add(2, 4)
+}
+
+func main() {
+    var x int = 10
+
+    fmt.Println("Hello", x)
+
+    printHello(10)
+
+    go printHello(1)
+
+    go printHello(2)
+
+    go printHello(3)
+
+    go printHello(4)
+
+    go printHello(5)
+
+    fmt.Println(a, " ", p)
+
+    time.Sleep(5 * time.Second)
+}
+</code></pre>
+<p><strong>Main Goroutine</strong></p>
+<ul>
+<li>এখানে <code>main()</code> এর জন্য <em>main goroutine</em> create হবে</li>
+<li>main goroutine এ <code>main()</code>, <code>printHello(10)</code> এবং <code>fmt.Println()</code> এর জন্য Stack Frame create হবে</li>
+<li>যদি Go program এ <code>init()</code> থাকে তবে <code>init()</code> এর জন্য ও Stack Frame, <em>main goroutine</em> এ create হবে</li>
+</ul>
+<p><strong>Other Goroutines</strong></p>
+<ul>
+<li><code>printHello()</code> এর জন্য Go runtime ৫টি আলাদা goroutine তৈরি করবে</li>
+<li><code>go printHello(1)</code> এর জন্য Heap এ যে goroutine create হয় সেখানে <code>printHello(1)</code>, <code>fmt.Println()</code> এবং <code>add(2, 4)</code> এর জন্য Stack Frame create হবে</li>
+<li>একই ভাবে অন্য goroutine এর জন্যও Stack Frame create হবে</li>
+</ul>
+<p><strong>🔍 যদি 2KB Stack যথেষ্ট না হয়</strong></p>
+<ul>
+<li>➡️ Go runtime automatically stack এর size বড় করে দেয় (dynamic grow করে)</li>
+</ul>
+<p><strong>📈 কিভাবে কাজ করে?</strong></p>
+<ul>
+<li><em>শুরুতে:</em> <strong>2KB</strong></li>
+<li><em>দরকার হলে:</em> <strong>4KB</strong>, <strong>8KB</strong>, <strong>16KB</strong>... → যত দরকার তত বাড়তে পারে</li>
+<li><em>সর্বোচ্চ</em>: <strong>1 GB</strong> পর্যন্ত</li>
+</ul>
+<blockquote>
+<p>Go runtime পুরা stack copy করে নতুন বড় stack এ নিয়ে যায়, old stack ফেলে দেয়।</p>
+</blockquote>
+<blockquote>
+<p>Go Runtime reallocate করতে পারে।</p>
+</blockquote>
+<p>Heap এর Stack এ যে <a href="https://nesohq.github.io/bgce-archive/interview-qna/class-wise/golang035-BP-SP/index.html">SP, BP</a> থাকে তা মূলত <strong>Go Runtime এর initialized logical processor</strong> এর SP, BP, return address etc.</p>
+<pre><code>
+                    🧵 Goroutines &amp; Their Stack Memory
+
+┌──────────────────────────────┬─────────────────────────────┬─────────────────────────────┐
+│ Goroutine 1 (main)           │ Goroutine 2 (printHello 1)  │ Goroutine 3 (printHello 2)  │
+├──────────────────────────────┼─────────────────────────────┼─────────────────────────────┤
+│ Stack:                       │ Stack:                      │ Stack:                      │
+│ - main()                     │ - printHello(1)             │ - printHello(2)             │
+│ - printHello(10)             │ - fmt.Println()             │ - fmt.Println()             │
+│ - fmt.Println()              │ - add(2, 4)                 │ - add(2, 4)                 │
+└──────────────────────────────┴─────────────────────────────┴─────────────────────────────┘
+
+┌─────────────────────────────┬─────────────────────────────┬──────────────────────────────┐
+│ Goroutine 4 (printHello 3)  │ Goroutine 5 (printHello 4)  │ Goroutine 6 (printHello 5)   │
+├─────────────────────────────┼─────────────────────────────┼──────────────────────────────┤
+│ Stack:                      │ Stack:                      │ Stack:                       │
+│ - printHello(3)             │ - printHello(4)             │ - printHello(5)              │
+│ - fmt.Println()             │ - fmt.Println()             │ - fmt.Println()              │
+│ - add(2, 4)                 │ - add(2, 4)                 │ - add(2, 4)                  │
+└─────────────────────────────┴─────────────────────────────┴──────────────────────────────┘
+
+</code></pre>
+<blockquote>
+<p>Main goroutine শেষ হলেই পুরো program শেষ,
+তাই অন্য goroutine চালাতে চাইলে main goroutine কে কিছু সময় বাঁচিয়ে রাখতে হবে ✅</p>
+</blockquote>
+<p><strong>💥 When &amp; How <em>Main Thread</em>, <em>Go Runtime</em> &amp; <em>Main Goroutine</em> Get Destroyed</strong></p>
+<blockquote>
+<p>main thread ≠ main goroutine</p>
+</blockquote>
+<div class="table-wrapper"><table><thead><tr><th>Component</th><th>Destruction Point</th></tr></thead><tbody>
+<tr><td><strong>Main Goroutine</strong></td><td>Ends when <code>main()</code> returns or panics</td></tr>
+<tr><td><strong>Main Thread</strong></td><td>Exits after main goroutine ends</td></tr>
+<tr><td><strong>Go Runtime</strong></td><td>Terminates when main goroutine ends</td></tr>
+<tr><td><strong>Other Goroutines</strong></td><td>Force-killed when main goroutine exits</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>goroutine গুলো শেষ পর্যন্ত execute করার জন্য <code>main()</code> কে block করে রাখা যায় যেমন:</p>
+<ul>
+<li><code>time.Sleep()</code></li>
+<li><code>sync.WaitGroup</code></li>
+<li><code>select {}</code> (infinite block)</li>
+</ul>
+</blockquote>
+<h2 id="-thread-vs-goroutine"><a class="header" href="#-thread-vs-goroutine">🧵 Thread vs Goroutine</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Feature</th><th><strong>Thread</strong></th><th><strong>Goroutine</strong></th></tr></thead><tbody>
+<tr><td><strong>Definition</strong></td><td>OS-level execution unit</td><td>Go’s lightweight concurrent execution unit</td></tr>
+<tr><td><strong>Created By</strong></td><td>Operating System</td><td>Go Runtime Scheduler</td></tr>
+<tr><td><strong>Memory Usage</strong></td><td>~1 MB stack (fixed)</td><td>Starts with ~2 KB stack (grows dynamically)</td></tr>
+<tr><td><strong>Creation Cost</strong></td><td>High (involves system call)</td><td>Very Low (simple runtime function)</td></tr>
+<tr><td><strong>Scheduling</strong></td><td>Done by OS</td><td>Done by Go runtime (user-space scheduler)</td></tr>
+<tr><td><strong>Communication</strong></td><td>Using shared memory, locks</td><td>Using channels (safe and built-in)</td></tr>
+<tr><td><strong>Concurrency Limit</strong></td><td>Limited (few thousand max)</td><td>Huge (millions possible)</td></tr>
+<tr><td><strong>Blocking</strong></td><td>Blocks entire thread</td><td>Blocking one goroutine doesn’t block others</td></tr>
+<tr><td><strong>Context Switching</strong></td><td>Costly (kernel-level)</td><td>Cheap (user-space context switch)</td></tr>
+<tr><td><strong>Portability</strong></td><td>Depends on OS</td><td>Cross-platform (managed by Go)</td></tr>
+</tbody></table>
+</div>
+<p>[<strong>Author:</strong> @nazma98
+<strong>Date:</strong> 2025-06-24
+<strong>Category:</strong> interview-qa/class-wise
+]</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="topic-wise"><a class="header" href="#topic-wise">Topic wise</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @mdimamhosen
 <strong>Date:</strong> 2025-04-19
@@ -10149,53 +10598,84 @@ func main() {
 }
 </code></pre>
 <p>This method unpacks the slice <code>nums</code> and passes its elements individually to the <code>print</code> function.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="-resources-1"><a class="header" href="#-resources-1">📚 Resources</a></h1>
-<p>This chapter contains curated coding problems and learning materials collected from various competitive programming and interview preparation platforms.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-programming--golang-resources"><a class="header" href="#-programming--golang-resources">📚 Programming &amp; Golang Resources</a></h1>
+<p>এই Category টি Golang এবং জেনারেল প্রোগ্রামিং শেখার জন্য প্রয়োজনীয় লিংক এবং রিসোর্সের সংকলন। এখানে থাকবে ইন্টারনেট জুড়ে ছড়িয়ে থাকা সেরা টিউটোরিয়াল, টুল, ডকুমেন্টেশন, প্র্যাকটিস প্ল্যাটফর্ম এবং আরও অনেক কিছু!</p>
+<hr />
 <h2 id="-contents"><a class="header" href="#-contents">📌 Contents</a></h2>
 <ul>
 <li>
-<p><strong><a href="link-resources//link-resources/Problems/CF/index.html">Codeforces (CF)</a></strong><br />
-A collection of selected problems categorized by difficulty and topic.</p>
+<p><strong><a href="link-resources/index.html#golang-resources">Golang Resources</a></strong><br />
+Official docs, tutorials, and Go-specific tools.</p>
 </li>
 <li>
-<p><strong><a href="link-resources//link-resources/Problems/LeetCode/index.html">LeetCode</a></strong><br />
-Popular coding interview questions organized by data structures and algorithms.</p>
+<p><strong><a href="link-resources/index.html#programming-essentials">Programming Essentials</a></strong><br />
+General CS knowledge, Git, Linux, CLI, and more.</p>
 </li>
 <li>
-<p><strong>Other Platforms</strong><br />
-(Optional: Add links or folders for HackerRank, AtCoder, etc., if available.)</p>
+<p><strong><a href="link-resources/index.html#useful-tools--platforms">Useful Tools &amp; Platforms</a></strong><br />
+Tools that improve coding, testing, deployment, and collaboration.</p>
 </li>
 </ul>
-<h2 id="-platforms-included"><a class="header" href="#-platforms-included">✨ Platforms Included</a></h2>
-<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Platform</th><th style="text-align: left">Link to Website</th></tr></thead><tbody>
-<tr><td style="text-align: left">Codeforces</td><td style="text-align: left"><a href="https://codeforces.com">https://codeforces.com/</a></td></tr>
-<tr><td style="text-align: left">LeetCode</td><td style="text-align: left"><a href="https://leetcode.com">https://leetcode.com/</a></td></tr>
+<hr />
+<h2 id="-golang-resources"><a class="header" href="#-golang-resources">🧠 Golang Resources</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Resource</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="https://go.dev/tour/">Go Tour</a></td><td>Interactive introduction to Go</td></tr>
+<tr><td><a href="https://gobyexample.com/">Go by Example</a></td><td>Hands-on examples for core Go concepts</td></tr>
+<tr><td><a href="https://go.dev/doc/effective_go">Effective Go</a></td><td>Idiomatic Go programming practices</td></tr>
+<tr><td><a href="https://gophercises.com/">Gophercises</a></td><td>Coding exercises to improve Go skills</td></tr>
+<tr><td><a href="https://github.com/avelino/awesome-go">Awesome Go</a></td><td>Curated list of Go packages, tools, and resources</td></tr>
+<tr><td><a href="https://pkg.go.dev/golang.org/x">Go.dev Docs</a></td><td>Official documentation and API reference</td></tr>
 </tbody></table>
 </div>
-<h2 id="-goal"><a class="header" href="#-goal">📈 Goal</a></h2>
+<hr />
+<h2 id="-programming-essentials"><a class="header" href="#-programming-essentials">💡 Programming Essentials</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Resource</th></tr></thead><tbody>
+<tr><td>Git &amp; GitHub</td><td><a href="https://guides.github.com/introduction/git-handbook/">Git Handbook</a></td></tr>
+<tr><td>Linux CLI Basics</td><td><a href="https://ubuntu.com/tutorials/command-line-for-beginners#1-overview">Linux Command Cheat Sheet</a></td></tr>
+<tr><td>CS Foundations</td><td><a href="https://github.com/ossu/computer-science">OSSU CS</a></td></tr>
+<tr><td>Operating Systems</td><td><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">OSTEP Book</a></td></tr>
+<tr><td>Algorithms &amp; DSA</td><td><a href="https://cs50.harvard.edu/x/">CS50</a> or <a href="https://alright.dev/">AlgoCademy</a></td></tr>
+<tr><td>Regex Playground</td><td><a href="https://regexr.com/">RegExr</a></td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-useful-tools--platforms"><a class="header" href="#-useful-tools--platforms">🧰 Useful Tools &amp; Platforms</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Tool / Platform</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="https://replit.com/">Replit</a></td><td>Online IDE with Golang support</td></tr>
+<tr><td><a href="https://go.dev/play/">Go Playground</a></td><td>Run Go code snippets online</td></tr>
+<tr><td><a href="https://stackblitz.com/">StackBlitz</a></td><td>Frontend+backend web app prototyping</td></tr>
+<tr><td><a href="https://devdocs.io">DevDocs</a></td><td>Fast documentation browser</td></tr>
+<tr><td><a href="https://carbon.now.sh/">Carbon</a></td><td>Beautiful code snippet image generator</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-related-categories"><a class="header" href="#-related-categories">🛣️ Related Categories</a></h2>
+<blockquote>
+<p>All competitive programming-related problems and guides have been moved to the <a href="https://nesohq.github.io/bgce-archive/warp/cp-guide.html"><code>warp</code></a> category.</p>
+</blockquote>
+<hr />
+<h2 id="-contribution-guide"><a class="header" href="#-contribution-guide">🚀 Contribution Guide</a></h2>
 <ul>
-<li>Improve problem-solving skills</li>
-<li>Prepare for coding interviews</li>
-<li>Strengthen algorithmic thinking</li>
+<li>
+<p>Found a great Golang or dev resource?<br />
+→ Open a PR and add it under the right section.</p>
+</li>
+<li>
+<p>Want to organize by difficulty or topic later?<br />
+→ Feel free to suggest structure upgrades.</p>
+</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @mdimamhosen
-<strong>Date:</strong> 2025-04-20
-<strong>Category:</strong> e.g., link-resouces/problems
-<strong>Tags:</strong> [go, problem solving, cf]
-]</p>
-<h1 id="problem-313---a"><a class="header" href="#problem-313---a">Problem 313 - A</a></h1>
-<h2 id="problem-link"><a class="header" href="#problem-link">Problem Link</a></h2>
-<p><a href="https://codeforces.com/problemset/problem/313/A">CodeForces Problem 313 - A</a></p>
-<h1 id="problem-1676---b"><a class="header" href="#problem-1676---b">Problem 1676 - B</a></h1>
-<h2 id="problem-link-1"><a class="header" href="#problem-link-1">Problem Link</a></h2>
-<p><a href="https://codeforces.com/problemset/problem/1676/B">CodeForces Problem 1676 - B</a></p>
-<div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @mdimamhosen
-<strong>Date:</strong> 2025-04-23
-<strong>Category:</strong> e.g., link-resouces/problems
-<strong>Tags:</strong> [go, problem solving, leetcode]
-]</p>
-<h2 id="problem-link-2"><a class="header" href="#problem-link-2">Problem Link:</a></h2>
-<p><a href="https://leetcode.com/problems/find-numbers-with-even-number-of-digits/description/">LeetCode 1295</a></p>
+<hr />
+<h2 id="-external-sites"><a class="header" href="#-external-sites">🌐 External Sites</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Link</th></tr></thead><tbody>
+<tr><td>[Go.dev]</td><td>https://go.dev</td></tr>
+<tr><td>[GitHub]</td><td>https://github.com</td></tr>
+<tr><td>[Stack Overflow]</td><td>https://stackoverflow.com</td></tr>
+<tr><td>[LeetCode]</td><td>https://leetcode.com</td></tr>
+<tr><td>[Codeforces]</td><td>https://codeforces.com</td></tr>
+</tbody></table>
+</div>
+<hr />
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-a-journey-through-memory-the-tale-of-global-variables"><a class="header" href="#-a-journey-through-memory-the-tale-of-global-variables">🚀 A Journey Through Memory: The Tale of Global Variables</a></h1>
 <p>আজ আমরা একটা fascinating journey এ যাব - আপনার C program এর global variable গুলো কিভাবে memory তে তাদের ঘর খুঁজে নেয়। এটা একটা adventure story যেখানে আমাদের heroes হলো different types of global variables।</p>
 <h2 id="-meet-our-characters"><a class="header" href="#-meet-our-characters">🎭 Meet Our Characters</a></h2>
@@ -10347,7 +10827,6 @@ objdump -h your_program | grep -E "\.(text|rodata|data|bss)"
 </ul>
 <p>এখন যখনই আপনি global variable declare করবেন, মনে রাখবেন - আপনি একটা character এর journey শুরু করে দিচ্ছেন memory kingdom এ!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="students-will-keep"><a class="header" href="#students-will-keep">Students will keep</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="documentation-for-the-mini-cards-project"><a class="header" href="#documentation-for-the-mini-cards-project">Documentation for the mini cards project</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @mdimamhosen
 <strong>Date:</strong> 2025-04-23
 <strong>Category:</strong> e.g., mini-projects/Quantique
@@ -10404,92 +10883,10 @@ go get github.com/Delta456/box-cli-maker/v2
 <hr />
 <h2 id="-a-note-from-the-author"><a class="header" href="#-a-note-from-the-author">🤝 A Note from the Author</a></h2>
 <p>A small contribution to the incredible Best GoLang Community Ever</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="url-shortener---go"><a class="header" href="#url-shortener---go">URL Shortener - Go</a></h1>
-<p>A simple URL shortening service built with Go and MySQL. This project allows users to generate short URLs and redirect to the original long URL using a unique key.</p>
-<h2 id="features"><a class="header" href="#features">Features</a></h2>
-<ul>
-<li>Generate short URLs with unique keys</li>
-<li>Redirect to the original URL</li>
-<li>MySQL integration for URL storage</li>
-<li>JSON-based HTTP API</li>
-<li>Environment variable support via <code>.env</code> file</li>
-</ul>
-<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
-<pre><code>UrlShortner-Go/
-├── config/            # Loads MySQL connection using env vars
-├── database/
-│   └── mysql.go       # MySQL operations for saving and retrieving URLs
-├── handlers/
-│   └── UrlHandler.go  # HTTP handlers for shortening and redirecting
-├── models/            # Request/response models
-├── utils/
-│   └── utils.go       # Random key generation
-├── .env               # Environment variables
-└── main.go            # Entry point of the server
-</code></pre>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<ol>
-<li>
-<p>Clone the repository:</p>
-<pre><code class="language-bash">git clone https://github.com/0baydullah/UrlShortner-Go.git
-</code></pre>
-</li>
-<li>
-<p>Navigate to the project directory:</p>
-<pre><code class="language-bash">cd UrlShortner-Go
-</code></pre>
-</li>
-<li>
-<p>Set up your MySQL database and table:</p>
-<pre><code class="language-sql">CREATE DATABASE urlshortener;
-USE urlshortener;
-CREATE TABLE urls (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    short_key VARCHAR(255) NOT NULL UNIQUE,
-    original_url TEXT NOT NULL
-);
-</code></pre>
-</li>
-<li>
-<p>Create a <code>.env</code> file in the root directory:</p>
-<pre><code class="language-env">DB_USER=your_db_username
-DB_PASSWORD=your_db_password
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=urlshortener
-</code></pre>
-</li>
-<li>
-<p>Run the application:</p>
-<pre><code class="language-bash">go run main.go
-</code></pre>
-</li>
-</ol>
-<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<h3 id="shorten-a-url"><a class="header" href="#shorten-a-url">Shorten a URL</a></h3>
-<p>Send a <code>POST</code> request to <code>/shorten</code>:</p>
-<pre><code class="language-bash">curl -X POST http://localhost:8081/shorten -H "Content-Type: application/json" -d '{"url": "https://example.com"}'
-</code></pre>
-<p><strong>Response:</strong></p>
-<pre><code class="language-json">{
-  "key": "abc123",
-  "url": "https://example.com",
-  "shortUrl": "http://localhost:8081/abc123"
-}
-</code></pre>
-<p>or If you want to  test it you can use <code>PostMan</code> too! ;-)</p>
-<h3 id="here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already"><a class="header" href="#here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already">Here is a preview from Postman (had been hosted on a free VPS, maybe expired already)</a></h3>
-<p><img src="https://github.com/0baydullah/UrlShortner-Go/blob/main/image.png?raw=true" alt="App Preview" /></p>
-<h3 id="redirect-to-original-url"><a class="header" href="#redirect-to-original-url">Redirect to Original URL</a></h3>
-<p>Visit the shortened URL:</p>
-<pre><code class="language-bash">http://localhost:8081/abc123
-</code></pre>
-<p>This will redirect to <code>https://example.com</code>.</p>
-<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
-<p>Contributions are welcome! Feel free to open issues or submit pull requests.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="documentation-for-the-mini-cards-project"><a class="header" href="#documentation-for-the-mini-cards-project">Documentation for the mini cards project</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ccwc-custom-word-count"><a class="header" href="#ccwc-custom-word-count">CCWC (Custom Word Count)</a></h1>
 <p>A Go implementation of the Unix/Linux <code>wc</code> command that counts bytes, lines, words, and characters in text files.</p>
-<h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>Count bytes in a file (<code>-c</code>)</li>
 <li>Count lines in a file (<code>-l</code>)</li>
@@ -10498,7 +10895,7 @@ DB_NAME=urlshortener
 <li>Support for reading from both files and standard input (stdin)</li>
 <li>Default mode that displays line, word, and byte counts together</li>
 </ul>
-<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <ol>
 <li>Ensure you have Go installed on your system</li>
 <li>Navigate to the project directory:</li>
@@ -10510,7 +10907,7 @@ DB_NAME=urlshortener
 </ol>
 <pre><code class="language-bash">go build -o ccwc ./cmd/ccwc
 </code></pre>
-<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <h3 id="basic-usage"><a class="header" href="#basic-usage">Basic Usage</a></h3>
 <pre><code class="language-bash">./ccwc [options] [filename]
 </code></pre>
@@ -10554,7 +10951,7 @@ DB_NAME=urlshortener
 </ol>
 <pre><code class="language-bash">cat testdata/test.txt | ./ccwc -m
 </code></pre>
-<h2 id="project-structure-1"><a class="header" href="#project-structure-1">Project Structure</a></h2>
+<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
 <pre><code>mini-projects/ccwc/
 ├── cmd/
 │   └── ccwc/
@@ -10588,8 +10985,94 @@ DB_NAME=urlshortener
 </ul>
 </li>
 </ol>
-<h2 id="contributing-1"><a class="header" href="#contributing-1">Contributing</a></h2>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
 <p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<div style="break-before: page; page-break-before: always;"></div><p>[<strong>Author:</strong> @hasanmubin
+<strong>Date:</strong> 2025-06-19
+<strong>Category:</strong> e.g., mini-projects/GitPulse
+<strong>Tags:</strong> [go, GitPulse, mini-projects]
+]</p>
+<h1 id="gitpulse---a-github-activity-tracker-cli-"><a class="header" href="#gitpulse---a-github-activity-tracker-cli-">GitPulse - A GitHub Activity Tracker CLI 🧑‍💻</a></h1>
+<p>A simple command-line tool that fetches and displays the recent public activity of any GitHub user using the <a href="https://api.github.com/">GitHub Events API</a>.
+Built with Go.</p>
+<hr />
+<h2 id="-features-1"><a class="header" href="#-features-1">🚀 Features</a></h2>
+<ul>
+<li>
+<p>Accepts GitHub username as a command-line argument</p>
+</li>
+<li>
+<p>Fetches recent activity from: <code>https://api.github.com/users/&lt;username&gt;/events</code></p>
+</li>
+<li>
+<p>Displays:</p>
+<ul>
+<li>Push events (e.g., number of commits pushed to a repo)</li>
+<li>Issues opened</li>
+<li>Repositories starred</li>
+<li>And more...</li>
+</ul>
+</li>
+<li>
+<p>Gracefully handles errors such as:</p>
+<ul>
+<li>Invalid GitHub usernames</li>
+<li>Unexpected data formats</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="-prerequisites"><a class="header" href="#-prerequisites">📦 Prerequisites</a></h2>
+<ul>
+<li><a href="https://golang.org/dl/">Go</a> installed (version 1.18 or above recommended)</li>
+</ul>
+<hr />
+<h2 id="-setup-1"><a class="header" href="#-setup-1">🛠️ Setup</a></h2>
+<ol>
+<li>
+<p><strong>Initialize a Go module</strong>:</p>
+<pre><code class="language-bash"> go mod init GitPulse
+</code></pre>
+</li>
+<li>
+<p><strong>Build the application</strong>:</p>
+<pre><code class="language-bash">go build -o github-activity
+</code></pre>
+<p>This will create a binary file named <code>github-activity</code>.</p>
+</li>
+</ol>
+<hr />
+<h2 id="-usage"><a class="header" href="#-usage">🧑‍💻 Usage</a></h2>
+<pre><code class="language-bash">./github-activity &lt;github-username&gt;
+</code></pre>
+<h3 id="example-5"><a class="header" href="#example-5">Example:</a></h3>
+<pre><code class="language-bash">./github-activity kamranahmedse
+</code></pre>
+<h3 id="sample-output"><a class="header" href="#sample-output">Sample Output:</a></h3>
+<pre><code>Pushed 3 commits to kamranahmedse/developer-roadmap
+Opened a new issue in kamranahmedse/developer-roadmap
+Starred kamranahmedse/developer-roadmap
+</code></pre>
+<hr />
+<h2 id="-error-handling"><a class="header" href="#-error-handling">🛯️ Error Handling</a></h2>
+<ul>
+<li>
+<p>Invalid username or no recent activity? You’ll get:</p>
+<pre><code>Error: user not found or has no recent public activity.
+</code></pre>
+</li>
+<li>
+<p>Internet down? API fails? You’ll get a meaningful error message instead of a crash.</p>
+</li>
+</ul>
+<hr />
+<h2 id="-future-improvements-optional-ideas"><a class="header" href="#-future-improvements-optional-ideas">🌱 Future Improvements (Optional Ideas)</a></h2>
+<ul>
+<li>Filter by specific event type (<code>PushEvent</code>, <code>IssuesEvent</code>, etc.)</li>
+<li>Cache results locally to reduce API calls</li>
+<li>Display output in a more structured or colorized format</li>
+<li>Explore other endpoints like <code>/repos</code>, <code>/followers</code>, <code>/starred</code>, etc.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><p>🧩 Project: Build Your Own JSON Parser (Step 1)</p>
 <p>Imagine JSON like Lego blocks that computers use to send and understand data. In this project, we’re learning how to read those blocks and say: “Yep, this is built correctly!” or “Nope, something’s wrong!”</p>
 <p>⸻</p>
@@ -10802,16 +11285,95 @@ x/1i $pc            # বর্তমান ইনস্ট্রাকশনট
 <pre><code class="language-bash">docker rm -f go-debug
 docker run -it --name go-debug jsiqbal/go-debug-ready
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-bgce-server-backend-api"><a class="header" href="#-bgce-server-backend-api">🛰️ BGCE Server (Backend API)</a></h1>
+<p>Welcome to the <strong>backend server</strong> powering the BGCE (Best Golang Community Ever) archive and control system.<br />
+This project serves as the foundation for category management, RBAC (Role-Based Access Control), and future API integrations — all written in <strong>Golang</strong> with simplicity and scalability in mind.</p>
+<hr />
+<h2 id="-project-structure"><a class="header" href="#-project-structure">📁 Project Structure</a></h2>
+<pre><code class="language-bash">/server
+├── main               # Main entry point for the server
+├── go.mod             # Go module file (defines module path, dependencies)
+│
+├── /categories        # Category API handlers
+│   ├── categories.go  # HTTP handlers for category management (GET/POST/etc)
+│
+├── /rbac              # Role-Based Access Control logic
+│   ├── superadmin.go  # RBAC logic to allow/disallow actions based on role
+</code></pre>
+<hr />
+<h2 id="-getting-started"><a class="header" href="#-getting-started">🚀 Getting Started</a></h2>
+<h3 id="1-clone-the-repo--enter-the-server-directory"><a class="header" href="#1-clone-the-repo--enter-the-server-directory">1. Clone the repo &amp; enter the <code>/server</code> directory</a></h3>
+<pre><code class="language-bash">git clone https://github.com/yourusername/bgce-archive.git
+cd bgce-archive/server
+</code></pre>
+<h3 id="2-initialize-dependencies-if-needed"><a class="header" href="#2-initialize-dependencies-if-needed">2. Initialize dependencies (if needed)</a></h3>
+<pre><code class="language-bash">go mod tidy
+</code></pre>
+<h3 id="3-run-the-server"><a class="header" href="#3-run-the-server">3. Run the server</a></h3>
+<pre><code class="language-bash">go run main.go
+</code></pre>
+<blockquote>
+<p>✅ Server runs on: <code>http://localhost:8080</code></p>
+</blockquote>
+<hr />
+<h2 id="-role-based-access-control-rbac"><a class="header" href="#-role-based-access-control-rbac">🔐 Role-Based Access Control (RBAC)</a></h2>
+<p>For now, <strong>Super Admin</strong> check is a simple function in <code>rbac/superadmin.go</code>:</p>
+<pre><code class="language-go">func IsSuperAdmin(r *http.Request) bool
+</code></pre>
+<p>This will later be extended using JWT tokens, sessions, or other proper authentication systems.</p>
+<hr />
+<h2 id="-api-endpoints-wip"><a class="header" href="#-api-endpoints-wip">🧩 API Endpoints (WIP)</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Endpoint</th><th>Method</th><th>Description</th><th>Access</th></tr></thead><tbody>
+<tr><td><code>/</code></td><td>GET</td><td>Welcome route</td><td>Public</td></tr>
+<tr><td><code>/categories</code></td><td>GET</td><td>List all categories</td><td>Super Admin</td></tr>
+<tr><td><code>/categories</code></td><td>POST</td><td>Create a new category</td><td>Super Admin</td></tr>
+<tr><td><code>/categories</code></td><td>PUT</td><td>Update a category</td><td>Super Admin</td></tr>
+<tr><td><code>/categories</code></td><td>DELETE</td><td>Delete a category</td><td>Super Admin</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="-contributing"><a class="header" href="#-contributing">🤝 Contributing</a></h2>
+<p>We welcome PRs, ideas, and improvements! Here's how to get started:</p>
+<ol>
+<li><strong>Fork</strong> the repo</li>
+<li>Create a new branch using:
+<pre><code class="language-bash">git switch -c feature/your-feature-name
+</code></pre>
+</li>
+<li>Add your changes (modular, readable, minimal)</li>
+<li><strong>If adding route logic</strong>, place it under <code>/categories/</code></li>
+<li><strong>If adding role or auth logic</strong>, place it under <code>/rbac/</code></li>
+<li>Push and open a PR with a clear title and message</li>
+</ol>
+<blockquote>
+<p>📌 <em>Keep each PR focused — one feature or fix per PR, please!</em></p>
+</blockquote>
+<hr />
+<h2 id="-roadmap-wip-ideas"><a class="header" href="#-roadmap-wip-ideas">🔮 Roadmap (WIP Ideas)</a></h2>
+<ul>
+<li>✅ Clean route structure using <code>http.ServeMux</code></li>
+<li>🔐 Real token-based Super Admin checks (JWT/session)</li>
+<li>📦 Persistent DB (PostgreSQL or SQLite)</li>
+<li>🧩 Problem management endpoints</li>
+<li>📊 Admin dashboard (frontend)</li>
+<li>🔄 JSON response formatting</li>
+</ul>
+<hr />
+<h2 id="-maintained-by"><a class="header" href="#-maintained-by">🧑‍💻 Maintained By</a></h2>
+<h2 id="bgce-mod-team"><a class="header" href="#bgce-mod-team">BGCE Mod Team</a></h2>
+<blockquote>
+<p><em>If you break it, you fix it. If you build it, name it something cool.</em> 😎</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo-cli"><a class="header" href="#todo-cli">Todo CLI</a></h1>
 <p>A simple command-line interface (CLI) application for managing your to-do tasks, built with Go.</p>
-<h2 id="features-2"><a class="header" href="#features-2">Features</a></h2>
+<h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
 <ul>
 <li>Add new tasks</li>
 <li>List all tasks (with --all flag for completed tasks)</li>
 <li>Mark tasks as completed</li>
 <li>Delete tasks</li>
 </ul>
-<h2 id="project-structure-2"><a class="header" href="#project-structure-2">Project Structure</a></h2>
+<h2 id="project-structure-1"><a class="header" href="#project-structure-1">Project Structure</a></h2>
 <pre><code>todo-cli/
 ├── cmd/
 │   └── tasks/
@@ -10821,7 +11383,7 @@ docker run -it --name go-debug jsiqbal/go-debug-ready
         ├── task.go
         └── storage.go
 </code></pre>
-<h2 id="installation-2"><a class="header" href="#installation-2">Installation</a></h2>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
 <ol>
 <li>Clone the repository:
 <pre><code class="language-bash">git clone https://github.com/OxRokib/bgce-archive.git
@@ -10836,7 +11398,7 @@ docker run -it --name go-debug jsiqbal/go-debug-ready
 </code></pre>
 </li>
 </ol>
-<h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
 <h3 id="add-a-task"><a class="header" href="#add-a-task">Add a Task</a></h3>
 <pre><code class="language-bash">./todo add "Your task description"
 </code></pre>
@@ -10853,31 +11415,239 @@ docker run -it --name go-debug jsiqbal/go-debug-ready
 <h3 id="delete-a-task"><a class="header" href="#delete-a-task">Delete a Task</a></h3>
 <pre><code class="language-bash">./todo delete &lt;task-id&gt;
 </code></pre>
-<h2 id="contributing-2"><a class="header" href="#contributing-2">Contributing</a></h2>
+<h2 id="contributing-1"><a class="header" href="#contributing-1">Contributing</a></h2>
 <p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<div style="break-before: page; page-break-before: always;"></div><pre><code class="language-markdown"># UDP Server in C
+
+This is a simple UDP server program written in C. It binds to `127.0.0.1` on port `5501` and listens for incoming datagrams.
+
+## Files
+
+- `main.c` : The UDP server code.
+
+## Requirements
+
+- GCC or any C compiler
+- Linux or macOS (or WSL on Windows)
+
+## How to Compile and Run
+
+1. **Compile:**
+
+```bash
+gcc main.c -o udp_server
+</code></pre>
+<ol start="2">
+<li><strong>Run:</strong></li>
+</ol>
+<pre><code class="language-bash">./udp_server
+</code></pre>
+<p>It will start and wait for incoming UDP packets.</p>
+<h2 id="code-explanation-brief"><a class="header" href="#code-explanation-brief">Code Explanation (Brief)</a></h2>
+<ul>
+<li><strong>socket()</strong> – creates a UDP socket.</li>
+<li><strong>bind()</strong> – binds to <code>127.0.0.1:5501</code>.</li>
+<li><strong>recvfrom()</strong> – receives data from any UDP client.</li>
+<li><strong>printf()</strong> – prints the received message.</li>
+</ul>
+<h2 id="example-client-testing"><a class="header" href="#example-client-testing">Example Client (Testing)</a></h2>
+<p>To test quickly, use <code>netcat</code> as a UDP client:</p>
+<pre><code class="language-bash">echo "Hello Server" | nc -u 127.0.0.1 5501
+</code></pre>
+<p>Or write your own simple C client to send a datagram to port <code>5501</code>.</p>
+<h2 id="reference"><a class="header" href="#reference">Reference</a></h2>
+<p><a href="https://github.com/nikhilroxtomar/UDP-Client-Server-Program-in-C">UDP Client-Server Program in C</a></p>
+<hr />
+<h3 id="notes"><a class="header" href="#notes">Notes</a></h3>
+<ul>
+<li>Change <code>127.0.0.1</code> to <code>0.0.0.0</code> to bind on all interfaces.</li>
+<li>Always handle errors in production-grade code (<code>if (sockfd &lt; 0) { perror("socket failed"); exit(1); }</code> etc).</li>
+</ul>
+<hr />
+<p>Feel free to modify and extend this as needed for your networking practice or system programming portfolio.</p>
+<pre><code></code></pre>
+<div style="break-before: page; page-break-before: always;"></div><pre><code class="language-markdown"># Simple UDP Server in Node.js
+
+This is a **minimal UDP server** built using Node.js `dgram` module. It listens on `127.0.0.1:41234` and optionally replies back to the client.
+
+## Files
+
+- `server.js` : Contains the UDP server code.
+
+## Requirements
+
+- Node.js (v12+ recommended)
+- npm
+
+## How to Run
+
+1. **Install dependencies (if any)**
+
+This script uses only core Node.js modules, so no installation is required. But initialize your project for good practice:
+
+```bash
+npm init -y
+</code></pre>
+<ol start="2">
+<li><strong>Run the server</strong></li>
+</ol>
+<pre><code class="language-bash">node server.js
+</code></pre>
+<p>You should see:</p>
+<pre><code>UDP Server listening on 127.0.0.1:41234
+</code></pre>
+<h2 id="code-explanation-brief-1"><a class="header" href="#code-explanation-brief-1">Code Explanation (Brief)</a></h2>
+<ul>
+<li><strong>dgram.createSocket("udp4")</strong> – creates an IPv4 UDP socket.</li>
+<li><strong>server.on("message")</strong> – handles incoming datagrams.</li>
+<li><strong>server.send()</strong> – sends a reply back to the client.</li>
+<li><strong>server.bind()</strong> – binds the server to the specified port and host.</li>
+</ul>
+<h2 id="-testing-the-server"><a class="header" href="#-testing-the-server">📡 Testing the Server</a></h2>
+<h3 id="-using-netcat-nc"><a class="header" href="#-using-netcat-nc">🔧 Using netcat (nc)</a></h3>
+<p>Open a separate terminal and run:</p>
+<pre><code class="language-bash">echo "Hello from client" | nc -u 127.0.0.1 41234
+</code></pre>
+<p>You should see the server log the received message and send a reply.</p>
+<h3 id="-using-a-nodejs-udp-client"><a class="header" href="#-using-a-nodejs-udp-client">🔧 Using a Node.js UDP client</a></h3>
+<p>Create a simple <code>client.js</code>:</p>
+<pre><code class="language-js">import dgram from "dgram";
+
+const client = dgram.createSocket("udp4");
+const msg = Buffer.from("Hello server!");
+
+client.send(msg, 0, msg.length, 41234, "127.0.0.1", (err) =&gt; {
+    if (err) console.error(err);
+    else console.log("Message sent!");
+    client.close();
+});
+</code></pre>
+<p>Run it:</p>
+<pre><code class="language-bash">node client.js
+</code></pre>
+<h2 id="reference-1"><a class="header" href="#reference-1">Reference</a></h2>
+<ul>
+<li><a href="https://nodejs.org/api/dgram.html">Node.js dgram documentation</a></li>
+</ul>
+<hr />
+<h3 id="notes-1"><a class="header" href="#notes-1">Notes</a></h3>
+<ul>
+<li>For production use, handle errors and edge cases gracefully.</li>
+<li>Use <code>udp6</code> instead of <code>udp4</code> for IPv6 sockets.</li>
+<li>Adjust <code>HOST</code> to <code>0.0.0.0</code> if you want to accept messages from any network interface.</li>
+</ul>
+<hr />
+<p>Happy UDP hacking!</p>
+<pre><code></code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="url-shortener---go"><a class="header" href="#url-shortener---go">URL Shortener - Go</a></h1>
+<p>A simple URL shortening service built with Go and MySQL. This project allows users to generate short URLs and redirect to the original long URL using a unique key.</p>
+<h2 id="features-2"><a class="header" href="#features-2">Features</a></h2>
+<ul>
+<li>Generate short URLs with unique keys</li>
+<li>Redirect to the original URL</li>
+<li>MySQL integration for URL storage</li>
+<li>JSON-based HTTP API</li>
+<li>Environment variable support via <code>.env</code> file</li>
+</ul>
+<h2 id="project-structure-2"><a class="header" href="#project-structure-2">Project Structure</a></h2>
+<pre><code>UrlShortner-Go/
+├── config/            # Loads MySQL connection using env vars
+├── database/
+│   └── mysql.go       # MySQL operations for saving and retrieving URLs
+├── handlers/
+│   └── UrlHandler.go  # HTTP handlers for shortening and redirecting
+├── models/            # Request/response models
+├── utils/
+│   └── utils.go       # Random key generation
+├── .env               # Environment variables
+└── main.go            # Entry point of the server
+</code></pre>
+<h2 id="installation-2"><a class="header" href="#installation-2">Installation</a></h2>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<pre><code class="language-bash">git clone https://github.com/0baydullah/UrlShortner-Go.git
+</code></pre>
+</li>
+<li>
+<p>Navigate to the project directory:</p>
+<pre><code class="language-bash">cd UrlShortner-Go
+</code></pre>
+</li>
+<li>
+<p>Set up your MySQL database and table:</p>
+<pre><code class="language-sql">CREATE DATABASE urlshortener;
+USE urlshortener;
+CREATE TABLE urls (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    short_key VARCHAR(255) NOT NULL UNIQUE,
+    original_url TEXT NOT NULL
+);
+</code></pre>
+</li>
+<li>
+<p>Create a <code>.env</code> file in the root directory:</p>
+<pre><code class="language-env">DB_USER=your_db_username
+DB_PASSWORD=your_db_password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=urlshortener
+</code></pre>
+</li>
+<li>
+<p>Run the application:</p>
+<pre><code class="language-bash">go run main.go
+</code></pre>
+</li>
+</ol>
+<h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
+<h3 id="shorten-a-url"><a class="header" href="#shorten-a-url">Shorten a URL</a></h3>
+<p>Send a <code>POST</code> request to <code>/shorten</code>:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:8081/shorten -H "Content-Type: application/json" -d '{"url": "https://example.com"}'
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "key": "abc123",
+  "url": "https://example.com",
+  "shortUrl": "http://localhost:8081/abc123"
+}
+</code></pre>
+<p>or If you want to  test it you can use <code>PostMan</code> too! ;-)</p>
+<h3 id="here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already"><a class="header" href="#here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already">Here is a preview from Postman (had been hosted on a free VPS, maybe expired already)</a></h3>
+<p><img src="https://github.com/0baydullah/UrlShortner-Go/blob/main/image.png?raw=true" alt="App Preview" /></p>
+<h3 id="redirect-to-original-url"><a class="header" href="#redirect-to-original-url">Redirect to Original URL</a></h3>
+<p>Visit the shortened URL:</p>
+<pre><code class="language-bash">http://localhost:8081/abc123
+</code></pre>
+<p>This will redirect to <code>https://example.com</code>.</p>
+<h2 id="contributing-2"><a class="header" href="#contributing-2">Contributing</a></h2>
+<p>Contributions are welcome! Feel free to open issues or submit pull requests.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-কমপিটিটিভ-পরোগরামিং-গাইড-cp-guide-in-bengali"><a class="header" href="#-কমপিটিটিভ-পরোগরামিং-গাইড-cp-guide-in-bengali">🧠 কম্পিটিটিভ প্রোগ্রামিং গাইড (CP Guide in Bengali)</a></h1>
 <blockquote>
 <p>📘 <em>এই গাইডটি তৈরি করা হয়েছে বাংলায় CP শেখার সুবিধার্থে। টেকনিক্যাল টার্ম এবং কোড ইংরেজিতে রাখা হয়েছে যাতে ইন্টারন্যাশনাল স্ট্যান্ডার্ড ফলো করা যায়।</em></p>
 </blockquote>
-<h2 id="-discord-session-content"><a class="header" href="#-discord-session-content">📅 Discord session content</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>সেশন</th><th>তারিখ</th><th>আলোচনা করা টপিকস</th><th>Instructor (Discord name)</th></tr></thead><tbody>
-<tr><td>সেশন ১</td><td>২০২৫-০৫-০৫</td><td>1. প্রবলেম সলভিং আর CP-এর ফিলোসফি<br>2. কেন আমরা CP করবো?<br>3. The Right Problem Solving Mindset<br>4. Exercise vs Problem</td><td>popcycle</td></tr>
-<tr><td>সেশন ২</td><td>২০২৫-০৫-০৭</td><td>1. Problem Solving mindset ঠিক করার দারুন কিছু উপায়<br>2. Strategy, tactics আর pattern চিনে নেওয়ার কৌশল<br>3. Mindset আর knowledge—দুটোরই importance<br>4. Basic math ভিত্তিক problem<br>5. Census-taker problem ও তার solution<br>6. কীভাবে একটা solid math foundation তৈরি করবেন</td><td>popcycle</td></tr>
-<tr><td>সেশন ৩</td><td>২০২৫-০৫-১২</td><td>1. কিছু Golang conceptual exercise<br>2. Basic Math problems in CP → GCD, LCM, Prime check, Divisor, Modulo math, Factorial<br>3. Live coding এবং Q&amp;A session</td><td>popcycle</td></tr>
-<tr><td>সেশন ৪</td><td>২০২৫-০৫-১৫</td><td>1. Nebula Clash 001 contest এর প্রব্লেম নিয়ে বিস্তারিত আলোচনা এবং upsolving<br>2. Problem Solving এর পিছনের idea, fastIO, concept এবং কিভাবে একটি problem approach করতে হয়<br>3. Problem solving এর জন্য সাধারণ কিছু math এবং algorithm</td><td>nayemul_islam</td></tr>
-<tr><td>সেশন ৫</td><td>২০২৫-০৫-১৭</td><td>1. Complexity জিনিসটা আসলে কি?<br>2. দুই ধরণের complexity : time complexity এবং memory complexity<br>3. কেন complexity সম্পর্কে ধারণা থাকটা important<br>4. CP তে complexity কীভাবে কাজে লাগে<br>5. কীভাবে complexity সম্পর্কে জানার মাধ্যমে আমরা একটি algorithm কতটুকু efficient সে সম্পর্কে ধারণা পেতে পারি<br>6. complexity প্রকাশ করার বিভিন্ন Notation (যেমন Big O, Big omega, Big theta)<br>7. কীভাবে Notation গুলো কাজ করে এবং কীভাবে এই notation গুলোর মাধ্যমে complexity হিসেব করা যায়?<br>8. Big O calculate করার বিভিন্ন rules<br>9. বিভিন্ন ধরণের time complexity (O(1), O(logn), O(n), O(nlogn), O(n^2) ইত্যাদি)<br>10. বিভিন্ন ধরণের memory complexity<br>11. Recursive function, nested loop, array declaration এর complexity</td><td>MArhamAA</td></tr>
-<tr><td>সেশন ৬</td><td>২০২৫-০৫-১৯</td><td>1. Golang এ normal input এবং output method<br>2. <code>bufio</code> এবং <code>os</code> এর মাধ্যমে I/O handling<br>3. <code>.txt</code> file এবং অন্যান্য text file থেকে input এবং output handle করা<br>4. FastIO কি? buffered IO কেন fast?<br>5. buffer কি? buffered IO কীভাবে ভিতরে ভিতরে কাজ করে?<br>6. Buffered I/O vs unbuffered I/O<br>7. Buffered I/O inside Internal Memory<br>8. CP তে fastIO কেন necessary?</td><td>popcycle</td></tr>
-<tr><td>সেশন ৭</td><td>২০২৫-০৫-২১</td><td>1. BruteForce কি এবং কেন BruteForce দরকার?<br>2. প্রত্যেকটা problem কি BruteForce দিয়ে solve করা উচিত?<br>3. BruteForce নিয়ে কি প্রথমেই ভাবা উচিত? কেন?<br>4. বিভিন্ন ধরণের problem BruteForce দিয়ে solve করার উদাহরণ</td><td>MArhamAA</td></tr>
-<tr><td>সেশন ৮</td><td>২০২৫-০৫-২৪</td><td>1. FastIO in Golang part 2<br>2. FastIO template of Golang for CP<br>3. <code>defer</code> function এবং এটি কী করে?<br>4. Buffered I/O flush করার ক্ষেত্রে <code>defer</code> কীভাবে কাজ করে</td><td>popcycle</td></tr>
-<tr><td>সেশন ৯</td><td>২০২৫-০৫-২৬</td><td>1. Greedy technique আসলে কী?<br>2. আমাদের এটা কেন দরকার? brute force কি যথেষ্ট না?<br>3. বাস্তব problem-এ greedy technique দিয়ে কীভাবে approach করতে হয়<br>4. প্রথমে brute force চিন্তা করা → এরপর কীভাবে greedy দিয়ে optimize করা যায়</td><td>toji</td></tr>
-<tr><td>সেশন ১০</td><td>২০২৫-০৫-২৮</td><td>1. Post contest আলোচনা<br>2. NC002 Problems Uplsolving<br>3. Q&amp;A related to contest</td><td>MArhamAA, popcycle</td></tr>
-<tr><td>সেশন ১১</td><td>২০২৫-০৬-০১</td><td>1. Linear search কী এবং naming convention-এর ব্যাপারটা<br>2. Binary search: এর implementation, complexity, এবং বিভিন্ন use case<br>3. Binary search ভিত্তিক practice problems</td><td>toji</td></tr>
-<tr><td>সেশন ১২</td><td>২০২৫-০৬-০২</td><td>1. Binary search part 2<br>2. Lower bound এবং Upper bound concepts<br>3. Binary Search on Answer technique<br>4. Floating point number এর উপর binary search<br>5. Binary search ভিত্তিক আরও কিছু practice problems</td><td>MArhamAA</td></tr>
-</tbody></table>
-</div>
-<blockquote>
-<p>💡 নতুন সেশন যুক্ত হতে থাকবে সময় অনুযায়ী।</p>
-</blockquote>
+<hr />
+<h2 id="-intro"><a class="header" href="#-intro">🚀 Intro</a></h2>
+<p>এই গাইডটি <strong>Golang দিয়ে Competitive Programming শেখার জন্য</strong> একটি সহজ পথপ্রদর্শক।<br />
+আপনি যদি CP-তে নতুন হয়ে থাকেন বা Golang-কে CP-তে ব্যবহার করতে চান, তাহলে এই গাইড আপনার জন্যই! এখানে থাকছে:</p>
+<ul>
+<li>Easy থেকে Hard লেভেলের categorized problems</li>
+<li>Bengali explanation সহ curated exercises</li>
+<li>Community-made contest problems এবং revision list</li>
+<li>Golang-specific tips &amp; fast I/O templates</li>
+</ul>
+<hr />
+<h2 id="-কিভাবে-এই-guide-বযাবহার-করবেন"><a class="header" href="#-কিভাবে-এই-guide-বযাবহার-করবেন">🛠️ কিভাবে এই Guide ব্যাবহার করবেন</a></h2>
+<ol>
+<li>নিচে থাকা <strong>Exercises</strong> গুলো থেকে শুরু করুন Golang দিয়ে প্র‍্যাকটিস করতে।</li>
+<li>তারপর Problem List অনুযায়ী প্রতিদিন ২-৩টা করে CP Problem solve করুন।</li>
+<li>"Tag" দেখে বুঝে নিন কোনটা কোন contest/level এর অংশ।</li>
+<li>“UID” ব্যবহার করে solution submit এবং discuss করুন BGCE server এ।</li>
+<li>Extra Resource এবং Revision Topics অংশ ব্যাবহার করুন আপনার দক্ষতা বাড়ানোর জন্য।</li>
+<li>আমাদের CP সেশনগুলোতে কি কি topic নিয়ে আলোচনা হয়েছে এবং কোন কোন topic আপনি নিজে নিজে practice করবেন তা জানতে <a href="https://nesohq.github.io/bgce-archive/warp/cp-session-log.html">Discord CP session log</a> দেখুন।</li>
+<li>This is how we are moving forward <a href="https://nesohq.github.io/bgce-archive/warp/roadmap.html">CP Roadmap</a></li>
+</ol>
+<hr />
 <h4 id="exercises-to-practice-with-golang"><a class="header" href="#exercises-to-practice-with-golang">Exercises to Practice with Golang</a></h4>
 <ul>
 <li><input disabled="" type="checkbox"/>
@@ -10898,45 +11668,56 @@ Function ব্যবহার করে দুই সংখ্যার গড় 
 <a href="https://www.codechef.com/problems/FIT">Fitness</a> (dncpc2)</li>
 <li><input disabled="" type="checkbox"/>
 <a href="https://atcoder.jp/contests/abc112/tasks/abc112_a?lang=en">Programming Education</a> (dncpc5)</li>
+<li><input disabled="" type="checkbox"/>
+<a href="https://www.codechef.com/problems/DIVIDE3?tab=statement">Divide into 3</a> (dncpc7)</li>
 </ul>
 <blockquote>
 <p>পরবর্তীতে আরও <code>exercise</code> add করা হবে।</p>
 </blockquote>
 <hr />
-<h2 id="problem-list"><a class="header" href="#problem-list">Problem list</a></h2>
-<h4 id="basic-mathematical-problems"><a class="header" href="#basic-mathematical-problems">Basic Mathematical problems</a></h4>
-<ol>
-<li><a href="https://acm.timus.ru/problem.aspx?space=1&amp;num=1000">Timus 1000</a></li>
-<li><a href="https://acm.timus.ru/problem.aspx?space=1&amp;num=1409">Timus 1409</a></li>
-<li><a href="https://projecteuler.net/problem=1">Project Euler 1</a></li>
-<li><a href="https://atcoder.jp/contests/abc043/tasks/abc043_a?lang=en">Children and Candies</a> (dncpc1)</li>
-<li><a href="https://codeforces.com/problemset/problem/2086/A">Cloudberry Jams</a> (dncpc1)</li>
-<li><a href="https://atcoder.jp/contests/abc055/tasks/abc055_a?lang=en">Restuarant</a> (dncpc1)</li>
-<li><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=996">Hashmat the Brave warrior</a></li>
-<li><a href="https://atcoder.jp/contests/abc061/tasks/abc061_a?lang=en">Between two integers</a> (dncpc2)</li>
-<li><a href="https://codeforces.com/problemset/problem/50/A">Domino Piling</a> (dncpc2)</li>
-<li><a href="https://codeforces.com/problemset/problem/2044/A">Easy problem</a> (dncpc3)</li>
-<li><a href="https://atcoder.jp/contests/abc366/tasks/abc366_a?lang=en">Election go brrr</a> (dncpc3)</li>
-<li><a href="https://codeforces.com/problemset/problem/959/A">A game of choice</a> (dncpc3)</li>
-<li><a href="https://atcoder.jp/contests/abc072/tasks/abc072_a?lang=en">Sandglass</a> (dncpc3)</li>
-<li><a href="https://atcoder.jp/contests/abc102/tasks/abc102_a?lang=en">Multiple of 2 and N</a> (dncpc4)</li>
-<li><a href="https://atcoder.jp/contests/abc105/tasks/abc105_a?lang=en">Atocoder Crackers</a> (dncpc4)</li>
-<li><a href="https://codeforces.com/problemset/problem/546/A">Soldier and Bananas</a> (dncpc4)</li>
-<li><a href="https://codeforces.com/problemset/problem/460/A">Vasya and Socks</a> (dncpc4)</li>
-<li><a href="https://atcoder.jp/contests/abc106/tasks/abc106_a?lang=en">Garden</a> (dncpc5)</li>
-<li><a href="https://codeforces.com/problemset/problem/1950/C">Clock Conversion</a> (dncpc5)</li>
-<li><a href="https://atcoder.jp/contests/abc137/tasks/abc137_a?lang=en">Plus Minus X</a> (dncpc6)</li>
-</ol>
-<h4 id="beginner-friendly-cp-problems"><a class="header" href="#beginner-friendly-cp-problems">Beginner Friendly CP problems</a></h4>
-<ol start="21">
-<li><a href="https://cses.fi/problemset/task/1068">Weird Algorithm</a></li>
-<li><a href="https://leetcode.com/problems/concatenation-of-array/description/">Concatenation of Array</a></li>
-<li><a href="https://codeforces.com/problemset/problem/2008/A">Sakurako's Exam</a></li>
-<li><a href="https://atcoder.jp/contests/abc132/tasks/abc132_a?lang=en">Fifty-Fifty</a> (dncpc6)</li>
-<li><a href="https://codeforces.com/problemset/problem/1873/B">Good Kid</a> (dncpc6)</li>
-<li><a href="https://toph.co/p/make-it-big">Make it Big</a> (dncpc6)</li>
-<li><a href="https://codeforces.com/problemset/problem/1709/A">Three Doors</a> (dncpc6)</li>
-</ol>
+<h2 id="-problem-list"><a class="header" href="#-problem-list">🧮 Problem List</a></h2>
+<h3 id="-basic-mathematical-problems"><a class="header" href="#-basic-mathematical-problems">🔢 Basic Mathematical Problems</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>UID</th><th>Title</th><th>Link</th><th>Tag</th></tr></thead><tbody>
+<tr><td>1</td><td>4832</td><td>Timus 1000</td><td><a href="https://acm.timus.ru/problem.aspx?space=1&amp;num=1000">Link</a></td><td></td></tr>
+<tr><td>2</td><td>7940</td><td>Timus 1409</td><td><a href="https://acm.timus.ru/problem.aspx?space=1&amp;num=1409">Link</a></td><td></td></tr>
+<tr><td>3</td><td>1602</td><td>Project Euler 1</td><td><a href="https://projecteuler.net/problem=1">Link</a></td><td></td></tr>
+<tr><td>4</td><td>2314</td><td>Children and Candies</td><td><a href="https://atcoder.jp/contests/abc043/tasks/abc043_a?lang=en">Link</a></td><td>dncpc1</td></tr>
+<tr><td>5</td><td>6851</td><td>Cloudberry Jams</td><td><a href="https://codeforces.com/problemset/problem/2086/A">Link</a></td><td>dncpc1</td></tr>
+<tr><td>6</td><td>9473</td><td>Restuarant</td><td><a href="https://atcoder.jp/contests/abc055/tasks/abc055_a?lang=en">Link</a></td><td>dncpc1</td></tr>
+<tr><td>7</td><td>5119</td><td>Hashmat the Brave Warrior</td><td><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=996">Link</a></td><td></td></tr>
+<tr><td>8</td><td>8640</td><td>Between Two Integers</td><td><a href="https://atcoder.jp/contests/abc061/tasks/abc061_a?lang=en">Link</a></td><td>dncpc2</td></tr>
+<tr><td>9</td><td>1208</td><td>Domino Piling</td><td><a href="https://codeforces.com/problemset/problem/50/A">Link</a></td><td>dncpc2</td></tr>
+<tr><td>10</td><td>3765</td><td>Easy Problem</td><td><a href="https://codeforces.com/problemset/problem/2044/A">Link</a></td><td>dncpc3</td></tr>
+<tr><td>11</td><td>9021</td><td>Election Go Brrr</td><td><a href="https://atcoder.jp/contests/abc366/tasks/abc366_a?lang=en">Link</a></td><td>dncpc3</td></tr>
+<tr><td>12</td><td>1459</td><td>A Game of Choice</td><td><a href="https://codeforces.com/problemset/problem/959/A">Link</a></td><td>dncpc3</td></tr>
+<tr><td>13</td><td>5184</td><td>Sandglass</td><td><a href="https://atcoder.jp/contests/abc072/tasks/abc072_a?lang=en">Link</a></td><td>dncpc3</td></tr>
+<tr><td>14</td><td>7804</td><td>Multiple of 2 and N</td><td><a href="https://atcoder.jp/contests/abc102/tasks/abc102_a?lang=en">Link</a></td><td>dncpc4</td></tr>
+<tr><td>15</td><td>2691</td><td>Atocoder Crackers</td><td><a href="https://atcoder.jp/contests/abc105/tasks/abc105_a?lang=en">Link</a></td><td>dncpc4</td></tr>
+<tr><td>16</td><td>4302</td><td>Soldier and Bananas</td><td><a href="https://codeforces.com/problemset/problem/546/A">Link</a></td><td>dncpc4</td></tr>
+<tr><td>17</td><td>6789</td><td>Vasya and Socks</td><td><a href="https://codeforces.com/problemset/problem/460/A">Link</a></td><td>dncpc4</td></tr>
+<tr><td>18</td><td>9032</td><td>Garden</td><td><a href="https://atcoder.jp/contests/abc106/tasks/abc106_a?lang=en">Link</a></td><td>dncpc5</td></tr>
+<tr><td>19</td><td>1025</td><td>Clock Conversion</td><td><a href="https://codeforces.com/problemset/problem/1950/C">Link</a></td><td>dncpc5</td></tr>
+<tr><td>20</td><td>5671</td><td>Plus Minus X</td><td><a href="https://atcoder.jp/contests/abc137/tasks/abc137_a?lang=en">Link</a></td><td>dncpc6</td></tr>
+<tr><td>21</td><td>3421</td><td>Square Year</td><td><a href="https://codeforces.com/problemset/problem/2114/A">Link</a></td><td>dncpc7</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h3 id="-beginner-friendly-cp-problems"><a class="header" href="#-beginner-friendly-cp-problems">🧑‍💻 Beginner Friendly CP Problems</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>UID</th><th>Title</th><th>Link</th><th>Tag</th></tr></thead><tbody>
+<tr><td>22</td><td>4598</td><td>Weird Algorithm</td><td><a href="https://cses.fi/problemset/task/1068">Link</a></td><td></td></tr>
+<tr><td>23</td><td>7334</td><td>Concatenation of Array</td><td><a href="https://leetcode.com/problems/concatenation-of-array/description/">Link</a></td><td></td></tr>
+<tr><td>24</td><td>1019</td><td>Sakurako's Exam</td><td><a href="https://codeforces.com/problemset/problem/2008/A">Link</a></td><td></td></tr>
+<tr><td>25</td><td>5640</td><td>Fifty-Fifty</td><td><a href="https://atcoder.jp/contests/abc132/tasks/abc132_a?lang=en">Link</a></td><td>dncpc6</td></tr>
+<tr><td>26</td><td>8123</td><td>Good Kid</td><td><a href="https://codeforces.com/problemset/problem/1873/B">Link</a></td><td>dncpc6</td></tr>
+<tr><td>27</td><td>2047</td><td>Make it Big</td><td><a href="https://toph.co/p/make-it-big">Link</a></td><td>dncpc6</td></tr>
+<tr><td>28</td><td>6831</td><td>Three Doors</td><td><a href="https://codeforces.com/problemset/problem/1709/A">Link</a></td><td>dncpc6</td></tr>
+<tr><td>29</td><td>9276</td><td>Distance Table</td><td><a href="https://atcoder.jp/contests/abc411/tasks/abc411_b?lang=en">Link</a></td><td>dncpc7</td></tr>
+<tr><td>30</td><td>3915</td><td>Sushi for Two</td><td><a href="https://codeforces.com/problemset/problem/1138/A">Link</a></td><td>dncpc7</td></tr>
+<tr><td>31</td><td>0313</td><td>Ilya and Bank Account</td><td><a href="https://codeforces.com/problemset/problem/313/A">Link</a></td><td></td></tr>
+<tr><td>32</td><td>1676</td><td>Equal Candies</td><td><a href="https://codeforces.com/problemset/problem/1676/B">Link</a></td><td></td></tr>
+<tr><td>33</td><td>1295</td><td>Find Numbers with Even Number of digits</td><td><a href="https://leetcode.com/problems/find-numbers-with-even-number-of-digits/">Link</a></td><td></td></tr>
+</tbody></table>
+</div>
 <h4 id="-problems-made-by-the-community"><a class="header" href="#-problems-made-by-the-community">🧩 Problems made by the community</a></h4>
 <div class="table-wrapper"><table><thead><tr><th>Problem Code</th><th>Problem Name &amp; Link</th><th>Author(Discord name)</th></tr></thead><tbody>
 <tr><td>2101</td><td><a href="https://www.hackerrank.com/contests/nebula-clash/challenges/challenge-5718">সমান ভাগের রহস্য</a></td><td>popcycle</td></tr>
@@ -10984,15 +11765,6 @@ Function ব্যবহার করে দুই সংখ্যার গড় 
 </tbody></table>
 </div>
 <hr />
-<h2 id="কিভাবে-এই-guide-বযাবহার-করবেন"><a class="header" href="#কিভাবে-এই-guide-বযাবহার-করবেন">কিভাবে এই guide ব্যাবহার করবেন</a></h2>
-<ol>
-<li>প্রতিদিন discord এ দেওয়া exercises/problems গুলো solve করবেন।</li>
-<li>নিয়মিত আমাদের session এবং contest গুলোতে participate করুন।</li>
-<li>সেশন লিস্ট নিয়মিত আপডেট করুন।</li>
-<li>বেশি problem solve করা উদ্দেশ্য নয়, বরং ভালোভাবে বুঝে problem solving করবেন।</li>
-<li>নিজের একটি github repo তৈরি করুন এবং এই guide এর problem solution গুলো সেখানে add করতে পারেন।</li>
-</ol>
-<hr />
 <blockquote>
 <p><em>এই গাইডের সাথে থাকুন, নিজের প্রগ্রেস ট্র্যাক করুন, আর শেখা চালিয়ে যান!</em></p>
 </blockquote>
@@ -11001,11 +11773,38 @@ Function ব্যবহার করে দুই সংখ্যার গড় 
 <li>dncpc = Daily (Nebula-Clash) practice contest</li>
 <li>NC = Nebula Clash</li>
 </ol>
+<hr />
 <p>[<strong>Author:</strong> @ifrunruhin12
 <strong>Date:</strong> 2025-05-09
 <strong>Category:</strong> docs/warp
 ]</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="-cp-রোডমযাপ-zero-থেকে-শুরু-হয়ে-উঠুন-cp-গুরু"><a class="header" href="#-cp-রোডমযাপ-zero-থেকে-শুরু-হয়ে-উঠুন-cp-গুরু">🛣️ CP রোডম্যাপ: Zero থেকে শুরু, হয়ে উঠুন CP গুরু</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="-discord-session-content"><a class="header" href="#-discord-session-content">📅 Discord session content</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>সেশন</th><th>তারিখ</th><th>আলোচনা করা টপিকস</th><th>Instructor (Discord name)</th></tr></thead><tbody>
+<tr><td>সেশন ১</td><td>২০২৫-০৫-০৫</td><td>1. প্রবলেম সলভিং আর CP-এর ফিলোসফি<br>2. কেন আমরা CP করবো?<br>3. The Right Problem Solving Mindset<br>4. Exercise vs Problem</td><td>popcycle</td></tr>
+<tr><td>সেশন ২</td><td>২০২৫-০৫-০৭</td><td>1. Problem Solving mindset ঠিক করার দারুন কিছু উপায়<br>2. Strategy, tactics আর pattern চিনে নেওয়ার কৌশল<br>3. Mindset আর knowledge—দুটোরই importance<br>4. Basic math ভিত্তিক problem<br>5. Census-taker problem ও তার solution<br>6. কীভাবে একটা solid math foundation তৈরি করবেন</td><td>popcycle</td></tr>
+<tr><td>সেশন ৩</td><td>২০২৫-০৫-১২</td><td>1. কিছু Golang conceptual exercise<br>2. Basic Math problems in CP → GCD, LCM, Prime check, Divisor, Modulo math, Factorial<br>3. Live coding এবং Q&amp;A session</td><td>popcycle</td></tr>
+<tr><td>সেশন ৪</td><td>২০২৫-০৫-১৫</td><td>1. Nebula Clash 001 contest এর প্রব্লেম নিয়ে বিস্তারিত আলোচনা এবং upsolving<br>2. Problem Solving এর পিছনের idea, fastIO, concept এবং কিভাবে একটি problem approach করতে হয়<br>3. Problem solving এর জন্য সাধারণ কিছু math এবং algorithm</td><td>nayemul_islam</td></tr>
+<tr><td>সেশন ৫</td><td>২০২৫-০৫-১৭</td><td>1. Complexity জিনিসটা আসলে কি?<br>2. দুই ধরণের complexity : time complexity এবং memory complexity<br>3. কেন complexity সম্পর্কে ধারণা থাকটা important<br>4. CP তে complexity কীভাবে কাজে লাগে<br>5. কীভাবে complexity সম্পর্কে জানার মাধ্যমে আমরা একটি algorithm কতটুকু efficient সে সম্পর্কে ধারণা পেতে পারি<br>6. complexity প্রকাশ করার বিভিন্ন Notation (যেমন Big O, Big omega, Big theta)<br>7. কীভাবে Notation গুলো কাজ করে এবং কীভাবে এই notation গুলোর মাধ্যমে complexity হিসেব করা যায়?<br>8. Big O calculate করার বিভিন্ন rules<br>9. বিভিন্ন ধরণের time complexity (O(1), O(logn), O(n), O(nlogn), O(n^2) ইত্যাদি)<br>10. বিভিন্ন ধরণের memory complexity<br>11. Recursive function, nested loop, array declaration এর complexity</td><td>MArhamAA</td></tr>
+<tr><td>সেশন ৬</td><td>২০২৫-০৫-১৯</td><td>1. Golang এ normal input এবং output method<br>2. <code>bufio</code> এবং <code>os</code> এর মাধ্যমে I/O handling<br>3. <code>.txt</code> file এবং অন্যান্য text file থেকে input এবং output handle করা<br>4. FastIO কি? buffered IO কেন fast?<br>5. buffer কি? buffered IO কীভাবে ভিতরে ভিতরে কাজ করে?<br>6. Buffered I/O vs unbuffered I/O<br>7. Buffered I/O inside Internal Memory<br>8. CP তে fastIO কেন necessary?</td><td>popcycle</td></tr>
+<tr><td>সেশন ৭</td><td>২০২৫-০৫-২১</td><td>1. BruteForce কি এবং কেন BruteForce দরকার?<br>2. প্রত্যেকটা problem কি BruteForce দিয়ে solve করা উচিত?<br>3. BruteForce নিয়ে কি প্রথমেই ভাবা উচিত? কেন?<br>4. বিভিন্ন ধরণের problem BruteForce দিয়ে solve করার উদাহরণ</td><td>MArhamAA</td></tr>
+<tr><td>সেশন ৮</td><td>২০২৫-০৫-২৪</td><td>1. FastIO in Golang part 2<br>2. FastIO template of Golang for CP<br>3. <code>defer</code> function এবং এটি কী করে?<br>4. Buffered I/O flush করার ক্ষেত্রে <code>defer</code> কীভাবে কাজ করে</td><td>popcycle</td></tr>
+<tr><td>সেশন ৯</td><td>২০২৫-০৫-২৬</td><td>1. Greedy technique আসলে কী?<br>2. আমাদের এটা কেন দরকার? brute force কি যথেষ্ট না?<br>3. বাস্তব problem-এ greedy technique দিয়ে কীভাবে approach করতে হয়<br>4. প্রথমে brute force চিন্তা করা → এরপর কীভাবে greedy দিয়ে optimize করা যায়</td><td>toji</td></tr>
+<tr><td>সেশন ১০</td><td>২০২৫-০৫-২৮</td><td>1. Post contest আলোচনা<br>2. NC002 Problems Uplsolving<br>3. Q&amp;A related to contest</td><td>MArhamAA, popcycle</td></tr>
+<tr><td>সেশন ১১</td><td>২০২৫-০৬-০১</td><td>1. Linear search কী এবং naming convention-এর ব্যাপারটা<br>2. Binary search: এর implementation, complexity, এবং বিভিন্ন use case<br>3. Binary search ভিত্তিক practice problems</td><td>toji</td></tr>
+<tr><td>সেশন ১২</td><td>২০২৫-০৬-০২</td><td>1. Binary search part 2<br>2. Lower bound এবং Upper bound concepts<br>3. Binary Search on Answer technique<br>4. Floating point number এর উপর binary search<br>5. Binary search ভিত্তিক আরও কিছু practice problems</td><td>MArhamAA</td></tr>
+<tr><td>সেশন ১৩</td><td>২০২৫-০৭-০৭</td><td>1. পূর্ববর্তী CP sessions  review <br>2. পূর্ববর্তী সব টপিক revision <br> 3. CP problem submission guide</td><td>popcycle</td></tr>
+<tr><td>সেশন ১৪</td><td>২০২৫-০৭-১৪</td><td>1.Recursion theory (Firstly show Stack theory) <br> 2.Recursion is one type of bruteforce(Magic) <br> 3.Some basic problems using recursion <br> 4.Basic idea about memoization</td><td>MArhamAA</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>💡 নতুন সেশন যুক্ত হতে থাকবে সময় অনুযায়ী।</p>
+</blockquote>
+<h2 id="-cp-session-task"><a class="header" href="#-cp-session-task">📚 CP Session Task</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Session No.</th><th>Session Task</th><th>Session Topic</th></tr></thead><tbody>
+<tr><td>13</td><td>✅ Solve all problems from <a href="warp/./cp-guide.html">cp-guide.md</a></td><td>Revision &amp; Practice</td></tr>
+<tr><td>14</td><td>🔁 Solve the following recursion problems:<br>• <a href="https://cses.fi/problemset/task/2165">Tower of Hanoi (CSES)</a><br>• <a href="https://www.codechef.com/problems/CHRL1">Chef and String (CodeChef)</a><br>• <a href="https://atcoder.jp/contests/abc153/tasks/abc153_d">Monster Defeating (AtCoder)</a><br>• <a href="https://cses.fi/problemset/task/2205">Gray Code (CSES)</a></td><td>Recursion</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="-cp-রোডমযাপ-zero-থেকে-শুরু-হয়ে-উঠুন-cp-গুরু"><a class="header" href="#-cp-রোডমযাপ-zero-থেকে-শুরু-হয়ে-উঠুন-cp-গুরু">🛣️ CP রোডম্যাপ: Zero থেকে শুরু, হয়ে উঠুন CP গুরু</a></h1>
 <p>এই গাইডে আমরা যেভাবে এগোবো — এটি শুধু একটি সঠিক পথ না, বরং বাস্তবভিত্তিক ও প্রমাণিত একটি রোডম্যাপ। ধাপে ধাপে শেখা, চর্চা করা এবং নিজের স্কিল লেভেল বাড়ানোই আমাদের মূল লক্ষ্য।</p>
 <hr />
 <h3 id="1-programming-language-basics-go"><a class="header" href="#1-programming-language-basics-go">1. Programming Language Basics (Go)</a></h3>
@@ -11090,6 +11889,7 @@ Function ব্যবহার করে দুই সংখ্যার গড় 
             window.setTimeout(window.print, 100);
         });
         </script>
+
 
     </div>
     </body>
