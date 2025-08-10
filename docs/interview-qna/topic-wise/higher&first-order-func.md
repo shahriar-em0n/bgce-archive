@@ -1,4 +1,4 @@
-[**Author:** @mdimamhosen
+[**Author:** @mdimamhosen, @mahabubulhasibshawon
 **Date:** 2025-04-22
 **Category:** interview-qa/Higher-Order
 **Tags:** [go, First-Order, Higher-Order]
@@ -8,11 +8,11 @@
 
 ### First-Order Function
 
-A **first-order function** is a function that operates on basic data types (integers, strings, etc.) and does not take other functions as arguments nor returns a function as its result.
+**First-Order Function** এমন একটি function, যা সাধারণ data type (যেমন int, string ইত্যাদি) এর উপর কাজ করে এবং কোনো function কে ইনপুট হিসেবে নেয় না বা return করে না।
 
 ### Higher-Order Function
 
-A **higher-order function** is a function that can accept other functions as arguments and/or return a function as its result. Higher-order functions are key in functional programming paradigms.
+**Higher-Order Function** এমন function, যা অন্য function কে argument হিসেবে নিতে পারে এবং/অথবা function return করতে পারে। Higher-Order Function **functional programming paradigm** এ খুব গুরুত্বপূর্ণ ভূমিকা রাখে।
 
 ### Example Code
 
@@ -59,36 +59,39 @@ func main() {
 
 ### Logic in Mathematics
 
-In discrete mathematics, logic is used to define and analyze the properties and relationships of objects.
+Discrete Mathmatics-এ, logic ব্যবহার করা হয় object এর property এবং তাদের relation বিশ্লেষণ করার জন্য।
 
-1. **Object**: An entity that has a physical existence (e.g., people, animals).
-2. **Property**: Characteristics or attributes of objects (e.g., color, height).
-3. **Relation**: Describes how objects are related to each other (e.g., "all customers must pay their pizza bills").
+1. **Object**: এমন কিছু যার বাস্তব অস্তিত্ব আছে (যেমন: মানুষ, প্রাণী)
+2. **Property**: Object-এর বৈশিষ্ট্য বা গুণ (যেমন: রং, উচ্চতা)
+3. **Relation**: কিভাবে object-গুলো একে অপরের সাথে সম্পর্কযুক্ত (যেমন: "all customers must pay their pizza bills")
 
-Example:
+উদাহরণ:
 
-- **Object**: Customer
-- **Property**: Has a bill
-- **Relation**: Must pay the bill
+* **Object**: Customer
 
-- **First-Order Logic**: Works with objects, properties, and relations.
-- **Higher-Order Logic**: Works with relations between functions and operations.
+* **Property**: Has a bill
 
-In the context of functions:
+* **Relation**: Must pay the bill
 
-- **First-Order Function**: Operates directly on objects and their properties.
-- **Higher-Order Function**: Operates on relations between functions, allowing for more abstract and flexible operations.
+* **First-Order Logic**: Object, property এবং relation নিয়ে কাজ করে।
+
+* **Higher-Order Logic**: function এর মধ্যকার relation বা operations নিয়ে কাজ করে।
+
+function এর ক্ষেত্রে:
+
+* **First-Order Function**: সরাসরি object ও তার properties এর উপর কাজ করে।
+* **Higher-Order Function**: function এর মধ্যকার relation নিয়ে কাজ করে, যেটা আরও abstract ও flexible operations করতে সাহায্য করে।
 
 ### Functional Paradigms
 
-Functional programming is a programming paradigm where programs are constructed by applying and composing functions. It emphasizes **pure functions**, **immutability**, and **higher-order functions**.
+Functional programming এমন একটি programming paradigm যেখানে program গঠন করা হয় function apply এবং compose করার মাধ্যমে। এই paradigm জোর দেওয়া হয় **pure functions**, **immutability**, এবং **higher-order functions** এর উপর।
 
-- **Pure Functions**: Functions that always produce the same output for the same input and have no side effects.
-- **Immutability**: Data cannot be changed once it is created. New data structures are created with updated values.
-- **First-Class Functions**: Functions are treated as first-class citizens, meaning they can be assigned to variables, passed as arguments, and returned from other functions.
-- **Higher-Order Functions**: Functions that take other functions as arguments or return them as results.
+* **Pure Functions**: একই input সব সময় একই output দেয়, এবং কোনো side effect থাকে না।
+* **Immutability**: একবার data তৈরি হলে তা পরিবর্তন করা যায় না; পরিবর্তনের জন্য নতুন data তৈরি করা হয়।
+* **First-Class Functions**: function গুলোকে variable এ রাখা যায়, argument হিসেবে পাঠানো যায় এবং অন্য function থেকে return করা যায়।
+* **Higher-Order Functions**: functionগুলো অন্য function কে argument হিসেবে নিতে পারে বা return করতে পারে।
 
-Functional programming languages like **Haskell**, **Racket**, and **Lisp** provide powerful abstractions for working with functions.
+**Haskell**, **Racket**, এবং **Lisp** এর মতো functional programming ভাষাগুলো function নিয়ে কাজ করার জন্য শক্তিশালী abstraction দেয়।
 
 ### Additional Example Code
 
@@ -140,16 +143,16 @@ func main() {
 }
 ```
 
-### Interview Q&A (Code Examples)
+### Interview Q\&A (Code Examples)
 
 #### 1. **What is a higher-order function?**
 
 **Question**: What is a higher-order function, and how does it work in Go?
 
 **Answer**:
-A higher-order function is a function that either accepts other functions as parameters or returns a function.
+একটি higher-order function এমন function, যেটা অন্য function কে parameter হিসেবে নিতে পারে অথবা অন্য কোনো functionকে return করতে পারে অথবা উভয়ই করতে পারে।
 
-Example:
+উদাহরণ:
 
 ```go
 package main
@@ -175,9 +178,9 @@ func main() {
 **Question**: Explain a first-order function in Go.
 
 **Answer**:
-A first-order function operates on basic data types and does not take other functions as parameters nor return functions.
+একটি first-order function হলো এমন function, যা শুধুমাত্র সাধারন data type নিয়ে কাজ করে এবং অন্য কোনো function কে parameter হিসেবে নেয় না বা return করে না।
 
-Example:
+উদাহরণ:
 
 ```go
 package main
@@ -199,7 +202,7 @@ func main() {
 **Question**: Write a function that returns another function and demonstrates its usage.
 
 **Answer**:
-Yes, you can create a higher-order function that returns another function. Here's an example:
+হ্যাঁ, একটি higher-order function তৈরি করা যায় যেটা আরেকটি function return করে।
 
 ```go
 package main
@@ -223,9 +226,7 @@ func main() {
 **Question**: Show an example of an anonymous function in Go.
 
 **Answer**:
-An anonymous function is a function defined without a name, often used for short-lived operations.
-
-Example:
+Anonymous function হলো এমন একটি function যার নাম নেই। সাধারণত ছোট বা একবারের জন্য ব্যবহৃত কাজের ক্ষেত্রে এটি ব্যবহৃত হয়।
 
 ```go
 package main
@@ -244,9 +245,7 @@ func main() {
 **Question**: Write a code example for an Immediately Invoked Function Expression (IIFE) in Go.
 
 **Answer**:
-An IIFE is a function that is defined and immediately invoked.
-
-Example:
+IIFE এমন একটি function যেটি define করার সাথে সাথেই invoke (call) করা হয়।
 
 ```go
 package main
