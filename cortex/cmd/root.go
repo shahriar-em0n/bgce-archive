@@ -1,25 +1,22 @@
 package cmd
 
 import (
-	"fmt"
+	"context"
+	"log/slog"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-var RootCmd = &cobra.Command{
-	Use:   "cortex",
-	Short: "cortex server binary",
-}
-
-func init() {
-	RootCmd.AddCommand(serverRestCmd)
-	RootCmd.AddCommand(genJWTCmd)
-}
-
-func Execute() {
-	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
+func Execute(ctx context.Context) {
+	root := &cobra.Command{
+		Use:   "cortex",
+		Short: "cortex server binary",
+	}
+	root.AddCommand(APIServerCommand(ctx))
+	root.AddCommand(GenerateJWTCommand())
+	if err := root.ExecuteContext(ctx); err != nil {
+		slog.Error("Failed to execute command", slog.Any("error", err))
 		os.Exit(1)
 	}
 }
