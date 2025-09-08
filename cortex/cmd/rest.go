@@ -11,13 +11,16 @@ import (
 	"cortex/cache"
 	category "cortex/category"
 	"cortex/config"
+	"cortex/ent"
+	"cortex/ent/migrate"
 	"cortex/logger"
 	"cortex/rabbitmq"
-	"cortex/repo"
 	"cortex/rest"
 	"cortex/rest/handlers"
 	"cortex/rest/middlewares"
 	"cortex/rest/utils"
+
+	_ "github.com/lib/pq" 
 
 	"github.com/spf13/cobra"
 	"go.elastic.co/apm/module/apmhttp"
@@ -28,6 +31,7 @@ func APIServerCommand(ctx context.Context) *cobra.Command {
 		Use:   "serve-rest",
 		Short: "start a rest server",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			backgroundContext := context.Background()
 			cnf := config.GetConfig()
 
 			apm.InitAPM(*cnf.Apm)
@@ -39,31 +43,13 @@ func APIServerCommand(ctx context.Context) *cobra.Command {
 			rmq := rabbitmq.NewRMQ(cnf)
 			defer rmq.Client.Stop()
 
-			psql := repo.GetQueryBuilder()
-
-			readBgceDB, err := repo.GetDbConnection(cnf.ReadBgceDB)
+			entClient, err := ent.Open(cnf.BGCE_DB_DRIVER, cnf.BGCE_DB_DSN)
 			if err != nil {
-				slog.Error("Failed to connect to read bgce database:", logger.Extra(map[string]any{
-					"error": err.Error(),
-				}))
+				slog.Error("Failed to connect to bgce database:", slog.Any("error", err))
 				return err
 			}
-			defer readBgceDB.Close()
-
-			writeBgceDB, err := repo.GetDbConnection(cnf.WriteBgceDB)
-			if err != nil {
-				slog.Error("Failed to connect to write bgce database:", logger.Extra(map[string]any{
-					"error": err.Error(),
-				}))
-				return err
-			}
-			defer writeBgceDB.Close()
-
-			err = repo.MigrateDB(writeBgceDB, cnf.MigrationSource)
-			if err != nil {
-				slog.Error("Failed to migrate database:", logger.Extra(map[string]any{
-					"error": err.Error(),
-				}))
+			if err := entClient.Schema.Create(backgroundContext, migrate.WithDropIndex(true), migrate.WithDropColumn(true)); err != nil {
+				slog.Error("Failed to create schema:", slog.Any("error", err))
 				return err
 			}
 
@@ -92,8 +78,7 @@ func APIServerCommand(ctx context.Context) *cobra.Command {
 				UseRedisCache: true,
 			})
 
-			ctgryRepo := repo.NewCtgryRepo(readBgceDB, writeBgceDB, psql)
-			ctgrySvc := category.NewService(cnf, rmq, ctgryRepo, redisCache)
+			ctgrySvc := category.NewService(cnf, rmq, redisCache, entClient)
 			handlers := handlers.NewHandler(cnf, ctgrySvc)
 			mux, err := rest.NewServeMux(middlewares, handlers)
 			if err != nil {
